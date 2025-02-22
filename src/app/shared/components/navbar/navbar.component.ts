@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit {
+  mobileMenuHidden: boolean = true;
   constructor() {}
 
   ngOnInit() {}
