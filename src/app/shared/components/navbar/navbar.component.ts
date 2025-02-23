@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   imports: [
-    RouterLink
+    RouterLink,
+    NgClass
   ],
   standalone: true,
   templateUrl: './navbar.component.html',
@@ -12,9 +14,13 @@ import { RouterLink } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   mobileMenuHidden: boolean = true;
-  constructor() {}
+  constructor(private activatedRoute:ActivatedRoute,
+              private router: Router) {}
 
   ngOnInit() {}
 
+  isCurrentPage(page: string) {
+    return this.router.url.includes(page);
+  }
 
 }

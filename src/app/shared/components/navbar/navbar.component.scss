@@ -13,3 +13,12 @@
     }
   }
 }
+.hamburger-menu-item{
+  @apply inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900;
+  &.active{
+    @apply border-b-2 border-indigo-500;
+  }
+}
+.hamburger-menu-item:hover{
+   @apply border-b-2 hover:border-gray-300 hover:text-gray-700;
+}
