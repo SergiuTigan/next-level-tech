@@ -16,9 +16,9 @@
           }
         </button>
       </div>
-      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-        <div class="flex shrink-0 items-center">
-          <img [routerLink]="'/home'" class="h-24 w-auto" src="assets/NLT%20Simple%20Logo%20Black.png" alt="Next Level Tech">
+      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-between">
+        <div class="flex shrink-0 items-center ">
+          <img [routerLink]="'/home'" class="h-16 w-auto cursor-pointer" src="assets/NLT%20Simple%20Logo%20Black.png" alt="Next Level Tech">
         </div>
         <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
           <a [routerLink]="'/blog'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('blog')}">Blog</a>
