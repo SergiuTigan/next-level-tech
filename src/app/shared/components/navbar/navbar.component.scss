@@ -1,5 +1,5 @@
 .navbar-container{
-  @apply bg-white shadow-sm;
+  @apply bg-white shadow-md border-2 border-black border-opacity-10;
   .menu-container{
     @apply mx-auto max-w-7xl px-2 sm:px-6 lg:px-8;
     .menu{
