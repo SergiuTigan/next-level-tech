@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Article } from '../../../shared/models/article.interface';
 
 @Component({
   selector: 'app-blog',
@@ -8,5 +9,8 @@ import { Component } from '@angular/core';
   styleUrl: './blog.component.scss'
 })
 export class BlogComponent {
+  articles: Article[] = [];
+  constructor(){
+  }
 
 }
