@@ -1,1 +1,113 @@
-<p>blog-create works!</p>
+<div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
+
+  <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+
+
+        <form [formGroup]="createPostForm" (ngSubmit)="onSubmit()" class="w-[30vw] mx-auto bg-white p-6 rounded-xl shadow-md space-y-4">
+          <h2 class="text-2xl font-bold text-center">Create a New Post</h2>
+
+          <!-- Title -->
+          <div>
+            <label for="title" class="block font-medium">Title:</label>
+            <input id="title" type="text" formControlName="title"
+                   class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300 outline-none"
+                   placeholder="Enter post title" required />
+            <div *ngIf="createPostForm.get('title')?.invalid && createPostForm.get('title')?.touched"
+                 class="text-red-500 text-sm mt-1">
+              Title is required
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label for="description" class="block font-medium">Description:</label>
+            <input id="description" type="text" formControlName="description"
+                   class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300 outline-none"
+                   placeholder="Short description" required />
+            <div *ngIf="createPostForm.get('description')?.invalid && createPostForm.get('description')?.touched"
+                 class="text-red-500 text-sm mt-1">
+              Description is required
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div>
+            <label for="content" class="block font-medium">Content:</label>
+            <textarea id="content" formControlName="content"
+                      class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300 outline-none" rows="4"
+                      placeholder="Write your content here..." required></textarea>
+            <div *ngIf="createPostForm.get('content')?.invalid && createPostForm.get('content')?.touched"
+                 class="text-red-500 text-sm mt-1">
+              Content is required
+            </div>
+          </div>
+
+          <!-- Category -->
+          <div>
+            <label for="category" class="block font-medium">Category:</label>
+            <select id="category" formControlName="category"
+                    class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300 outline-none" required>
+              <option value="">Select Category</option>
+              <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+            <div *ngIf="createPostForm.get('category')?.invalid && createPostForm.get('category')?.touched"
+                 class="text-red-500 text-sm mt-1">
+              Category is required
+            </div>
+          </div>
+
+          <!-- Cover Image -->
+          <div>
+            <label for="coverImage" class="block font-medium">Cover Image URL:</label>
+            <input id="coverImage" type="text" formControlName="coverImage"
+                   class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300 outline-none"
+                   placeholder="Paste cover image URL" required />
+            <div *ngIf="createPostForm.get('coverImage')?.invalid && createPostForm.get('coverImage')?.touched"
+                 class="text-red-500 text-sm mt-1">
+              Cover Image is required
+            </div>
+          </div>
+
+          <!-- Images (Multiple URLs) -->
+          <div>
+            <label for="images" class="block font-medium">Images (Comma-separated URLs):</label>
+            <input id="images" type="text"
+                   class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300 outline-none"
+                   placeholder="Enter multiple image URLs, separated by commas" />
+          </div>
+
+          <!-- Tags -->
+          <div>
+            <label for="tags" class="block font-medium">Tags (Comma-separated):</label>
+            <input id="tags" type="text"
+                   class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300 outline-none"
+                   placeholder="Enter tags, separated by commas" />
+          </div>
+
+          <!-- Thumbnail -->
+          <div>
+            <label for="thumbnail" class="block font-medium">Thumbnail URL:</label>
+            <input id="thumbnail" type="text" formControlName="thumbnail"
+                   class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300 outline-none"
+                   placeholder="Paste thumbnail URL" />
+          </div>
+
+          <!-- Author -->
+          <div>
+            <label for="author" class="block font-medium">Author:</label>
+            <input id="author" type="text" formControlName="author"
+                   class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300 outline-none"
+                   placeholder="Enter author name" />
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" [disabled]="createPostForm.invalid"
+                  class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition">
+            Submit Post
+          </button>
+        </form>
+      </div>
+  </div>
+</div>

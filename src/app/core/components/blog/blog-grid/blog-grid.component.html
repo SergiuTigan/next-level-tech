@@ -1,6 +1,13 @@
 <div class="bg-white py-24 sm:py-32">
   <div class="mx-auto max-w-7xl px-6 lg:px-8">
     <div class="mx-auto max-w-2xl lg:mx-0">
+      <button type="button"
+              class="absolute top-5 right-28 cursor-pointer rounded-full bg-indigo-600 p-2 text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      (click)="showModal()">
+        <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+          <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z"/>
+        </svg>
+      </button>
       <h2 class="text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">Tech Insights & Innovations</h2>
       <p class="mt-2 text-lg/8 text-gray-600">Stay ahead with Next Level Tech as we explore the latest trends in Angular, React, TailwindCSS, Bootstrap, and Material UI. Discover
                                               insights on performance, scalability, and innovation in modern web development.</p>
@@ -23,16 +30,16 @@
             <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600">{{ article.description }}</p>
           </div>
           <div class="relative mt-8 flex items-center gap-x-4">
-<!--            <img src="{{article.author.avatar}}"-->
-<!--                 alt="" class="size-10 rounded-full bg-gray-50">-->
+            <!--            <img src="{{article.author.avatar}}"-->
+            <!--                 alt="" class="size-10 rounded-full bg-gray-50">-->
             <div class="text-sm/6">
               <p class="font-semibold text-gray-900">
                 <a href="#">
                   <span class="absolute inset-0"></span>
-<!--                  {{ article.author.name }}-->
+                  <!--                  {{ article.author.name }}-->
                 </a>
               </p>
-<!--              <p class="text-gray-600">{{ article.author.role }}</p>-->
+              <!--              <p class="text-gray-600">{{ article.author.role }}</p>-->
             </div>
           </div>
         </article>
@@ -45,3 +52,7 @@
     </div>
   </div>
 </div>
+
+@if(showCreateModal) {
+  <app-blog-create/>
+}

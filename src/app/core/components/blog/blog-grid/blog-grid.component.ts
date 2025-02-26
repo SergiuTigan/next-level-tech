@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Article } from '../../../../shared/models/article.interface';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { BlogService } from '../../../services/blog.service';
+import { BlogCreateComponent } from '../blog-create/blog-create.component';
 
 @Component({
   selector: 'app-blog-grid',
   imports: [
-    RouterLink
+    RouterLink,
+    BlogCreateComponent
   ],
   providers: [BlogService],
   standalone: true,
@@ -15,10 +17,9 @@ import { BlogService } from '../../../services/blog.service';
 })
 export class BlogGridComponent implements OnInit {
   articles: Article[] = [];
+  showCreateModal: boolean = false;
 
-  constructor(private blogService: BlogService,
-              private router: Router,
-              private route: ActivatedRoute) {
+  constructor(private blogService: BlogService) {
   }
 
   ngOnInit(): void {
@@ -27,4 +28,11 @@ export class BlogGridComponent implements OnInit {
     });
   }
 
+  showModal(): void {
+    if (!this.showCreateModal) {
+      this.showCreateModal = true;
+    } else {
+      this.showCreateModal = false;
+    }
+  }
 }
