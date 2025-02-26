@@ -1,13 +1,14 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CreateArticleDto } from '../../../../shared/models/article.interface';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-blog-create',
   imports: [
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    NgForOf
   ],
   standalone: true,
   templateUrl: './blog-create.component.html',
@@ -15,6 +16,7 @@ import { NgIf } from '@angular/common';
 })
 export class BlogCreateComponent implements OnInit{
   @Output() createPost = new EventEmitter<CreateArticleDto>();
+  @Output() close = new EventEmitter<boolean>();
   createPostForm!: FormGroup;
   categories = ['Technology', 'Health', 'Sports', 'Business']; // Example categories
 
@@ -43,5 +45,8 @@ export class BlogCreateComponent implements OnInit{
     if (this.createPostForm.valid) {
       console.log('Form Submitted:', this.createPostForm.value);
     }
+  }
+  closeModal(){
+    this.close.emit(false);
   }
 }

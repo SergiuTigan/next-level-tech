@@ -28,11 +28,8 @@ export class BlogGridComponent implements OnInit {
     });
   }
 
-  showModal(): void {
-    if (!this.showCreateModal) {
-      this.showCreateModal = true;
-    } else {
-      this.showCreateModal = false;
-    }
+  showModal(show: boolean): void {
+    this.showCreateModal = show;
   }
+
 }
