@@ -8,7 +8,8 @@ const routes: Routes = [
   { path: 'team', loadChildren: () => import('./core/components/team/team.module').then(m => m.TeamModule) },
   { path: 'projects', loadChildren: () => import('./core/components/projects/projects.module').then(m => m.ProjectsModule) },
   { path: 'about', loadChildren: () => import('./core/components/about/about.module').then(m => m.AboutModule) },
-  { path: 'contact', loadChildren: () => import('./core/components/contact/contact.module').then(m => m.ContactModule) }
+  { path: 'contact', loadChildren: () => import('./core/components/contact/contact.module').then(m => m.ContactModule) },
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Article } from '../../../../shared/models/article.interface';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BlogService } from '../../../services/blog.service';
 
 @Component({
@@ -16,7 +16,9 @@ import { BlogService } from '../../../services/blog.service';
 export class BlogGridComponent implements OnInit {
   articles: Article[] = [];
 
-  constructor(private blogService: BlogService) {
+  constructor(private blogService: BlogService,
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
