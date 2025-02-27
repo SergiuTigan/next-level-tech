@@ -1,0 +1,102 @@
+<div class="auth-form-container max-w-md mx-auto mt-8 p-6 bg-white rounded shadow">
+  <h2 class="text-2xl font-bold mb-6 text-center">
+    {{ isSignIn ? 'Sign In' : 'Create an Account' }}
+  </h2>
+
+  <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+    <!-- Email Field -->
+    <div class="mb-4">
+      <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        class="w-full px-3 py-2 border rounded"
+        [ngClass]="{'border-red-500': submitted && f['email'].errors, 'border-gray-300': !(submitted && f['email'].errors)}"
+      >
+      <div *ngIf="submitted && f['email'].errors" class="mt-1 text-sm text-red-500">
+        <div *ngIf="f['email'].errors?.['required']">Email is required</div>
+        <div *ngIf="f['email'].errors?.['email']">Email must be a valid email address</div>
+      </div>
+    </div>
+
+    <!-- Name Field (Sign Up only) -->
+    <div class="mb-4" *ngIf="!isSignIn">
+      <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        class="w-full px-3 py-2 border rounded"
+        [ngClass]="{'border-red-500': submitted && f['name']?.errors, 'border-gray-300': !(submitted && f['name']?.errors)}"
+      >
+      <div *ngIf="submitted && f['name']?.errors" class="mt-1 text-sm text-red-500">
+        <div *ngIf="f['name']?.errors?.['required']">Name is required</div>
+        <div *ngIf="f['name']?.errors?.['minlength']">Name must be at least 2 characters</div>
+      </div>
+    </div>
+
+    <!-- Role Selection (Sign Up only) -->
+    <div class="mb-4" *ngIf="!isSignIn">
+      <label for="role" class="block text-sm font-medium text-gray-700">I want to</label>
+      <select
+        id="role"
+        formControlName="role"
+        class="w-full px-3 py-2 border rounded bg-white"
+        [ngClass]="{'border-red-500': submitted && f['role']?.errors, 'border-gray-300': !(submitted && f['role']?.errors)}"
+      >
+        <option value="Reader">Just read articles</option>
+        <option value="Writer">Write and read articles</option>
+      </select>
+      <div *ngIf="submitted && f['role']?.errors" class="mt-1 text-sm text-red-500">
+        <div *ngIf="f['role']?.errors?.['required']">Please select a role</div>
+      </div>
+    </div>
+
+    <!-- Password Field -->
+    <div class="mb-4">
+      <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        class="w-full px-3 py-2 border rounded"
+        [ngClass]="{'border-red-500': submitted && f['password'].errors, 'border-gray-300': !(submitted && f['password'].errors)}"
+      >
+      <div *ngIf="submitted && f['password'].errors" class="mt-1 text-sm text-red-500">
+        <div *ngIf="f['password'].errors?.['required']">Password is required</div>
+        <div *ngIf="f['password'].errors?.['minlength']">Password must be at least 8 characters</div>
+      </div>
+    </div>
+
+    <!-- Confirm Password Field (Sign Up only) -->
+    <div class="mb-4" *ngIf="!isSignIn">
+      <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+      <input
+        type="password"
+        id="confirmPassword"
+        formControlName="confirmPassword"
+        class="w-full px-3 py-2 border rounded"
+        [ngClass]="{'border-red-500': submitted && f['confirmPassword']?.errors, 'border-gray-300': !(submitted && f['confirmPassword']?.errors)}"
+      >
+      <div *ngIf="submitted && f['confirmPassword']?.errors" class="mt-1 text-sm text-red-500">
+        <div *ngIf="f['confirmPassword']?.errors?.['required']">Please confirm your password</div>
+        <div *ngIf="f['confirmPassword']?.errors?.['passwordMismatch']">Passwords do not match</div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-500">
+      {{ isSignIn ? 'Sign In' : 'Sign Up' }}
+    </button>
+
+    <!-- Toggle auth mode -->
+    <div class="mt-4 text-center">
+      <a href="javascript:void(0)" (click)="toggleAuthMode()" class="text-indigo-600 hover:text-indigo-500">
+        {{ isSignIn ? 'Need an account? Sign Up' : 'Already have an account? Sign In' }}
+      </a>
+    </div>
+  </form>
+</div>

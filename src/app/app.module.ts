@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { LoginFormComponent } from './shared/components/login-form/login-form.component';
+import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     BrowserModule,
     AppRoutingModule,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    LoginFormComponent,
+    ClickOutsideDirective
   ],
   providers: [],
   bootstrap: [AppComponent]

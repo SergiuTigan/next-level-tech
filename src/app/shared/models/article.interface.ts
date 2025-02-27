@@ -1,4 +1,4 @@
-import { Author } from './author.interface';
+import { User } from './user.interface';
 
 export interface Article {
   id?: number;
@@ -13,7 +13,7 @@ export interface Article {
   likes: number;
   comments: string[];
   thumbnail: string;
-  author: Author;
+  author: User;
 }
 
 export interface CreateArticleDto {
