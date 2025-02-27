@@ -1,7 +1,59 @@
 <div class="h-[100vh]">
-<app-navbar/>
+  <app-navbar/>
   <div class="sm:h-[85vh] h-[75vh]">
-<router-outlet/>
+    <router-outlet/>
   </div>
-<app-footer/>
+  <app-footer/>
 </div>
+
+@if (isOpen$ | async) {
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <!-- Modal Box -->
+    <div class="bg-white rounded-lg shadow-xl w-96 p-6 relative">
+
+      <!-- Close Button -->
+      <button (click)="closeModal()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+        ✕
+      </button>
+
+      <!-- Header -->
+      <h2 class="text-xl font-semibold text-center mb-4">
+        {{ isSignIn ? 'Sign In' : 'Sign Up' }}
+      </h2>
+
+      <!-- Form -->
+      <form>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" class="w-full px-3 py-2 border rounded focus:ring-indigo-500 focus:border-indigo-500" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700">Password</label>
+          <input type="password" class="w-full px-3 py-2 border rounded focus:ring-indigo-500 focus:border-indigo-500" required>
+        </div>
+
+        <!-- Extra field for Sign Up -->
+        @if (!isSignIn) {
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <input type="password" class="w-full px-3 py-2 border rounded focus:ring-indigo-500 focus:border-indigo-500" required>
+          </div>
+        }
+
+
+        <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-500">
+          {{ isSignIn ? 'Sign In' : 'Sign Up' }}
+        </button>
+      </form>
+
+      <!-- Toggle Link -->
+      <p class="text-sm text-center mt-4">
+        {{ isSignIn ? "Don't have an account?" : "Already have an account?" }}
+        <button (click)="toggleForm()" class="text-indigo-600 hover:underline">
+          {{ isSignIn ? 'Sign Up' : 'Sign In' }}
+        </button>
+      </p>
+    </div>
+  </div>
+}
