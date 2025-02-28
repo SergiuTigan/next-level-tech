@@ -7,6 +7,8 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { LoginFormComponent } from './shared/components/login-form/login-form.component';
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,11 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     LoginFormComponent,
     ClickOutsideDirective
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../../shared/models/user.interface';
 import { environment } from '../../../assets/environment/environment';
 import { BaseService } from './base.service';
@@ -22,7 +22,11 @@ export class UsersService {
   register(user: User): Observable<User> {
     return this.baseService.post<User>(`${this.baseUrl}/users`, user);
   }
-  login(user: any): Observable<User> {
-    return this.baseService.post<User>(`${this.baseUrl}/users/login`, user);
+
+  login(user: any): Observable<{ user: User, token: string }> {
+    return this.baseService.post<{ user: User, token: string }>(`${this.baseUrl}/users/login`, user).pipe(tap((user: { user: User, token: string }) => {
+      sessionStorage.setItem('token', user.token);
+      sessionStorage.setItem('user', JSON.stringify(user.user));
+    }));
   }
 }
