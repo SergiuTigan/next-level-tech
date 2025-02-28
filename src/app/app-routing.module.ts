@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'projects', loadChildren: () => import('./core/components/projects/projects.module').then(m => m.ProjectsModule) },
   { path: 'about', loadChildren: () => import('./core/components/about/about.module').then(m => m.AboutModule) },
   { path: 'contact', loadChildren: () => import('./core/components/contact/contact.module').then(m => m.ContactModule) },
+  { path: 'profile', loadChildren: () => import('./core/components/profile/profile.module').then(m => m.ProfileModule) },
   { path: '**', redirectTo: 'home' }
 ];
 

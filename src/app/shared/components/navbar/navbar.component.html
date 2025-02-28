@@ -28,13 +28,26 @@
           <a [routerLink]="'/contact'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('contact')}">Contact</a>
         </div>
       </div>
-      <button type="button"
-              class="cursor-pointer bg-indigo-600 px-4 py-2 h-1/2 self-center ml-5
+      @if (isUserLoggedIn | async) {
+        <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+          <a [routerLink]="'/profile'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('profile')}">Profile</a>
+          <button type="button"
+                  class="cursor-pointer bg-red-600 px-4 py-2 h-1/2 self-center ml-5
+              rounded-lg text-white text-sm font-semibold shadow-md transition-all duration-300
+              hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
+                  (click)="logout()">
+            Log Out
+          </button>
+        </div>
+      } @else {
+        <button type="button"
+                class="cursor-pointer bg-indigo-600 px-4 py-2 h-1/2 self-center ml-5
               rounded-lg text-white text-sm font-semibold shadow-md transition-all duration-300
               hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
-              (click)="openModal($event)">
-        Sign In
-      </button>
+                (click)="openModal($event)">
+          Sign In / Sign Up
+        </button>
+      }
     </div>
   </div>
 

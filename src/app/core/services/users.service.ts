@@ -10,13 +10,19 @@ import { BaseService } from './base.service';
 export class UsersService {
   baseUrl = environment.baseUrl;
   isSignInOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isSignInOpenCurrent = this.isSignInOpen$.asObservable();
+  isAuthenticatedCurrent = this.isAuthenticated$.asObservable();
 
   constructor(private baseService: BaseService) {
   }
 
   saveCurrentState(isOpen: boolean): void {
     this.isSignInOpen$.next(isOpen);
+  }
+
+  saveAuthState(isAuthenticated: boolean): void {
+    this.isAuthenticated$.next(isAuthenticated);
   }
 
   register(user: User): Observable<User> {
@@ -27,6 +33,7 @@ export class UsersService {
     return this.baseService.post<{ user: User, token: string }>(`${this.baseUrl}/users/login`, user).pipe(tap((user: { user: User, token: string }) => {
       sessionStorage.setItem('token', user.token);
       sessionStorage.setItem('user', JSON.stringify(user.user));
+      this.saveAuthState(true);
     }));
   }
 }
