@@ -3,8 +3,8 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validator
 import { NgClass, NgIf } from '@angular/common';
 import { UsersService } from '../../../core/services/users.service';
 import CryptoJS from 'crypto-js';
-import { BaseService } from '../../../core/services/base.service';
 import { HttpClientModule } from '@angular/common/http';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-login-form',
@@ -15,17 +15,17 @@ import { HttpClientModule } from '@angular/common/http';
     NgClass,
     NgIf, HttpClientModule
   ],
-  providers: [UsersService, BaseService],
+  providers: [],
   standalone: true
 })
 export class LoginFormComponent implements OnInit {
   authForm!: FormGroup;
   isSignIn = true;
   submitted = false;
-  userRoles = ['Reader', 'Writer'];
 
   constructor(private fb: FormBuilder,
-              private usersService: UsersService) {
+              private usersService: UsersService,
+              private snackbar: SnackbarService) {
   }
 
   ngOnInit(): void {
@@ -116,10 +116,23 @@ export class LoginFormComponent implements OnInit {
     }
 
     // Send encrypted data to backend
-    this.isSignIn ? this.usersService.login(formData).subscribe() : this.usersService.register(formData).subscribe();
+    this.isSignIn ? this.usersService.login(formData).subscribe(response => {
+        if (response) {
+          this.snackbar.success('Login successful');
+        }
+        this.usersService.saveCurrentState(false);
+      },
+      error => {
+        this.snackbar.error('Login failed');
+      }) : this.usersService.register(formData).subscribe(response => {
+      if (response) {
+        this.snackbar.success(`User ${formData.name} created successfully`);
+      }
+      this.usersService.saveCurrentState(false);
+    });
   }
 
   private encryptPassword(password: string): string {
-    return CryptoJS.AES.encrypt(password, 'test123').toString();
+    return CryptoJS.SHA256(password).toString();
   }
 }

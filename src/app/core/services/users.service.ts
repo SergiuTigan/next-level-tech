@@ -19,7 +19,7 @@ export class UsersService {
     this.isSignInOpen$.next(isOpen);
   }
 
-  register(user: any): Observable<User> {
+  register(user: User): Observable<User> {
     return this.baseService.post<User>(`${this.baseUrl}/users`, user);
   }
   login(user: any): Observable<User> {

@@ -9,7 +9,6 @@ import { UsersService } from './core/services/users.service';
   providers: []
 })
 export class AppComponent {
-  isSignIn = true;
   isOpen$ = this.usersService.isSignInOpenCurrent;
 
   constructor(private usersService: UsersService) {
@@ -17,9 +16,5 @@ export class AppComponent {
 
   closeModal() {
     this.usersService.saveCurrentState(false);
-  }
-
-  toggleForm() {
-    this.isSignIn = !this.isSignIn;
   }
 }
