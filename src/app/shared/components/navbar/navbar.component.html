@@ -22,7 +22,6 @@
         </div>
         <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
           <a [routerLink]="'/blog'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('blog')}">Blog</a>
-          <a [routerLink]="'/team'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('team')}">Team</a>
           <a [routerLink]="'/projects'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('projects')}">Projects</a>
           <a [routerLink]="'/about'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('about')}">About</a>
           <a [routerLink]="'/contact'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('contact')}">Contact</a>
@@ -55,12 +54,12 @@
     <div class="sm:hidden absolute top-[3rem] left-0 w-full" id="mobile-menu">
       <div class="space-y-1 pt-2 pb-4">
         <a [routerLink]="'/blog'" class="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pr-4 pl-3 text-base font-medium text-indigo-700">Blog</a>
-        <a [routerLink]="'/team'"
-           class="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Team</a>
         <a [routerLink]="'/projects'"
            class="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Projects</a>
         <a [routerLink]="'/about'"
            class="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">About</a>
+        <a [routerLink]="'/contact'"
+           class="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Contact</a>
       </div>
     </div>
   }
