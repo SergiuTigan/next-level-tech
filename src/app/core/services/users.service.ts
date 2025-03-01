@@ -51,4 +51,9 @@ export class UsersService {
       this.saveRole(user.user.role);
     }));
   }
+  update(id: string, user: User): Observable<User> {
+    return this.baseService.patch<User>(`${this.baseUrl}/users/${id}`, user).pipe(tap((user: User) => {
+      sessionStorage.setItem('user', JSON.stringify(user));
+    }));
+  }
 }
