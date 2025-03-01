@@ -28,4 +28,5 @@ export interface CreateArticleDto {
   likes: number;
   comments: string[];
   thumbnail: string;
+  author: User;
 }

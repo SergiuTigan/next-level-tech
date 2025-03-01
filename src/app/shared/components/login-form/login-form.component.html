@@ -20,19 +20,35 @@
       </div>
     </div>
 
-    <!-- Name Field (Sign Up only) -->
+    <!-- First Name Field (Sign Up only) -->
     <div class="mb-4" *ngIf="!isSignIn">
-      <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+      <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
       <input
         type="text"
-        id="name"
-        formControlName="name"
+        id="firstName"
+        formControlName="firstName"
         class="w-full px-3 py-2 border rounded"
-        [ngClass]="{'border-red-500': submitted && f['name']?.errors, 'border-gray-300': !(submitted && f['name']?.errors)}"
+        [ngClass]="{'border-red-500': submitted && f['firstName']?.errors, 'border-gray-300': !(submitted && f['firstName']?.errors)}"
       >
-      <div *ngIf="submitted && f['name']?.errors" class="mt-1 text-sm text-red-500">
-        <div *ngIf="f['name']?.errors?.['required']">Name is required</div>
-        <div *ngIf="f['name']?.errors?.['minlength']">Name must be at least 2 characters</div>
+      <div *ngIf="submitted && f['firstName']?.errors" class="mt-1 text-sm text-red-500">
+        <div *ngIf="f['firstName']?.errors?.['required']">Name is required</div>
+        <div *ngIf="f['firstName']?.errors?.['minlength']">Name must be at least 2 characters</div>
+      </div>
+    </div>
+
+    <!-- Last Name Field (Sign Up only) -->
+    <div class="mb-4" *ngIf="!isSignIn">
+      <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+      <input
+        type="text"
+        id="lastName"
+        formControlName="lastName"
+        class="w-full px-3 py-2 border rounded"
+        [ngClass]="{'border-red-500': submitted && f['lastName']?.errors, 'border-gray-300': !(submitted && f['lastName']?.errors)}"
+      >
+      <div *ngIf="submitted && f['lastName']?.errors" class="mt-1 text-sm text-red-500">
+        <div *ngIf="f['lastName']?.errors?.['required']">Name is required</div>
+        <div *ngIf="f['lastName']?.errors?.['minlength']">Name must be at least 2 characters</div>
       </div>
     </div>
 

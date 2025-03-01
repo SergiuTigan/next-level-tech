@@ -44,7 +44,10 @@ export class LoginFormComponent implements OnInit {
       this.authForm.addControl('confirmPassword',
         this.fb.control('', [Validators.required, this.matchPassword()])
       );
-      this.authForm.addControl('name',
+      this.authForm.addControl('firstName',
+        this.fb.control('', [Validators.required, Validators.minLength(2)])
+      );
+      this.authForm.addControl('lastName',
         this.fb.control('', [Validators.required, Validators.minLength(2)])
       );
       this.authForm.addControl('role',
@@ -78,13 +81,17 @@ export class LoginFormComponent implements OnInit {
     // Reinitialize with appropriate controls
     if (this.isSignIn) {
       this.authForm.removeControl('confirmPassword');
-      this.authForm.removeControl('name');
+      this.authForm.removeControl('firstName');
+      this.authForm.removeControl('lastName');
       this.authForm.removeControl('role');
     } else {
       this.authForm.addControl('confirmPassword',
         this.fb.control('', [Validators.required, this.matchPassword()])
       );
-      this.authForm.addControl('name',
+      this.authForm.addControl('firstName',
+        this.fb.control('', [Validators.required, Validators.minLength(2)])
+      );
+      this.authForm.addControl('lastName',
         this.fb.control('', [Validators.required, Validators.minLength(2)])
       );
       this.authForm.addControl('role',
@@ -126,7 +133,7 @@ export class LoginFormComponent implements OnInit {
         this.snackbar.error('Login failed');
       }) : this.usersService.register(formData).subscribe(response => {
       if (response) {
-        this.snackbar.success(`User ${formData.name} created successfully`);
+        this.snackbar.success(`User ${formData.firstName} ${formData.lastName} created successfully`);
       }
       this.usersService.saveCurrentState(false);
     });

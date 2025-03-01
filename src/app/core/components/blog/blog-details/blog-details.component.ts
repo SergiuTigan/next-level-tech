@@ -12,7 +12,6 @@ export class BlogDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    debugger;
   }
 
 }
