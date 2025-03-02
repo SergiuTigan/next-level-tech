@@ -1,4 +1,4 @@
-<nav class="navbar-container">
+<nav class="navbar-container relative z-10">
   <div class="menu-container">
     <div class="menu">
       <div class="mobile">
@@ -50,16 +50,43 @@
     </div>
   </div>
 
+  <!-- Mobile menu overlay -->
   @if (!mobileMenuHidden) {
-    <div class="sm:hidden absolute top-[3rem] left-0 w-full" id="mobile-menu">
-      <div class="space-y-1 pt-2 pb-4">
-        <a [routerLink]="'/blog'" class="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pr-4 pl-3 text-base font-medium text-indigo-700">Blog</a>
-        <a [routerLink]="'/projects'"
-           class="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Projects</a>
-        <a [routerLink]="'/about'"
-           class="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">About</a>
-        <a [routerLink]="'/contact'"
-           class="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Contact</a>
+    <div class="sm:hidden fixed inset-0 bg-black bg-opacity-50 z-20" (click)="mobileMenuHidden = true"></div>
+    <div class="sm:hidden fixed top-0 right-0 w-64 h-full bg-white shadow-lg z-30 transform transition-transform ease-in-out duration-300" id="mobile-menu">
+      <div class="flex justify-between items-center p-4 border-b">
+        <h2 class="text-lg font-semibold text-indigo-600">Menu</h2>
+        <button class="text-gray-500 hover:text-gray-700" (click)="mobileMenuHidden = true">
+          <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="py-4">
+        <a [routerLink]="'/blog'" class="block py-2 px-4 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-700" (click)="mobileMenuHidden = true">Blog</a>
+        <a [routerLink]="'/projects'" class="block py-2 px-4 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-700" (click)="mobileMenuHidden = true">Projects</a>
+        <a [routerLink]="'/about'" class="block py-2 px-4 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-700" (click)="mobileMenuHidden = true">About</a>
+        <a [routerLink]="'/contact'" class="block py-2 px-4 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+           (click)="mobileMenuHidden = true">Contact</a>
+
+        @if (isUserLoggedIn | async) {
+          <div class="border-t mt-4 pt-4">
+            <a [routerLink]="'/profile'" class="block py-2 px-4 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-700" (click)="mobileMenuHidden = true">Profile</a>
+            <button type="button"
+                    class="w-full text-left py-2 px-4 text-base font-medium text-red-600 hover:bg-red-50"
+                    (click)="logout(); mobileMenuHidden = true">
+              Log Out
+            </button>
+          </div>
+        } @else {
+          <div class="border-t mt-4 pt-4">
+            <button type="button"
+                    class="w-full text-left py-2 px-4 text-base font-medium text-indigo-600 hover:bg-indigo-50"
+                    (click)="openModal($event); mobileMenuHidden = true">
+              Sign In / Sign Up
+            </button>
+          </div>
+        }
       </div>
     </div>
   }

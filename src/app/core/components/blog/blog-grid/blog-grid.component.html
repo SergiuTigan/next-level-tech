@@ -1,11 +1,11 @@
-<div class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-24 sm:py-32 min-h-[85vh]">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto mb-12 sm:mb-16 max-w-2xl lg:mx-0 lg:flex lg:items-center lg:justify-between">
+<div class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto mb-8 sm:mb-12 max-w-2xl lg:mx-0 lg:flex lg:items-center lg:justify-between">
       <div>
-        <h2 class="text-4xl font-bold tracking-tight text-pretty sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-pretty bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
           Tech Insights & Innovations
         </h2>
-        <p class="mt-4 text-lg text-gray-600">
+        <p class="mt-3 text-base sm:text-lg text-gray-600">
           Stay ahead with Next Level Tech as we explore the latest trends in Angular, React, TailwindCSS, Bootstrap, and Material UI. Discover
           insights on performance, scalability, and innovation in modern web development.
         </p>
@@ -13,12 +13,12 @@
     </div>
 
     @if ((isAuth | async) && (isNotReader | async)) {
-      <div class="mt-6 lg:mt-0 flex justify-end mb-8">
+      <div class="mt-4 lg:mt-0 flex justify-end mb-6">
         <button
           type="button"
           [routerLink]="['create']"
-          class="inline-flex items-center gap-x-2 rounded-md px-4 py-3 text-sm font-semibold text-white shadow-md bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-          <svg class="-ml-0.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          class="inline-flex items-center gap-x-2 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-md bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          <svg class="-ml-0.5 h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"/>
           </svg>
           Create Blog
@@ -26,34 +26,34 @@
       </div>
     }
 
-    <div class="mx-auto mt-2 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-4 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+    <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 border-t border-gray-200 pt-8 sm:pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3">
       @for (article of articles; track article) {
         <article
-          class="flex flex-col bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+          class="flex flex-col bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer h-full"
           [routerLink]="'details/' + article.id">
 
           <!-- Main Content -->
-          <div class="flex-1 p-6">
+          <div class="flex-1 p-5">
             <!-- Category and Date -->
-            <div class="flex items-center gap-x-4 text-xs mb-3">
+            <div class="flex items-center gap-x-3 text-xs mb-2">
               <time datetime="2020-03-16" class="text-gray-500">{{ article.createDate }}</time>
-              <span class="relative z-10 rounded-full bg-blue-50 px-3 py-1.5 font-medium text-blue-600 hover:bg-blue-100 transition-colors duration-200">
+              <span class="relative z-10 rounded-full bg-blue-50 px-2.5 py-1 font-medium text-blue-600 hover:bg-blue-100 transition-colors duration-200">
                 {{ article.category }}
               </span>
             </div>
 
             <!-- Title and Description -->
             <div class="group">
-              <h3 class="mt-3 text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
+              <h3 class="mt-2 text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
                 {{ article.title }}
               </h3>
-              <p class="mt-4 line-clamp-3 text-sm/6 text-gray-600">{{ article.description }}</p>
+              <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-gray-600">{{ article.description }}</p>
             </div>
           </div>
 
           <!-- Footer -->
-          <div class="mt-auto border-t border-gray-100 bg-gray-50 p-4 flex items-center gap-x-4">
-            <div class="h-8 w-8 rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold text-xs">
+          <div class="mt-auto border-t border-gray-100 bg-gray-50 p-3 flex items-center gap-x-3">
+            <div class="h-7 w-7 rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold text-xs">
               {{ article.author?.firstName?.charAt(0) || 'A' }}
             </div>
             <div class="text-sm">
@@ -67,9 +67,9 @@
       }
 
       @if (articles.length === 0) {
-        <div class="flex items-center justify-center col-span-3 p-12 bg-white rounded-xl shadow-md border border-gray-100">
+        <div class="flex items-center justify-center col-span-3 p-8 bg-white rounded-xl shadow-md border border-gray-100">
           <div class="text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
             </svg>

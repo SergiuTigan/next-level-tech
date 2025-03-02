@@ -1,9 +1,11 @@
-<div class="h-[100vh]">
+<div class="min-h-[100vh]">
   <app-navbar/>
-  <div class="sm:h-[85vh] h-[75vh]">
+  <div class="sm:min-h-[85vh] min-h-[75vh]">
     <router-outlet/>
   </div>
+  <div class="hidden md:block">
   <app-footer/>
+  </div>
 </div>
 
 @if (isOpen$ | async) {
