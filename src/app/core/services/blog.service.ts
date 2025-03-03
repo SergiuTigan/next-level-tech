@@ -20,4 +20,7 @@ export class BlogService {
   getAllArticles(): Observable<Article[]> {
     return this.baseService.get<Article[]>(`${this.baseUrl}/blog-posts`);
   }
+  getArticleById(id: string): Observable<Article> {
+    return this.baseService.get<Article>(`${this.baseUrl}/blog-posts/${id}`);
+  }
 }

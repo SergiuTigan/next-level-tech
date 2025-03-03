@@ -1,0 +1,29 @@
+/* blog-details.component.css */
+/* Additional custom styles can be added here */
+/* Most styling is handled by Tailwind classes */
+
+/* Add smooth scrolling for the entire page */
+:host {
+  display: block;
+  scroll-behavior: smooth;
+}
+
+/* For image hover effects */
+.prose img {
+  transition: all 0.3s ease;
+}
+
+.prose img:hover {
+  transform: scale(1.02);
+}
+
+/* Optional animation for like button */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.like-animation {
+  animation: heartbeat 0.5s;
+}
