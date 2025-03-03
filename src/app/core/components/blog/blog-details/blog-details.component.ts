@@ -20,36 +20,12 @@ export class BlogDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.blogPost = {
-      id: 5,
-      title: 'Introduction to Docker for Developers',
-      content: 'Docker has revolutionized how we build, ship, and run applications. This introduction explains key Docker concepts and how to integrate containerization into your development workflow.',
-      description: 'Get started with Docker containerization and learn how it can streamline your development and deployment processes.',
-      category: 'DevOps',
-      createDate: new Date().toISOString(),
-      coverImage: 'assets/img/sergiu.jpg',
-      images: [
-        'assets/img/andreea.png',
-        'assets/img/dobby.png'
-      ],
-      tags: ['Docker', 'DevOps', 'Containerization', 'CI/CD'],
-      likes: 93,
-      comments: [
-        'This finally helped me understand the difference between images and containers.',
-        'Great primer on Docker! Any plans for a Kubernetes follow-up?'
-      ],
-      thumbnail: 'assets/img/andreea.jpg',
-      author: {
-        firstName: 'Michael',
-        email: 'michael.chen@example.com',
-        bio: 'Backend architect specializing in Node.js microservices.',
-        avatar: 'assets/img/sergiu.jpg',
-        _id: '4',
-        lastName: 'Chen',
-        role: 'admin'
-      }
-    };
-
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.blogService.getArticleById(id).subscribe((article: Article) => {
+        this.blogPost = article;
+      });
+    }
   }
 
   formatDate(dateString: string): string {

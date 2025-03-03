@@ -30,6 +30,7 @@ export class BlogGridComponent implements OnInit {
 
   ngOnInit(): void {
     this.blogService.getAllArticles().subscribe((articles: Article[]) => {
+      this.articles = articles;
       //create some mock articles
       // Mock articles data
       //  this.articles = [
