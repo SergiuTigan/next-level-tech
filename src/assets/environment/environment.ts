@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  baseUrl: 'http://api.tigan.dev'
+  baseUrl: 'https://api.tigan.dev'
 }
