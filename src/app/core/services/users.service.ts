@@ -26,6 +26,7 @@ export class UsersService {
   saveAuthState(isAuthenticated: boolean): void {
     this.isAuthenticated$.next(isAuthenticated);
   }
+
   saveRole(role: string): void {
     if (role === 'Reader') {
       this.isNotReader.next(false);
@@ -51,8 +52,15 @@ export class UsersService {
       this.saveRole(user.user.role);
     }));
   }
+
   update(id: string, user: User): Observable<User> {
     return this.baseService.patch<User>(`${this.baseUrl}/users/${id}`, user).pipe(tap((user: User) => {
+      sessionStorage.setItem('user', JSON.stringify(user));
+    }));
+  }
+
+  uploadAvatar(id: string, avatar: File | null): Observable<User> {
+    return this.baseService.post<User>(`${this.baseUrl}/users/${id}/avatar`, avatar).pipe(tap((user: User) => {
       sessionStorage.setItem('user', JSON.stringify(user));
     }));
   }

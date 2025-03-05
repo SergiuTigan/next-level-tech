@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from './core/services/users.service';
 import { User } from './shared/models/user.interface';
+import { inject } from '@vercel/analytics';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    inject();
     sessionStorage.getItem('token') ? this.usersService.saveAuthState(true) : this.usersService.saveAuthState(false);
     if (sessionStorage.getItem('user')) {
       const user: User = JSON.parse(sessionStorage.getItem('user') || '{}');

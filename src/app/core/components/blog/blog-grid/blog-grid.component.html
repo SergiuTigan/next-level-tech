@@ -1,19 +1,27 @@
-<div class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-16 sm:py-24 min-h-[85vh]">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="mx-auto mb-8 sm:mb-12 max-w-2xl lg:mx-0 lg:flex lg:items-center lg:justify-between">
-      <div>
-        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-pretty bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-          Tech Insights & Innovations
-        </h2>
-        <p class="mt-3 text-base sm:text-lg text-gray-600">
-          Stay ahead with Next Level Tech as we explore the latest trends in Angular, React, TailwindCSS, Bootstrap, and Material UI. Discover
-          insights on performance, scalability, and innovation in modern web development.
-        </p>
-      </div>
+<div class="relative bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-[85vh] overflow-auto">
+  <!-- Hero Section with Cover Photo -->
+  <div class="relative overflow-hidden">
+    <div class="absolute inset-0">
+      <img
+        src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&h=600&q=80"
+        alt="Tech blog header"
+        class="w-full h-full object-cover object-center">
+      <div class="absolute inset-0 bg-gradient-to-b from-indigo-900/70 to-purple-900/70 mix-blend-multiply"></div>
     </div>
 
+    <div class="relative max-w-7xl mx-auto py-24 px-6 sm:py-32 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">Tech Insights & Innovations</h1>
+      <p class="mt-6 max-w-3xl text-xl text-indigo-100">
+        Stay ahead with Next Level Tech as we explore the latest trends in Angular, React, TailwindCSS, Bootstrap, and Material UI.
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <!-- Create Blog Button (Only for authenticated non-readers) -->
     @if ((isAuth | async) && (isNotReader | async)) {
-      <div class="mt-4 lg:mt-0 flex justify-end mb-6">
+      <div class="flex justify-end mb-8">
         <button
           type="button"
           [routerLink]="['create']"
@@ -26,10 +34,11 @@
       </div>
     }
 
-    <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 border-t border-gray-200 pt-8 sm:pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+    <!-- Articles Grid -->
+    <div class="mx-auto grid max-w-full grid-cols-1 gap-x-6 gap-y-10 pt-8 sm:pt-10 md:grid-cols-2 lg:grid-cols-3">
       @for (article of articles; track article) {
         <article
-          class="flex flex-col bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer h-full"
+          class="flex flex-col bg-white/90 backdrop-blur-sm rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer h-full"
           [routerLink]="'details/' + article._id">
 
           <!-- Main Content -->
@@ -67,7 +76,7 @@
       }
 
       @if (articles.length === 0) {
-        <div class="flex items-center justify-center col-span-3 p-8 bg-white rounded-xl shadow-md border border-gray-100">
+        <div class="flex items-center justify-center col-span-1 md:col-span-2 lg:col-span-3 p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-md border border-gray-100">
           <div class="text-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -79,5 +88,6 @@
         </div>
       }
     </div>
+
   </div>
 </div>

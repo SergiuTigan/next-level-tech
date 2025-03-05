@@ -24,6 +24,8 @@ export class ProfileComponent implements OnInit {
   submitted = false;
   loading = false;
   currentUser: any;
+  avatarPreview: string | null = null;
+  selectedFile: File | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,6 +47,9 @@ export class ProfileComponent implements OnInit {
       email: [{ value: this.currentUser?.email || '', disabled: true }],
       firstName: [this.currentUser?.firstName || '', [Validators.required, Validators.minLength(2)]],
       lastName: [this.currentUser?.lastName || '', [Validators.required, Validators.minLength(2)]],
+      avatar: [this.currentUser?.avatar || ''],
+      bio: [this.currentUser?.bio || '', [Validators.maxLength(500)]],
+      role: [{ value: this.currentUser?.role || '', disabled: true }],
       password: [''],
       newPassword: ['', [Validators.minLength(8)]],
       confirmNewPassword: ['']
@@ -86,6 +91,30 @@ export class ProfileComponent implements OnInit {
     return this.profileForm.controls;
   }
 
+  // Handle file selection for avatar upload
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length) {
+      this.selectedFile = input.files[0];
+
+      // Display preview of the selected image
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.avatarPreview = reader.result as string;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  // Remove selected avatar
+  removeAvatar(): void {
+    this.avatarPreview = null;
+    this.selectedFile = null;
+    this.profileForm.get('avatar')?.setValue('');
+    this.userService.uploadAvatar(this.currentUser._id, null);
+  }
+
   onSubmit(): void {
     this.submitted = true;
 
@@ -103,7 +132,27 @@ export class ProfileComponent implements OnInit {
       delete formData.confirmNewPassword;
     }
 
-    this.updateProfile(formData);
+    // If there's a new avatar file, handle it
+    if (this.selectedFile) {
+      this.uploadAvatar(formData);
+    } else {
+      this.updateProfile(formData);
+    }
+  }
+
+  // Upload avatar image and then update profile
+  private uploadAvatar(formData: any): void {
+    this.userService.uploadAvatar(this.currentUser._id, this.selectedFile).subscribe(
+      (response: any) => {
+        formData.avatar = response.url;
+        this.snackbarService.success('Avatar uploaded successfully');
+        this.updateProfile(formData);
+      },
+      (error: any) => {
+        this.snackbarService.error('Failed to upload avatar. Please try again.');
+        this.loading = false;
+      }
+    );
   }
 
   private updateProfile(formData: any): void {
