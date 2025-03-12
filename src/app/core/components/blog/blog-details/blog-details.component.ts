@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BlogService } from '../../../services/blog.service';
 import { Article } from '../../../../shared/models/article.interface';
-import { User } from '../../../../shared/models/user.interface';
 import { SafeHtmlPipe } from '../../../../shared/pipes/safe-html.pipe';
 
 @Component({
@@ -11,7 +10,7 @@ import { SafeHtmlPipe } from '../../../../shared/pipes/safe-html.pipe';
   standalone: true,
   imports: [CommonModule, SafeHtmlPipe],
   templateUrl: './blog-details.component.html',
-  styleUrls: ['./blog-details.component.css']
+  styleUrls: ['./blog-details.component.scss'] // Fixed stylesheet reference
 })
 export class BlogDetailsComponent implements OnInit {
   article!: Article;
@@ -26,8 +25,13 @@ export class BlogDetailsComponent implements OnInit {
     if (id) {
       this.blogService.getArticleById(id).subscribe((article: Article) => {
         this.article = article;
-        this.article.tags = this.article.tags[0].split(',');
-        this.article.tags = this.article.tags.map(tag => tag.charAt(0).toUpperCase() + tag.slice(1));
+
+        if (typeof this.article.tags[0] === 'string') {
+          this.article.tags = this.article.tags[0].split(',');
+          this.article.tags = this.article.tags.map(tag => tag.trim().charAt(0).toUpperCase() + tag.trim().slice(1));
+        }
+
+        // Process article content with images if needed
         if (article && article.images && article.images.length > 0) {
           this.article.content = this.integrateImagesIntoContent(article.content, article.images);
         } else {
@@ -54,8 +58,8 @@ export class BlogDetailsComponent implements OnInit {
     const contentLength = content.length;
     const numImagesToPlace = Math.min(
       images.length,
-      Math.floor(contentLength / 100) + 1, // One image per ~1000 chars
-      Math.floor(paragraphs.length / 2)      // Or one image per ~3 paragraphs, whichever is smaller
+      Math.floor(contentLength / 1000) + 1, // One image per ~1000 chars
+      Math.floor(paragraphs.length / 3)      // Or one image per ~3 paragraphs, whichever is smaller
     );
 
     // Create copy of images array to work with
@@ -111,6 +115,7 @@ export class BlogDetailsComponent implements OnInit {
   }
 
   sharePost(): void {
+    // Implement share functionality
   }
 
   goBack(): void {

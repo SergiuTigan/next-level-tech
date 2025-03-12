@@ -77,10 +77,8 @@
       </div>
     </div>
 
-    <!-- Replace the original content section -->
-    <div class="prose prose-lg max-w-none mb-10 leading-relaxed"
-         [innerHTML]="article.content">
-    </div>
+    <!-- In your blog-details.component.html -->
+    <div class="prose prose-content" [innerHTML]="article.content | safeHtml"></div>
 
     <!-- Additional images gallery -->
     @if (article.images && article.images.length > 0) {
