@@ -2,8 +2,9 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CreateArticleDto } from '../../../../shared/models/article.interface';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BlogService } from '../../../services/blog.service';
+import { QuillEditorComponent } from 'ngx-quill';
 
 @Component({
   selector: 'app-blog-create',
@@ -11,7 +12,8 @@ import { BlogService } from '../../../services/blog.service';
     ReactiveFormsModule,
     NgIf,
     NgForOf,
-    RouterLink
+    RouterLink,
+    QuillEditorComponent
   ],
   standalone: true,
   templateUrl: './blog-create.component.html',
@@ -32,6 +34,24 @@ export class BlogCreateComponent implements OnInit {
   thumbnailPreview: string | null = null;
 
   additionalImages: any[] = [];
+  quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+      [{ 'header': 1 }, { 'header': 2 }],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'indent': '-1' }, { 'indent': '+1' }],
+      [{ 'direction': 'rtl' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+      ['clean'],
+      ['link', 'image', 'video']
+    ]
+  };
 
   get submitDisabled(): boolean {
     return this.createPostForm.invalid ||
@@ -42,7 +62,9 @@ export class BlogCreateComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder,
-              private blogService: BlogService) {
+              private blogService: BlogService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -204,7 +226,7 @@ export class BlogCreateComponent implements OnInit {
     formData.append('category', formValues.category);
     formData.append('tags', tags.join(','));
     formData.append('createDate', new Date().toISOString());
-    formData.append('authorEmail', user.email);
+    formData.append('authorId', user._id);
     formData.append('coverImage', this.coverImageFile ? this.coverImageFile : '');
 
     formData.append('thumbnail', this.thumbnailFile ? this.thumbnailFile : '');
@@ -229,7 +251,7 @@ export class BlogCreateComponent implements OnInit {
       const formData = this.prepareFormData();
       console.log(formData);
       this.blogService.createPost(formData).subscribe(response => {
-        console.log(response);
+        this.router.navigate(['../'], { relativeTo: this.activatedRoute }).then();
       });
     }
   }

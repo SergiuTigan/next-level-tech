@@ -27,3 +27,10 @@
 .like-animation {
   animation: heartbeat 0.5s;
 }
+
+::ng-deep{
+  p{
+    font-size: 1.2rem;
+    background-color:red;
+  }
+}

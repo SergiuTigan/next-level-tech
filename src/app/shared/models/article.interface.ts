@@ -8,13 +8,18 @@ export interface Article {
   category: string;
   createDate: string;
   coverImage: string;
-  images: string[];
+  images: Image[];
   imageDescriptions?: { [key: string]: string };
   tags: string[];
   likes: number;
   comments: string[];
   thumbnail: string;
   author: User;
+}
+export interface Image{
+  url:string,
+  description: string,
+  _id?: string
 }
 
 export interface CreateArticleDto {

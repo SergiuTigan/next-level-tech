@@ -7,6 +7,7 @@ import { UsersService } from '../../../services/users.service';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationModalComponent } from '../../../../shared/components/modals/delete-confirmation-modal/delete-confirmation-modal.component';
+import { User } from '../../../../shared/models/user.interface';
 
 @Component({
   selector: 'app-blog-grid',
@@ -39,6 +40,7 @@ export class BlogGridComponent implements OnInit {
       this.articles = articles;
     });
   }
+
   deleteArticle(event: any,id?: string): void {
     event.stopPropagation();
     this.matDialog.open(DeleteConfirmationModalComponent, {
