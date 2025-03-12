@@ -17,9 +17,7 @@
     </div>
   </div>
 
-  <!-- Main Content -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <!-- Create Blog Button (Only for authenticated non-readers) -->
     @if ((isAuth | async) && (isNotReader | async)) {
       <div class="flex justify-end mb-8">
         <button
@@ -40,7 +38,18 @@
         <article
           class="flex flex-col bg-white/90 backdrop-blur-sm rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer h-full"
           [routerLink]="'details/' + article._id">
-
+          <div
+            *ngIf="isAdmin"
+            class="absolute top-2 right-2 z-20"
+            (click)="deleteArticle( $event,article._id)">
+            <button
+              class="flex items-center justify-center w-8 h-8 rounded-full bg-red-500 hover:bg-red-600 text-white shadow-md transition-colors duration-200"
+              title="Delete article">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
           <!-- Main Content -->
           <div class="flex-1 p-5">
             <!-- Category and Date -->

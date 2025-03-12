@@ -202,9 +202,9 @@ export class BlogCreateComponent implements OnInit {
     formData.append('content', formValues.content);
     formData.append('description', formValues.description);
     formData.append('category', formValues.category);
-    formData.append('tags', JSON.stringify(tags));
+    formData.append('tags', tags.join(','));
     formData.append('createDate', new Date().toISOString());
-    formData.append('author', user._id);
+    formData.append('authorEmail', user.email);
     formData.append('coverImage', this.coverImageFile ? this.coverImageFile : '');
 
     formData.append('thumbnail', this.thumbnailFile ? this.thumbnailFile : '');

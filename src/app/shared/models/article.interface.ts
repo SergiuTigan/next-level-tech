@@ -1,7 +1,7 @@
 import { User } from './user.interface';
 
 export interface Article {
-  _id?: number;
+  _id?: string;
   title: string;
   content: string;
   description: string;
