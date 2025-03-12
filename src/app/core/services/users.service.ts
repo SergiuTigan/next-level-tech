@@ -60,7 +60,9 @@ export class UsersService {
   }
 
   uploadAvatar(id: string, avatar: File | null): Observable<User> {
-    return this.baseService.post<User>(`${this.baseUrl}/users/${id}/avatar`, avatar).pipe(tap((user: User) => {
+    const formData = new FormData();
+    formData.append('avatar', avatar as Blob);
+    return this.baseService.post<User>(`${this.baseUrl}/users/${id}/avatar`, formData).pipe(tap((user: User) => {
       sessionStorage.setItem('user', JSON.stringify(user));
     }));
   }

@@ -9,6 +9,7 @@ export interface Article {
   createDate: string;
   coverImage: string;
   images: string[];
+  imageDescriptions?: { [key: string]: string };
   tags: string[];
   likes: number;
   comments: string[];
@@ -22,11 +23,12 @@ export interface CreateArticleDto {
   description: string;
   category: string;
   createDate: string;
-  coverImage: string;
-  images: string[];
+  coverImage: File;
+  images: File[];
+  imageDescriptions?: { [key: string]: string };
   tags: string[];
   likes: number;
   comments: string[];
-  thumbnail: string;
-  author: User;
+  thumbnail: File;
+  author?: User;
 }

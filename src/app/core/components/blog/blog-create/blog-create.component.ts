@@ -1,8 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CreateArticleDto } from '../../../../shared/models/article.interface';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { BlogService } from '../../../services/blog.service';
 
 @Component({
   selector: 'app-blog-create',
@@ -19,10 +20,29 @@ import { RouterLink } from '@angular/router';
 export class BlogCreateComponent implements OnInit {
   @Output() createPost = new EventEmitter<CreateArticleDto>();
   @Output() close = new EventEmitter<boolean>();
+
   createPostForm!: FormGroup;
   categories = ['Technology', 'Health', 'Sports', 'Business']; // Example categories
 
-  constructor() {
+  coverImageFile: File | null = null;
+  coverImagePreview: string | null = null;
+  coverImageError: string | null = null;
+
+  thumbnailFile: File | null = null;
+  thumbnailPreview: string | null = null;
+
+  additionalImages: any[] = [];
+
+  get submitDisabled(): boolean {
+    return this.createPostForm.invalid ||
+      !this.coverImageFile ||
+      !this.thumbnailFile ||
+      !!this.coverImageError ||
+      this.hasAdditionalImageErrors();
+  }
+
+  constructor(private fb: FormBuilder,
+              private blogService: BlogService) {
   }
 
   ngOnInit(): void {
@@ -30,21 +50,187 @@ export class BlogCreateComponent implements OnInit {
   }
 
   private initForm() {
-    this.createPostForm = new FormGroup({
-      title: new FormControl(null, Validators.required),
-      content: new FormControl(null, Validators.required),
-      description: new FormControl(null, Validators.required),
-      category: new FormControl(null, Validators.required),
-      coverImage: new FormControl(null, Validators.required),
-      images: new FormControl([]),
-      tags: new FormControl([]),
-      thumbnail: new FormControl(null)
+    this.createPostForm = this.fb.group({
+      title: ['', Validators.required],
+      content: ['', Validators.required],
+      description: ['', Validators.required],
+      category: ['', Validators.required],
+      tags: [''],
+      imageItems: this.fb.array([])
     });
   }
 
+  get imageItems() {
+    return this.createPostForm.get('imageItems') as FormArray;
+  }
+
+  addImageItem() {
+    const imageItemGroup = this.fb.group({
+      description: ['']
+    });
+
+    this.imageItems.push(imageItemGroup);
+    this.additionalImages.push({
+      description: '',
+      preview: ''
+    });
+  }
+
+  removeImageItem(index: number) {
+    this.imageItems.removeAt(index);
+    this.additionalImages.splice(index, 1);
+  }
+
+  onCoverImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      const file = input.files[0];
+      this.coverImageFile = file;
+
+      if (file.size > 5 * 1024 * 1024) {
+        this.coverImageError = 'Image must be smaller than 5MB';
+        this.coverImagePreview = null;
+        return;
+      }
+
+      if (!file.type.match('image.*')) {
+        this.coverImageError = 'Only image files are allowed';
+        this.coverImagePreview = null;
+        return;
+      }
+
+      this.coverImageError = null;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.coverImagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeCoverImage() {
+    this.coverImageFile = null;
+    this.coverImagePreview = null;
+    this.coverImageError = null;
+  }
+
+  onThumbnailSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      const file = input.files[0];
+      this.thumbnailFile = file;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.thumbnailPreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeThumbnail() {
+    this.thumbnailFile = null;
+    this.thumbnailPreview = null;
+  }
+
+  onAdditionalImageSelected(event: Event, index: number) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      const file = input.files[0];
+
+      if (file.size > 5 * 1024 * 1024) {
+        this.additionalImages[index] = {
+          ...this.additionalImages[index],
+          preview: '',
+          error: 'Image must be smaller than 5MB'
+        };
+        return;
+      }
+
+      if (!file.type.match('image.*')) {
+        this.additionalImages[index] = {
+          ...this.additionalImages[index],
+          preview: '',
+          error: 'Only image files are allowed'
+        };
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.additionalImages[index] = {
+          ...this.additionalImages[index],
+          file: file,
+          preview: reader.result as string,
+          error: undefined,
+          description: this.imageItems.at(index).get('description')?.value
+        };
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  getImagePreview(index: number): string | null {
+    return this.additionalImages[index]?.preview || null;
+  }
+
+  getImageError(index: number): string | null {
+    return this.additionalImages[index]?.error || null;
+  }
+
+  hasAdditionalImageErrors(): boolean {
+    return this.additionalImages.some(img => !!img.error);
+  }
+
+  prepareFormData(): FormData {
+    const formValues = this.createPostForm.value;
+    const formData = new FormData();
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+
+    const tags = typeof formValues.tags === 'string'
+      ? formValues.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag)
+      : formValues.tags || [];
+
+    this.imageItems.controls.forEach((control, index) => {
+      if (this.additionalImages[index]) {
+        this.additionalImages[index].description = control.get('description')?.value;
+      }
+    });
+
+    formData.append('title', formValues.title);
+    formData.append('content', formValues.content);
+    formData.append('description', formValues.description);
+    formData.append('category', formValues.category);
+    formData.append('tags', JSON.stringify(tags));
+    formData.append('createDate', new Date().toISOString());
+    formData.append('author', user._id);
+    formData.append('coverImage', this.coverImageFile ? this.coverImageFile : '');
+
+    formData.append('thumbnail', this.thumbnailFile ? this.thumbnailFile : '');
+
+    const validImages = this.additionalImages.filter(img => img.file);
+
+    formData.append('imageMetadata', JSON.stringify(
+      validImages.map(img => ({ description: img.description || '' }))
+    ));
+
+    validImages.forEach((img) => {
+      if (img.file) {
+        formData.append('images', img.file);
+      }
+    });
+
+    return formData;
+  }
+
   onSubmit() {
-    if (this.createPostForm.valid) {
-      console.log('Form Submitted:', this.createPostForm.value);
+    if (this.createPostForm.valid && this.coverImageFile && !this.coverImageError && !this.hasAdditionalImageErrors()) {
+      const formData = this.prepareFormData();
+      console.log(formData);
+      this.blogService.createPost(formData).subscribe(response => {
+        console.log(response);
+      });
     }
   }
 }
