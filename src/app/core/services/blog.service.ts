@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../assets/environment/environment';
 import { BaseService } from './base.service';
 import { Article } from '../../shared/models/article.interface';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -10,11 +10,18 @@ import { HttpClient } from '@angular/common/http';
 })
 export class BlogService {
   baseUrl = environment.baseUrl;
+  previewArticle: BehaviorSubject<Article> = new BehaviorSubject({} as Article);
+  currentPreviewArticle$ = this.previewArticle.asObservable();
 
   constructor(
     private baseService: BaseService,
     private http: HttpClient
-  ) {}
+  ) {
+  }
+
+  savePreviewArticle(article: Article): void {
+    this.previewArticle.next(article);
+  }
 
   getAllArticles(): Observable<Article[]> {
     return this.baseService.get<Article[]>(`${this.baseUrl}/article`);

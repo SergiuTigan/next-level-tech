@@ -14,6 +14,7 @@ import { SafeHtmlPipe } from '../../../../shared/pipes/safe-html.pipe';
 })
 export class BlogDetailsComponent implements OnInit {
   article!: Article;
+  isPreviewMode: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -21,16 +22,26 @@ export class BlogDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.blogService.getArticleById(id).subscribe((article: Article) => {
-        this.article = article;
+    this.isPreviewMode = this.router.url.includes('preview');
+    if (!this.isPreviewMode) {
+      const id = this.route.snapshot.paramMap.get('id');
+      if (id) {
+        this.blogService.getArticleById(id).subscribe((article: Article) => {
+          this.article = article;
 
-        if (typeof this.article.tags[0] === 'string') {
-          this.article.tags = this.article.tags[0].split(',');
-          this.article.tags = this.article.tags.map(tag => tag.trim().charAt(0).toUpperCase() + tag.trim().slice(1));
-        }
+          if (typeof this.article.tags[0] === 'string') {
+            this.article.tags = this.article.tags[0].split(',');
+            this.article.tags = this.article.tags.map(tag => tag.trim().charAt(0).toUpperCase() + tag.trim().slice(1));
+          }
+        });
+      }
+    } else {
+      this.blogService.currentPreviewArticle$.subscribe((article: Article) => {
+        this.article = article;
       });
+    }
+    if(JSON.stringify(this.article) === '{}'){
+      this.router.navigate(['/blog'], {relativeTo: this.route});
     }
   }
 
@@ -52,6 +63,10 @@ export class BlogDetailsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/blog']);
+    if (this.isPreviewMode) {
+      this.router.navigate(['/blog/create']);
+    } else{
+      this.router.navigate(['/blog']);
+    }
   }
 }

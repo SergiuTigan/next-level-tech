@@ -116,61 +116,62 @@
         }
       </div>
     </div>
+    @if (!isPreviewMode) {
+      <!-- Comments section -->
+      <div class="mb-12 bg-gray-50 p-6 rounded-lg shadow-sm">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Comments ({{ article.comments.length }})</h3>
 
-    <!-- Comments section -->
-    <div class="mb-12 bg-gray-50 p-6 rounded-lg shadow-sm">
-      <h3 class="text-xl font-semibold text-gray-900 mb-4">Comments ({{ article.comments.length }})</h3>
-
-      @if (article.comments.length > 0) {
-        <div class="space-y-6">
-          @for (comment of article.comments; track $index) {
-            <div class="bg-white p-5 rounded-lg shadow-sm">
-              <div class="flex items-center mb-3">
-                <!-- In a real app, you would have comment author info -->
-                <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center mr-3">
-                  <span class="text-white font-medium">{{ $index + 1 }}</span>
+        @if (article.comments.length > 0) {
+          <div class="space-y-6">
+            @for (comment of article.comments; track $index) {
+              <div class="bg-white p-5 rounded-lg shadow-sm">
+                <div class="flex items-center mb-3">
+                  <!-- In a real app, you would have comment author info -->
+                  <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center mr-3">
+                    <span class="text-white font-medium">{{ $index + 1 }}</span>
+                  </div>
+                  <div>
+                    <span class="font-semibold text-gray-900">User {{ $index + 1 }}</span>
+                    <p class="text-gray-500 text-xs">Posted on {{ formatDate(article.createDate) }}</p>
+                  </div>
                 </div>
-                <div>
-                  <span class="font-semibold text-gray-900">User {{ $index + 1 }}</span>
-                  <p class="text-gray-500 text-xs">Posted on {{ formatDate(article.createDate) }}</p>
-                </div>
+                <p class="text-gray-800">{{ comment }}</p>
               </div>
-              <p class="text-gray-800">{{ comment }}</p>
-            </div>
-          }
-        </div>
-      } @else {
-        <div class="text-gray-500 italic text-center py-4">
-          No comments yet. Be the first to comment!
-        </div>
-      }
-    </div>
+            }
+          </div>
+        } @else {
+          <div class="text-gray-500 italic text-center py-4">
+            No comments yet. Be the first to comment!
+          </div>
+        }
+      </div>
 
-    <!-- Comment form -->
-    <div class="bg-gray-50 p-8 rounded-lg shadow-sm">
-      <h3 class="text-xl font-semibold text-gray-900 mb-6">Leave a comment</h3>
-      <div class="mb-4">
-        <label for="name" class="block text-gray-700 mb-2">Name</label>
-        <input
-          type="text"
-          id="name"
-          placeholder="Your name"
-          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
-        >
+      <!-- Comment form -->
+      <div class="bg-gray-50 p-8 rounded-lg shadow-sm">
+        <h3 class="text-xl font-semibold text-gray-900 mb-6">Leave a comment</h3>
+        <div class="mb-4">
+          <label for="name" class="block text-gray-700 mb-2">Name</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="Your name"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+          >
+        </div>
+        <div class="mb-6">
+          <label for="comment" class="block text-gray-700 mb-2">Comment</label>
+          <textarea
+            id="comment"
+            placeholder="Write your comment here..."
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+            rows="4"
+          ></textarea>
+        </div>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow">
+          Submit Comment
+        </button>
       </div>
-      <div class="mb-6">
-        <label for="comment" class="block text-gray-700 mb-2">Comment</label>
-        <textarea
-          id="comment"
-          placeholder="Write your comment here..."
-          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
-          rows="4"
-        ></textarea>
-      </div>
-      <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow">
-        Submit Comment
-      </button>
-    </div>
+    }
   } @else {
     <div class="text-center py-16">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

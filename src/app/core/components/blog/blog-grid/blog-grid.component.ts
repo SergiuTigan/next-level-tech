@@ -36,6 +36,7 @@ export class BlogGridComponent implements OnInit {
   }
 
   ngOnInit(): void {
+      this.blogService.savePreviewArticle({} as Article);
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     this.isAdmin = user.role === 'admin';
     this.blogService.getAllArticles().subscribe((articles: Article[]) => {

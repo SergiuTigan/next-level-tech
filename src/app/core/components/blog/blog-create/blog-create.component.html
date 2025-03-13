@@ -283,15 +283,24 @@
             Cancel
           </button>
           <button type="button"
+                  (click)="openPreview()"
                   class="inline-flex justify-center rounded-md border border-indigo-300 bg-indigo-50 py-3 px-6 text-sm font-medium text-indigo-700 shadow-sm hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200">
             Preview
           </button>
-          <button type="submit" [disabled]="!isEditMode ? submitDisabled : false"
-                  class="inline-flex justify-center rounded-md border border-transparent bg-gradient-to-r from-indigo-600 to-purple-600 py-3 px-6 text-sm font-medium text-white shadow-sm hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 transform hover:-translate-y-0.5">
+          <button type="submit" [disabled]="submitDisabled"
+                  class="inline-flex justify-center rounded-md border border-transparent
+                  bg-gradient-to-r from-indigo-600 to-purple-600 py-3 px-6 text-sm font-medium text-white
+                  shadow-sm hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                  focus:ring-offset-2 transition-all duration-200 transform hover:-translate-y-0.5 disabled:bg-grey-500 disabled:text-black">
             {{ isEditMode ? 'Edit Post' : 'Publish Post' }}
           </button>
         </div>
       </form>
+      @if(submitDisabled){
+      <div class="mt-4 p-4 bg-red-50 rounded-lg border border-red-200 text-red-700">
+        <p class="text-sm font-medium">Please fill in all required fields before submitting the post.</p>
+      </div>
+      }
     </div>
 
     <!-- Tips Section -->

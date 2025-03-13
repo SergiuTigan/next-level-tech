@@ -97,6 +97,29 @@ export class BlogCreateComponent implements OnInit {
           this.additionalImages[this.additionalImages.length - 1].preview = img.url;
         });
       });
+    } else {
+      this.blogService.currentPreviewArticle$.subscribe(article => {
+        if (article) {
+          this.createPostForm.patchValue({
+            title: article.title,
+            content: article.content,
+            description: article.description,
+            category: article.category,
+            tags: article.tags ?  article.tags.join(',') : []
+          });
+
+          this.coverImagePreview = article.coverImage;
+          this.thumbnailPreview = article.thumbnail;
+          this.coverImageFile = new File([], article.coverImage);
+          this.thumbnailFile = new File([], article.thumbnail);
+
+          article.images.forEach((img: any) => {
+            this.addImageItem();
+            this.imageItems.at(this.imageItems.length - 1).patchValue({ description: img.description });
+            this.additionalImages[this.additionalImages.length - 1].preview = img.url;
+          });
+        }
+      });
     }
   }
 
@@ -275,12 +298,38 @@ export class BlogCreateComponent implements OnInit {
     return formData;
   }
 
+  preparePreviewData(): Article {
+    const formValues = this.createPostForm.value;
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+
+    const tags = typeof formValues.tags === 'string'
+      ? formValues.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag)
+      : formValues.tags || [];
+
+    const images = this.additionalImages.map(img => ({ url: img.preview, description: img.description }));
+
+    return {
+      title: formValues.title,
+      content: formValues.content,
+      description: formValues.description,
+      category: formValues.category,
+      createDate: new Date().toISOString(),
+      author: user,
+      coverImage: this.coverImagePreview || '',
+      thumbnail: this.thumbnailPreview || '',
+      tags,
+      likes: 0,
+      images,
+      comments: []
+    };
+  }
+
   onSubmit(): void {
     if (this.createPostForm.valid && this.coverImageFile && !this.coverImageError && !this.hasAdditionalImageErrors()) {
       const formData = this.prepareFormData();
 
       if (this.isEditMode && this.postId) {
-        this.updatePost( formData);
+        this.updatePost(formData);
       } else {
         this.createNewPost(formData);
       }
@@ -289,6 +338,7 @@ export class BlogCreateComponent implements OnInit {
   }
 
   private createNewPost(formData: FormData): void {
+    this.blogService.savePreviewArticle({} as Article);
     this.blogService.createPost(formData).subscribe(
       response => {
         this.router.navigate(['../'], { relativeTo: this.activatedRoute }).then();
@@ -299,8 +349,9 @@ export class BlogCreateComponent implements OnInit {
       }
     );
   }
+
   private updatePost(formData: FormData): void {
-    this.blogService.updatePost(this.postId,formData).subscribe(
+    this.blogService.updatePost(this.postId, formData).subscribe(
       response => {
         this.router.navigate(['../'], { relativeTo: this.activatedRoute }).then();
         this.snackbarService.success('Article updated successfully');
@@ -309,5 +360,10 @@ export class BlogCreateComponent implements OnInit {
         this.snackbarService.error('Failed to create article');
       }
     );
+  }
+
+  openPreview(): void {
+    this.blogService.savePreviewArticle(this.preparePreviewData() as Article);
+    this.router.navigate(['/blog/details', 'preview']).then();
   }
 }
