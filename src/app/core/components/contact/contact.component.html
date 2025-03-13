@@ -1,12 +1,78 @@
-<div class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-16 px-4 sm:px-6 lg:px-8 max-h-[85vh] overflow-auto">
+<!-- Hero Section -->
+<div class="relative overflow-hidden">
+  <!-- Background Image with Overlay -->
+  <div class="absolute inset-0">
+    <img
+      src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&h=600&q=80"
+      alt="Team collaboration"
+      class="w-full h-full object-cover object-center">
+    <div class="absolute inset-0 bg-gradient-to-r from-indigo-900/80 via-purple-900/80 to-indigo-800/80 mix-blend-multiply backdrop-blur-sm"></div>
+  </div>
+
+  <!-- Content Container -->
+  <div class="relative max-w-7xl mx-auto py-16 px-6 sm:py-24 lg:px-8">
+    <div class="flex flex-col items-start space-y-8">
+      <!-- Decorative Element -->
+      <div class="w-20 h-1.5 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full"></div>
+
+      <!-- Title with Animation -->
+      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-200">
+        Get in Touch <span class="block mt-2 text-3xl sm:text-4xl lg:text-5xl font-light">with Next Level Tech</span>
+      </h1>
+
+      <!-- Subheading with Icon -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-300" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <p class="max-w-3xl text-xl text-indigo-100">
+          We're ready to answer your questions and help bring your ideas to life.
+        </p>
+      </div>
+
+      <!-- Contact Cards -->
+      <div class="flex flex-wrap gap-4 mt-4">
+        <div class="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden flex items-center p-1 pl-2 pr-4 transition-all duration-300 hover:bg-white/20">
+          <div class="w-8 h-8 rounded-full bg-indigo-500/30 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+            </svg>
+          </div>
+          <div>
+            <div class="text-xs text-indigo-200 font-medium">Call Us</div>
+            <div class="text-sm text-white font-medium">+40 740 014 666</div>
+          </div>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden flex items-center p-1 pl-2 pr-4 transition-all duration-300 hover:bg-white/20">
+          <div class="w-8 h-8 rounded-full bg-indigo-500/30 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+            </svg>
+          </div>
+          <div>
+            <div class="text-xs text-indigo-200 font-medium">Email Us</div>
+            <div class="text-sm text-white font-medium">{{ 'sergiu@tigan.dev' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Form Section -->
+<div class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-16 px-4 sm:px-6 lg:px-8 ">
   <div class="max-w-3xl mx-auto min-h-[74vh]">
     <!-- Form Header Section -->
     <div class="text-center mb-12">
       <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-        Get in Touch
+        Send Us a Message
       </h2>
       <p class="mt-4 text-lg text-gray-600">
-        Have questions or feedback? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.
+        Have questions or feedback? Fill out the form below and we'll get back to you as soon as possible.
       </p>
     </div>
 
@@ -178,6 +244,51 @@
           </div>
         </div>
       </form>
+    </div>
+
+    <!-- Alternative Contact Cards -->
+    <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all duration-300 flex items-start space-x-4">
+        <div class="flex-shrink-0">
+          <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium text-gray-900">Phone Support</h3>
+          <p class="mt-1 text-sm text-gray-500">Our team is available Monday-Friday from 9:00 to 17:00.</p>
+          <a href="tel:+40740014666" class="mt-3 inline-flex items-center text-indigo-600 font-medium hover:text-indigo-800 transition-colors duration-200">
+            +40 740 014 666
+            <svg class="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all duration-300 flex items-start space-x-4">
+        <div class="flex-shrink-0">
+          <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium text-gray-900">Email Support</h3>
+          <p class="mt-1 text-sm text-gray-500">Our support team typically responds within 24 hours.</p>
+          <a href="mailto:sergiu@tigan.dev" class="mt-3 inline-flex items-center text-indigo-600 font-medium hover:text-indigo-800 transition-colors duration-200">
+            {{ 'sergiu@tigan.dev' }}
+            <svg class="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+            </svg>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
