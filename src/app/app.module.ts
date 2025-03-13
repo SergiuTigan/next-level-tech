@@ -9,6 +9,7 @@ import { LoginFormComponent } from './shared/components/login-form/login-form.co
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     NavbarComponent,
     FooterComponent,

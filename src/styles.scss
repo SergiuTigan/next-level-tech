@@ -26,3 +26,34 @@ body {
   background-color: transparent !important;
   box-shadow: none !important;
 }
+
+// Add to your global styles.scss
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.btn-animate {
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &.btn-pulse:hover {
+    animation: pulse 1s infinite;
+  }
+}
+

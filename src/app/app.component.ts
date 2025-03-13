@@ -3,9 +3,12 @@ import { UsersService } from './core/services/users.service';
 import { User } from './shared/models/user.interface';
 import { inject } from '@vercel/analytics';
 import { injectSpeedInsights } from '@vercel/speed-insights';
+import { RouterOutlet } from '@angular/router';
+import { routeAnimations } from './shared/helpers/route-animations';
 
 @Component({
   selector: 'app-root',
+  animations: [routeAnimations],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   standalone: false,
@@ -29,5 +32,8 @@ export class AppComponent implements OnInit {
 
   closeModal() {
     this.usersService.saveCurrentState(false);
+  }
+  prepareRoute(outlet: RouterOutlet) {
+    return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
   }
 }

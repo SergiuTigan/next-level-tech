@@ -4,19 +4,36 @@ import { Router, RouterLink } from '@angular/router';
 import { BlogService } from '../../../services/blog.service';
 import { BlogCreateComponent } from '../blog-create/blog-create.component';
 import { UsersService } from '../../../services/users.service';
-import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe, NgForOf, NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from '../../../../shared/components/modals/delete-confirmation-modal/confirmation-modal.component';
 import { SnackbarService } from '../../../../shared/services/snackbar.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { SkeletonLoaderComponent } from '../../../../shared/helpers/skeleton-loader';
 
 @Component({
   selector: 'app-blog-grid',
+  animations: [
+    trigger('cardHover', [
+      state('normal', style({
+        transform: 'translateY(0) scale(1)',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+      })),
+      state('hovered', style({
+        transform: 'translateY(-10px) scale(1.02)',
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+      })),
+      transition('normal <=> hovered', animate('200ms ease-in-out'))
+    ])
+  ],
   imports: [
     RouterLink,
     BlogCreateComponent,
     AsyncPipe,
     NgIf,
-    DatePipe
+    DatePipe,
+    NgForOf,
+    SkeletonLoaderComponent
   ],
   providers: [MatDialog],
   standalone: true,
@@ -28,6 +45,8 @@ export class BlogGridComponent implements OnInit {
   isAuth = this.userService.isAuthenticatedCurrent;
   isNotReader = this.userService.isNotReaderCurrent$;
   isAdmin!: boolean;
+  cardStates: { [key: string]: 'normal' | 'hovered' } = {};
+  loading = true;
 
   constructor(private blogService: BlogService,
               private userService: UsersService,
@@ -37,12 +56,17 @@ export class BlogGridComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      this.blogService.savePreviewArticle({} as Article);
+    this.blogService.savePreviewArticle({} as Article);
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     this.isAdmin = user.role === 'admin';
     this.blogService.getAllArticles().subscribe((articles: Article[]) => {
       this.articles = articles;
+      this.loading = false;
     });
+  }
+
+  toggleHover(articleId: string): void {
+    this.cardStates[articleId] = this.cardStates[articleId] === 'hovered' ? 'normal' : 'hovered';
   }
 
   deleteArticle(event: any, id?: string): void {

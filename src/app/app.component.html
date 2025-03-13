@@ -1,9 +1,11 @@
-<div class="min-h-[100vh]">
+<div class="min-h-[100vh] flex flex-col">
   <app-navbar/>
-  <div class="sm:min-h-[85vh] min-h-[75vh]">
-    <router-outlet/>
+  <!-- Main content area with routing -->
+  <div class="flex-grow" [@routeAnimations]="prepareRoute(outlet)">
+    <router-outlet #outlet="outlet"/>
   </div>
-  <div class="hidden md:block sticky bottom-0 left-0">
+  <!-- Footer outside the animated container -->
+  <div class="hidden md:block">
     <app-footer/>
   </div>
 </div>
