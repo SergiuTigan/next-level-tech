@@ -1,10 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { CreateArticleDto } from '../../../../shared/models/article.interface';
+import { Article, CreateArticleDto } from '../../../../shared/models/article.interface';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BlogService } from '../../../services/blog.service';
 import { QuillEditorComponent } from 'ngx-quill';
+import { SnackbarService } from '../../../../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-blog-create',
@@ -32,6 +33,8 @@ export class BlogCreateComponent implements OnInit {
 
   thumbnailFile: File | null = null;
   thumbnailPreview: string | null = null;
+  isEditMode: boolean = false;
+  postId: string = '';
 
   additionalImages: any[] = [];
   quillModules = {
@@ -54,6 +57,7 @@ export class BlogCreateComponent implements OnInit {
   };
 
   get submitDisabled(): boolean {
+
     return this.createPostForm.invalid ||
       !this.coverImageFile ||
       !this.thumbnailFile ||
@@ -64,11 +68,36 @@ export class BlogCreateComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private blogService: BlogService,
               private router: Router,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private snackbarService: SnackbarService) {
   }
 
   ngOnInit(): void {
     this.initForm();
+    this.postId = this.activatedRoute.snapshot.params['id'];
+    if (this.postId) {
+      this.isEditMode = true;
+      this.blogService.getArticleById(this.activatedRoute.snapshot.params['id']).subscribe(post => {
+        this.createPostForm.patchValue({
+          title: post.title,
+          content: post.content,
+          description: post.description,
+          category: post.category,
+          tags: post.tags.join(',')
+        });
+
+        this.coverImagePreview = post.coverImage;
+        this.thumbnailPreview = post.thumbnail;
+        this.coverImageFile = new File([], post.coverImage);
+        this.thumbnailFile = new File([], post.thumbnail);
+
+        post.images.forEach((img: any) => {
+          this.addImageItem();
+          this.imageItems.at(this.imageItems.length - 1).patchValue({ description: img.description });
+          this.additionalImages[this.additionalImages.length - 1].preview = img.url;
+        });
+      });
+    }
   }
 
   private initForm() {
@@ -246,13 +275,39 @@ export class BlogCreateComponent implements OnInit {
     return formData;
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.createPostForm.valid && this.coverImageFile && !this.coverImageError && !this.hasAdditionalImageErrors()) {
       const formData = this.prepareFormData();
-      console.log(formData);
-      this.blogService.createPost(formData).subscribe(response => {
-        this.router.navigate(['../'], { relativeTo: this.activatedRoute }).then();
-      });
+
+      if (this.isEditMode && this.postId) {
+        this.updatePost( formData);
+      } else {
+        this.createNewPost(formData);
+      }
+
     }
+  }
+
+  private createNewPost(formData: FormData): void {
+    this.blogService.createPost(formData).subscribe(
+      response => {
+        this.router.navigate(['../'], { relativeTo: this.activatedRoute }).then();
+        this.snackbarService.success('Article created successfully');
+      },
+      error => {
+        this.snackbarService.error('Failed to create article');
+      }
+    );
+  }
+  private updatePost(formData: FormData): void {
+    this.blogService.updatePost(this.postId,formData).subscribe(
+      response => {
+        this.router.navigate(['../'], { relativeTo: this.activatedRoute }).then();
+        this.snackbarService.success('Article updated successfully');
+      },
+      error => {
+        this.snackbarService.error('Failed to create article');
+      }
+    );
   }
 }

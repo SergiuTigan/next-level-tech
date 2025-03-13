@@ -11,7 +11,8 @@ const blogRoutes: Routes = [
     children: [
       { path: '', component: BlogGridComponent },
       { path: 'details/:id', component: BlogDetailsComponent },
-      { path: 'create', component: BlogCreateComponent }
+      { path: 'create', component: BlogCreateComponent },
+      { path: 'edit/:id', component: BlogCreateComponent }
     ]
   }
 ];
