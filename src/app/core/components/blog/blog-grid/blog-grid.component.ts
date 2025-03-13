@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { BlogService } from '../../../services/blog.service';
 import { BlogCreateComponent } from '../blog-create/blog-create.component';
 import { UsersService } from '../../../services/users.service';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from '../../../../shared/components/modals/delete-confirmation-modal/confirmation-modal.component';
 import { SnackbarService } from '../../../../shared/services/snackbar.service';
@@ -15,7 +15,8 @@ import { SnackbarService } from '../../../../shared/services/snackbar.service';
     RouterLink,
     BlogCreateComponent,
     AsyncPipe,
-    NgIf
+    NgIf,
+    DatePipe
   ],
   providers: [MatDialog],
   standalone: true,

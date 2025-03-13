@@ -36,61 +36,89 @@
     <div class="mx-auto grid max-w-full grid-cols-1 gap-x-6 gap-y-10 pt-8 sm:pt-10 md:grid-cols-2 lg:grid-cols-3">
       @for (article of articles; track article) {
         <article
-          class="flex flex-col bg-white/90 backdrop-blur-sm rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer h-full"
+          class="flex flex-col bg-white/95 backdrop-blur-xl rounded-3xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer h-full max-w-md mx-auto"
           [routerLink]="'details/' + article._id">
-          <div
-            *ngIf="isAdmin"
-            class="absolute top-2 right-12 z-20"
-            (click)="editArticle($event, article._id)">
-            <button
-              class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-md transition-colors duration-200"
-              title="Edit article">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-              </svg>
-            </button>
-          </div>
-          <div
-            *ngIf="isAdmin"
-            class="absolute top-2 right-2 z-20"
-            (click)="deleteArticle( $event,article._id)">
-            <button
-              class="flex items-center justify-center w-8 h-8 rounded-full bg-red-500 hover:bg-red-600 text-white shadow-md transition-colors duration-200"
-              title="Delete article">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-              </svg>
-            </button>
-          </div>
-          <!-- Main Content -->
-          <div class="flex-1 p-5">
-            <!-- Category and Date -->
-            <div class="flex items-center gap-x-3 text-xs mb-2">
-              <time datetime="2020-03-16" class="text-gray-500">{{ article.createDate }}</time>
-              <span class="relative z-10 rounded-full bg-blue-50 px-2.5 py-1 font-medium text-blue-600 hover:bg-blue-100 transition-colors duration-200">
+
+          <!-- Thumbnail with Overlay and Integrated Controls -->
+          <div class="relative w-full h-44 overflow-hidden">
+            <!-- Image -->
+            <img
+              [src]="article.thumbnail"
+              alt="{{ article.title }}"
+              class="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105">
+
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10 flex items-end justify-between p-4">
+              <!-- Category Badge -->
+              <span
+                class="relative z-10 rounded-full bg-white/90 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-indigo-700 shadow-sm transition-all duration-300 hover:bg-white">
                 {{ article.category }}
               </span>
+
+              <!-- Admin Controls -->
+              <div *ngIf="isAdmin" class="flex space-x-2">
+                <button
+                  class="flex items-center justify-center w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm text-blue-600 shadow-md transition-all duration-300 hover:scale-110 hover:bg-white"
+                  title="Edit article"
+                  (click)="editArticle($event, article._id)">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                  </svg>
+                </button>
+
+                <button
+                  class="flex items-center justify-center w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm text-red-600 shadow-md transition-all duration-300 hover:scale-110 hover:bg-white"
+                  title="Delete article"
+                  (click)="deleteArticle($event, article._id)">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clip-rule="evenodd"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Content -->
+          <div class="flex-1 p-6">
+            <div class="flex items-center gap-x-3 text-xs mb-4">
+              <time class="text-gray-400 font-medium tracking-wide flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                {{ article.createDate | date }}
+              </time>
             </div>
 
-            <!-- Title and Description -->
             <div class="group">
-              <h3 class="mt-2 text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
+              <h3 class="text-xl font-bold text-gray-800 group-hover:text-indigo-600 transition-colors duration-300 line-clamp-2 leading-tight">
                 {{ article.title }}
               </h3>
-              <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-gray-600">{{ article.description }}</p>
+              <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-gray-500">{{ article.description }}</p>
             </div>
           </div>
 
           <!-- Footer -->
-          <div class="mt-auto border-t border-gray-100 bg-gray-50 p-3 flex items-center gap-x-3">
-            <div class="h-7 w-7 rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold text-xs">
-              {{ article.author?.firstName?.charAt(0) || 'A' }}
+          <div class="mt-auto border-t border-gray-100 bg-gray-50/70 p-4 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+              <div
+                class="h-10 w-10 rounded-full bg-gradient-to-tr from-indigo-500 to-blue-600 flex items-center justify-center text-white font-semibold text-sm shadow-md ring-2 ring-white">
+                {{ article.author?.firstName?.charAt(0) || 'A' }}
+              </div>
+              <div class="text-sm">
+                <p class="font-medium text-gray-800 tracking-tight">{{ article.author?.firstName || 'Anonymous' }}</p>
+                <p class="text-gray-500 text-xs font-light">{{ article.author?.role || 'Author' }}</p>
+              </div>
             </div>
-            <div class="text-sm">
-              <p class="font-semibold text-gray-900">
-                {{ article.author?.firstName || 'Anonymous' }}
-              </p>
-              <p class="text-gray-600 text-xs">{{ article.author?.role || 'Author' }}</p>
+
+            <!-- Read More Indicator -->
+            <div class="text-indigo-500 hover:text-indigo-700 transition-colors duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                      d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                      clip-rule="evenodd"/>
+              </svg>
             </div>
           </div>
         </article>
