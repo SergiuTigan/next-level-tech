@@ -90,13 +90,15 @@ export class BlogCreateComponent implements OnInit {
         this.thumbnailPreview = post.thumbnail;
         this.coverImageFile = new File([], post.coverImage);
         this.thumbnailFile = new File([], post.thumbnail);
-
-        post.images.forEach((img: any) => {
-          this.addImageItem();
-          this.imageItems.at(this.imageItems.length - 1).patchValue({ description: img.description });
-          this.additionalImages[this.additionalImages.length - 1].preview = img.url;
-        });
+        if (post.images.length) {
+          post.images.forEach((img: any) => {
+            this.addImageItem();
+            this.imageItems.at(this.imageItems.length - 1).patchValue({ description: img.description });
+            this.additionalImages[this.additionalImages.length - 1].preview = img.url;
+          });
+        }
       });
+
     } else {
       this.blogService.currentPreviewArticle$.subscribe(article => {
         if (article) {
@@ -105,19 +107,20 @@ export class BlogCreateComponent implements OnInit {
             content: article.content,
             description: article.description,
             category: article.category,
-            tags: article.tags ?  article.tags.join(',') : []
+            tags: article.tags ? article.tags.join(',') : []
           });
 
           this.coverImagePreview = article.coverImage;
           this.thumbnailPreview = article.thumbnail;
           this.coverImageFile = new File([], article.coverImage);
           this.thumbnailFile = new File([], article.thumbnail);
-
-          article.images.forEach((img: any) => {
-            this.addImageItem();
-            this.imageItems.at(this.imageItems.length - 1).patchValue({ description: img.description });
-            this.additionalImages[this.additionalImages.length - 1].preview = img.url;
-          });
+          if (article.images.length) {
+            article.images.forEach((img: any) => {
+              this.addImageItem();
+              this.imageItems.at(this.imageItems.length - 1).patchValue({ description: img.description });
+              this.additionalImages[this.additionalImages.length - 1].preview = img.url;
+            });
+          }
         }
       });
     }
