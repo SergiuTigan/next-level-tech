@@ -1,18 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { UsersService } from './core/services/users.service';
-import { User } from './shared/models/user.interface';
-import { inject } from '@vercel/analytics';
-import { injectSpeedInsights } from '@vercel/speed-insights';
-import { RouterOutlet } from '@angular/router';
-import { routeAnimations } from './shared/helpers/route-animations';
+import {Component, OnInit} from '@angular/core';
+import {UsersService} from './core/services/users.service';
+import {User} from './shared/models/user.interface';
+import {inject} from '@vercel/analytics';
+import {injectSpeedInsights} from '@vercel/speed-insights';
+import {RouterOutlet} from '@angular/router';
+import {routeAnimations} from './shared/helpers/route-animations';
+import {NavbarComponent} from "./shared/components/navbar/navbar.component";
+import {FooterComponent} from "./shared/components/footer/footer.component";
+import {AsyncPipe} from "@angular/common";
+import {LoginFormComponent} from "./shared/components/login-form/login-form.component";
 
 @Component({
   selector: 'app-root',
   animations: [routeAnimations],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false,
-  providers: []
+  standalone: true,
+  imports: [
+    NavbarComponent,
+    RouterOutlet,
+    FooterComponent,
+    AsyncPipe,
+    LoginFormComponent
+  ],
 })
 export class AppComponent implements OnInit {
   isOpen$ = this.usersService.isSignInOpenCurrent;
@@ -33,6 +43,7 @@ export class AppComponent implements OnInit {
   closeModal() {
     this.usersService.saveCurrentState(false);
   }
+
   prepareRoute(outlet: RouterOutlet) {
     return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
   }

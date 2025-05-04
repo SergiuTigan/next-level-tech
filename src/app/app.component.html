@@ -1,10 +1,8 @@
 <div class="min-h-[100vh] flex flex-col">
   <app-navbar/>
-  <!-- Main content area with routing -->
   <div class="flex-grow" [@routeAnimations]="prepareRoute(outlet)">
     <router-outlet #outlet="outlet"/>
   </div>
-  <!-- Footer outside the animated container -->
   <div class="hidden md:block">
     <app-footer/>
   </div>
@@ -12,10 +10,8 @@
 
 @if (isOpen$ | async) {
   <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-    <!-- Modal Box -->
     <div class="bg-white rounded-lg shadow-xl w-96 p-6 relative">
 
-      <!-- Close Button -->
       <button (click)="closeModal()" class="absolute top-3 right-3 text-4xl text-gray-500 hover:text-gray-700">
         ✕
       </button>
