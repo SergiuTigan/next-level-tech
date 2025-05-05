@@ -262,7 +262,7 @@
           <div class="sm:col-span-2 pt-4 flex flex-col justify-end">
             <button
               type="submit"
-              [disabled]="isSubmitting || contactForm.invalid"
+              [disabled]="isSubmitting || contactForm.invalid || !captchaToken"
               class="w-full inline-flex items-center justify-center px-6 py-3.5 border border-transparent rounded-md shadow-md text-base font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
             >
               <ng-container *ngIf="isSubmitting">
@@ -279,11 +279,11 @@
               </ng-container>
             </button>
             <div class="flex items-center justify-center mt-4">
-            <re-captcha
-              (resolved)="onCaptchaResolved($event)"
-              siteKey="6LczRC4rAAAAAIB8yfSLok6G6WIn-GTKs9af7IH4"
-              class="mt-4"
-            ></re-captcha>
+              <re-captcha
+                (resolved)="onCaptchaResolved($event)"
+                siteKey="6LczRC4rAAAAAIB8yfSLok6G6WIn-GTKs9af7IH4"
+                class="mt-4"
+              ></re-captcha>
             </div>
           </div>
         </div>
