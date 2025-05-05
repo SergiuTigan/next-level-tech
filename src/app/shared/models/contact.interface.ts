@@ -3,6 +3,7 @@ export interface ContactRequest {
   email: string;
   subject: string;
   message: string;
+  captchaToken: string;
 }
 
 export interface ContactResponse {

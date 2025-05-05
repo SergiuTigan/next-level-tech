@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../../shared/models/user.interface';
 import { environment } from '../../../assets/environment/environment';
@@ -8,6 +8,7 @@ import { BaseService } from './base.service';
   providedIn: 'root'
 })
 export class UsersService {
+  readonly #baseService = inject(BaseService);
   baseUrl = environment.baseUrl;
   isSignInOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -16,7 +17,7 @@ export class UsersService {
   isAuthenticatedCurrent = this.isAuthenticated$.asObservable();
   isNotReaderCurrent$ = this.isAuthenticated$.asObservable();
 
-  constructor(private baseService: BaseService) {
+  constructor() {
   }
 
   saveCurrentState(isOpen: boolean): void {
@@ -36,7 +37,7 @@ export class UsersService {
   }
 
   register(user: User): Observable<{ user: User, token: string }> {
-    return this.baseService.post<{ user: User, token: string }>(`${this.baseUrl}/users`, user).pipe(tap((user: { user: User, token: string }) => {
+    return this.#baseService.post<{ user: User, token: string }>(`${this.baseUrl}/users`, user).pipe(tap((user: { user: User, token: string }) => {
       sessionStorage.setItem('token', user.token);
       sessionStorage.setItem('user', JSON.stringify(user.user));
       this.saveAuthState(true);
@@ -45,7 +46,7 @@ export class UsersService {
   }
 
   login(user: any): Observable<{ user: User, token: string }> {
-    return this.baseService.post<{ user: User, token: string }>(`${this.baseUrl}/users/login`, user).pipe(tap((user: { user: User, token: string }) => {
+    return this.#baseService.post<{ user: User, token: string }>(`${this.baseUrl}/users/login`, user).pipe(tap((user: { user: User, token: string }) => {
       sessionStorage.setItem('token', user.token);
       sessionStorage.setItem('user', JSON.stringify(user.user));
       this.saveAuthState(true);
@@ -54,7 +55,7 @@ export class UsersService {
   }
 
   update(id: string, user: User): Observable<User> {
-    return this.baseService.patch<User>(`${this.baseUrl}/users/${id}`, user).pipe(tap((user: User) => {
+    return this.#baseService.patch<User>(`${this.baseUrl}/users/${id}`, user).pipe(tap((user: User) => {
       sessionStorage.setItem('user', JSON.stringify(user));
     }));
   }
@@ -62,7 +63,7 @@ export class UsersService {
   uploadAvatar(id: string, avatar: File | null): Observable<User> {
     const formData = new FormData();
     formData.append('avatar', avatar as Blob);
-    return this.baseService.post<User>(`${this.baseUrl}/users/${id}/avatar`, formData).pipe(tap((user: User) => {
+    return this.#baseService.post<User>(`${this.baseUrl}/users/${id}/avatar`, formData).pipe(tap((user: User) => {
       sessionStorage.setItem('user', JSON.stringify(user));
     }));
   }

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
-import { ContactService } from '../../services/contact.service';
-import { NgClass, NgIf } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {finalize} from 'rxjs/operators';
+import {ContactService} from '../../services/contact.service';
+import {NgClass, NgIf} from '@angular/common';
+import {RecaptchaModule} from "ng-recaptcha";
 
 @Component({
   selector: 'app-contact',
@@ -11,7 +12,8 @@ import { NgClass, NgIf } from '@angular/common';
   imports: [
     ReactiveFormsModule,
     NgIf,
-    NgClass
+    NgClass,
+    RecaptchaModule
   ],
   standalone: true
 })
@@ -20,6 +22,7 @@ export class ContactComponent implements OnInit {
   isSubmitting = false;
   submitSuccess = false;
   errorMessage: string | null = null;
+  captchaToken: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -72,7 +75,7 @@ export class ContactComponent implements OnInit {
     this.isSubmitting = true;
 
     // Submit form
-    this.contactService.submitContactForm(this.contactForm.value)
+    this.contactService.submitContactForm({...this.contactForm.value, captchaToken: this.captchaToken})
       .pipe(
         finalize(() => {
           this.isSubmitting = false;
@@ -107,4 +110,9 @@ export class ContactComponent implements OnInit {
       this.f[key].markAsUntouched();
     });
   }
+
+  onCaptchaResolved(token: string | null) {
+    this.captchaToken = token;
+  }
+
 }
