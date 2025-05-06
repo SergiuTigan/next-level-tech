@@ -14,61 +14,85 @@
         class="w-full px-3 py-2 border rounded"
         [ngClass]="{'border-red-500': submitted && f['email'].errors, 'border-gray-300': !(submitted && f['email'].errors)}"
       >
-      <div *ngIf="submitted && f['email'].errors" class="mt-1 text-sm text-red-500">
-        <div *ngIf="f['email'].errors?.['required']">Email is required</div>
-        <div *ngIf="f['email'].errors?.['email']">Email must be a valid email address</div>
-      </div>
+      @if (submitted && f['email'].errors) {
+        <div class="mt-1 text-sm text-red-500">
+          @if (f['email'].errors?.['required']) {
+            <div>Email is required</div>
+          }
+          @if (f['email'].errors?.['email']) {
+            <div>Email must be a valid email address</div>
+          }
+        </div>
+      }
     </div>
 
     <!-- First Name Field (Sign Up only) -->
-    <div class="mb-4" *ngIf="!isSignIn">
-      <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
-      <input
-        type="text"
-        id="firstName"
-        formControlName="firstName"
-        class="w-full px-3 py-2 border rounded"
-        [ngClass]="{'border-red-500': submitted && f['firstName']?.errors, 'border-gray-300': !(submitted && f['firstName']?.errors)}"
-      >
-      <div *ngIf="submitted && f['firstName']?.errors" class="mt-1 text-sm text-red-500">
-        <div *ngIf="f['firstName']?.errors?.['required']">Name is required</div>
-        <div *ngIf="f['firstName']?.errors?.['minlength']">Name must be at least 2 characters</div>
+    @if (!isSignIn) {
+      <div class="mb-4">
+        <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+        <input
+          type="text"
+          id="firstName"
+          formControlName="firstName"
+          class="w-full px-3 py-2 border rounded"
+          [ngClass]="{'border-red-500': submitted && f['firstName']?.errors, 'border-gray-300': !(submitted && f['firstName']?.errors)}"
+        >
+        @if (submitted && f['firstName']?.errors) {
+          <div class="mt-1 text-sm text-red-500">
+            @if (f['firstName']?.errors?.['required']) {
+              <div>Name is required</div>
+            }
+            @if (f['firstName']?.errors?.['minlength']) {
+              <div>Name must be at least 2 characters</div>
+            }
+          </div>
+        }
       </div>
-    </div>
 
-    <!-- Last Name Field (Sign Up only) -->
-    <div class="mb-4" *ngIf="!isSignIn">
-      <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
-      <input
-        type="text"
-        id="lastName"
-        formControlName="lastName"
-        class="w-full px-3 py-2 border rounded"
-        [ngClass]="{'border-red-500': submitted && f['lastName']?.errors, 'border-gray-300': !(submitted && f['lastName']?.errors)}"
-      >
-      <div *ngIf="submitted && f['lastName']?.errors" class="mt-1 text-sm text-red-500">
-        <div *ngIf="f['lastName']?.errors?.['required']">Name is required</div>
-        <div *ngIf="f['lastName']?.errors?.['minlength']">Name must be at least 2 characters</div>
+      <!-- Last Name Field (Sign Up only) -->
+
+      <div class="mb-4">
+        <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+        <input
+          type="text"
+          id="lastName"
+          formControlName="lastName"
+          class="w-full px-3 py-2 border rounded"
+          [ngClass]="{'border-red-500': submitted && f['lastName']?.errors, 'border-gray-300': !(submitted && f['lastName']?.errors)}"
+        >
+        @if (submitted && f['lastName']?.errors) {
+          <div class="mt-1 text-sm text-red-500">
+            @if (f['lastName']?.errors?.['required']) {
+              <div>Name is required</div>
+            }
+            @if (f['lastName']?.errors?.['minlength']) {
+              <div>Name must be at least 2 characters</div>
+            }
+          </div>
+        }
       </div>
-    </div>
 
-    <!-- Role Selection (Sign Up only) -->
-    <div class="mb-4" *ngIf="!isSignIn">
-      <label for="role" class="block text-sm font-medium text-gray-700">I want to</label>
-      <select
-        id="role"
-        formControlName="role"
-        class="w-full px-3 py-2 border rounded bg-white"
-        [ngClass]="{'border-red-500': submitted && f['role']?.errors, 'border-gray-300': !(submitted && f['role']?.errors)}"
-      >
-        <option value="Reader">Just read articles</option>
-        <option value="Writer">Write and read articles</option>
-      </select>
-      <div *ngIf="submitted && f['role']?.errors" class="mt-1 text-sm text-red-500">
-        <div *ngIf="f['role']?.errors?.['required']">Please select a role</div>
+      <!-- Role Selection (Sign Up only) -->
+      <div class="mb-4">
+        <label for="role" class="block text-sm font-medium text-gray-700">I want to</label>
+        <select
+          id="role"
+          formControlName="role"
+          class="w-full px-3 py-2 border rounded bg-white"
+          [ngClass]="{'border-red-500': submitted && f['role']?.errors, 'border-gray-300': !(submitted && f['role']?.errors)}"
+        >
+          <option value="Reader">Just read articles</option>
+          <option value="Writer">Write and read articles</option>
+        </select>
+        @if (submitted && f['role']?.errors) {
+          <div class="mt-1 text-sm text-red-500">
+            @if (f['role']?.errors?.['required']) {
+              <div>Please select a role</div>
+            }
+          </div>
+        }
       </div>
-    </div>
-
+    }
     <!-- Password Field -->
     <div class="mb-4">
       <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
@@ -79,27 +103,41 @@
         class="w-full px-3 py-2 border rounded"
         [ngClass]="{'border-red-500': submitted && f['password'].errors, 'border-gray-300': !(submitted && f['password'].errors)}"
       >
-      <div *ngIf="submitted && f['password'].errors" class="mt-1 text-sm text-red-500">
-        <div *ngIf="f['password'].errors?.['required']">Password is required</div>
-        <div *ngIf="f['password'].errors?.['minlength']">Password must be at least 8 characters</div>
-      </div>
+      @if (submitted && f['password'].errors) {
+        <div class="mt-1 text-sm text-red-500">
+          @if (f['password'].errors?.['required']) {
+            <div>Password is required</div>
+          }
+          @if (f['password'].errors?.['minlength']) {
+            <div>Password must be at least 8 characters</div>
+          }
+        </div>
+      }
     </div>
 
     <!-- Confirm Password Field (Sign Up only) -->
-    <div class="mb-4" *ngIf="!isSignIn">
-      <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-      <input
-        type="password"
-        id="confirmPassword"
-        formControlName="confirmPassword"
-        class="w-full px-3 py-2 border rounded"
-        [ngClass]="{'border-red-500': submitted && f['confirmPassword']?.errors, 'border-gray-300': !(submitted && f['confirmPassword']?.errors)}"
-      >
-      <div *ngIf="submitted && f['confirmPassword']?.errors" class="mt-1 text-sm text-red-500">
-        <div *ngIf="f['confirmPassword']?.errors?.['required']">Please confirm your password</div>
-        <div *ngIf="f['confirmPassword']?.errors?.['passwordMismatch']">Passwords do not match</div>
+    @if (!isSignIn) {
+      <div class="mb-4">
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          class="w-full px-3 py-2 border rounded"
+          [ngClass]="{'border-red-500': submitted && f['confirmPassword']?.errors, 'border-gray-300': !(submitted && f['confirmPassword']?.errors)}"
+        >
+        @if (submitted && f['confirmPassword']?.errors) {
+          <div class="mt-1 text-sm text-red-500">
+            @if (f['confirmPassword']?.errors?.['required']) {
+              <div>Please confirm your password</div>
+            }
+            @if (f['confirmPassword']?.errors?.['passwordMismatch']) {
+              <div>Passwords do not match</div>
+            }
+          </div>
+        }
       </div>
-    </div>
+    }
 
     <!-- Submit Button -->
     <button
