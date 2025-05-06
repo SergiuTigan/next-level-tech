@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { Article } from '../../../../shared/models/article.interface';
-import { Router, RouterLink } from '@angular/router';
-import { BlogService } from '../../../services/blog.service';
-import { BlogCreateComponent } from '../blog-create/blog-create.component';
-import { UsersService } from '../../../services/users.service';
-import { AsyncPipe, DatePipe, NgForOf, NgIf } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationModalComponent } from '../../../../shared/components/modals/delete-confirmation-modal/confirmation-modal.component';
-import { SnackbarService } from '../../../../shared/services/snackbar.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { SkeletonLoaderComponent } from '../../../../shared/helpers/skeleton-loader';
+import {Component, inject, OnInit} from '@angular/core';
+import {Article} from '../../../../shared/models/article.interface';
+import {Router, RouterLink} from '@angular/router';
+import {BlogService} from '../../../services/blog.service';
+import {BlogCreateComponent} from '../blog-create/blog-create.component';
+import {UsersService} from '../../../services/users.service';
+import {AsyncPipe, DatePipe, NgForOf, NgIf} from '@angular/common';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  ConfirmationModalComponent
+} from '../../../../shared/components/modals/delete-confirmation-modal/confirmation-modal.component';
+import {SnackbarService} from '../../../../shared/services/snackbar.service';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {SkeletonLoaderComponent} from '../../../../shared/helpers/skeleton-loader';
 
 @Component({
   selector: 'app-blog-grid',
@@ -41,6 +43,12 @@ import { SkeletonLoaderComponent } from '../../../../shared/helpers/skeleton-loa
   styleUrl: './blog-grid.component.scss'
 })
 export class BlogGridComponent implements OnInit {
+  readonly blogService = inject(BlogService);
+  readonly userService = inject(UsersService);
+  readonly matDialog = inject(MatDialog);
+  readonly snackbarService = inject(SnackbarService);
+  readonly router = inject(Router);
+
   articles: Article[] = [];
   isAuth = this.userService.isAuthenticatedCurrent;
   isNotReader = this.userService.isNotReaderCurrent$;
@@ -48,12 +56,6 @@ export class BlogGridComponent implements OnInit {
   cardStates: { [key: string]: 'normal' | 'hovered' } = {};
   loading = true;
 
-  constructor(private blogService: BlogService,
-              private userService: UsersService,
-              private matDialog: MatDialog,
-              private snackbarService: SnackbarService,
-              private router: Router) {
-  }
 
   ngOnInit(): void {
     this.blogService.savePreviewArticle({} as Article);

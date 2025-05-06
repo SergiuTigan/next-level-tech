@@ -1,28 +1,30 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BlogService } from '../../../services/blog.service';
-import { Article } from '../../../../shared/models/article.interface';
-import { SafeHtmlPipe } from '../../../../shared/pipes/safe-html.pipe';
+import {CommonModule} from '@angular/common';
+import {Component, inject, OnInit} from '@angular/core';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {BlogService} from '../../../services/blog.service';
+import {Article} from '../../../../shared/models/article.interface';
+import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-blog-details',
   standalone: true,
-  imports: [CommonModule, SafeHtmlPipe],
+  imports: [CommonModule, SafeHtmlPipe, RouterLink],
   templateUrl: './blog-details.component.html',
   styleUrls: ['./blog-details.component.scss'] // Fixed stylesheet reference
 })
 export class BlogDetailsComponent implements OnInit {
+  readonly route = inject(ActivatedRoute);
+  readonly router = inject(Router);
+  readonly blogService = inject(BlogService);
+
   article!: Article;
   isPreviewMode: boolean = false;
+  isSignedIn!: boolean;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private blogService: BlogService) {
-  }
 
   ngOnInit(): void {
     this.isPreviewMode = this.router.url.includes('preview');
+    this.isSignedIn = sessionStorage.getItem('token') !== null;
     if (!this.isPreviewMode) {
       const id = this.route.snapshot.paramMap.get('id');
       if (id) {
@@ -40,7 +42,7 @@ export class BlogDetailsComponent implements OnInit {
         this.article = article;
       });
     }
-    if(JSON.stringify(this.article) === '{}'){
+    if (JSON.stringify(this.article) === '{}') {
       this.router.navigate(['/blog'], {relativeTo: this.route});
     }
   }
@@ -65,7 +67,7 @@ export class BlogDetailsComponent implements OnInit {
   goBack(): void {
     if (this.isPreviewMode) {
       this.router.navigate(['/blog/create']);
-    } else{
+    } else {
       this.router.navigate(['/blog']);
     }
   }

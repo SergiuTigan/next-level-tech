@@ -1,7 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { BlogService } from '../../services/blog.service';
-import { Article } from '../../../shared/models/article.interface';
+import {Component, inject, OnDestroy} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {BlogService} from '../../services/blog.service';
+import {Article} from '../../../shared/models/article.interface';
 
 @Component({
   selector: 'app-blog',
@@ -13,9 +13,7 @@ import { Article } from '../../../shared/models/article.interface';
   styleUrl: './blog.component.scss'
 })
 export class BlogComponent implements OnDestroy {
-
-  constructor(private blogService: BlogService) {
-  }
+  readonly blogService = inject(BlogService);
 
   ngOnDestroy(): void {
     this.blogService.savePreviewArticle({} as Article);

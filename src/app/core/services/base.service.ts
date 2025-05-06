@@ -2,14 +2,9 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class BaseService {
   readonly #http = inject(HttpClient);
-
-  constructor() {
-  }
 
   get<T>(url: string): Observable<T> {
     return this.#http.get<T>(url);

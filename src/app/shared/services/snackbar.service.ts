@@ -1,14 +1,11 @@
 // src/app/shared/services/snackbar.service.ts
-import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../components/snackbar/snackbar.component';
+import {inject, Injectable} from '@angular/core';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
+import {SnackbarComponent} from '../components/snackbar/snackbar.component';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class SnackbarService {
-  constructor(private snackBar: MatSnackBar) {
-  }
+  readonly snackBar = inject(MatSnackBar);
 
   /**
    * Opens a custom snackbar with the provided message and type
@@ -21,11 +18,11 @@ export class SnackbarService {
       panelClass: ['custom-tailwind-snackbar']
     };
 
-    const snackbarConfig = { ...defaultConfig, ...config };
+    const snackbarConfig = {...defaultConfig, ...config};
 
     return this.snackBar.openFromComponent(SnackbarComponent, {
       ...snackbarConfig,
-      data: { message, type }
+      data: {message, type}
     });
   }
 

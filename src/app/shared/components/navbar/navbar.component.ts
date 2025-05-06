@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { BaseService } from '../../../core/services/base.service';
-import { UsersService } from '../../../core/services/users.service';
-import { ClickOutsideDirective } from '../../directives/click-outside.directive';
+import {Component, inject, OnInit} from '@angular/core';
+import {Router, RouterLink} from '@angular/router';
+import {AsyncPipe, NgClass} from '@angular/common';
+import {BaseService} from '../../../core/services/base.service';
+import {UsersService} from '../../../core/services/users.service';
+import {ClickOutsideDirective} from '../../directives/click-outside.directive';
 
 @Component({
   selector: 'app-navbar',
   imports: [
     RouterLink,
     NgClass,
-    ClickOutsideDirective,
     AsyncPipe
   ],
   providers: [BaseService],
@@ -19,12 +18,10 @@ import { ClickOutsideDirective } from '../../directives/click-outside.directive'
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit {
+  readonly router = inject(Router)
+  readonly usersService = inject(UsersService)
   mobileMenuHidden: boolean = true;
   isUserLoggedIn = this.usersService.isAuthenticatedCurrent;
-
-  constructor(private router: Router,
-              private usersService: UsersService) {
-  }
 
   ngOnInit(): void {
   }

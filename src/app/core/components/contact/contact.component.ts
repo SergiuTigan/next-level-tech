@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {finalize} from 'rxjs/operators';
 import {ContactService} from '../../services/contact.service';
@@ -18,20 +18,18 @@ import {RecaptchaModule} from "ng-recaptcha";
   standalone: true
 })
 export class ContactComponent implements OnInit {
-  contactForm: FormGroup;
+  readonly fb = inject(FormBuilder);
+  readonly contactService = inject(ContactService);
+
+  contactForm!: FormGroup;
   isSubmitting = false;
   submitSuccess = false;
   errorMessage: string | null = null;
   captchaToken: string | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private contactService: ContactService
-  ) {
-    this.contactForm = this.createForm();
-  }
 
   ngOnInit(): void {
+    this.contactForm = this.createForm();
   }
 
   /**

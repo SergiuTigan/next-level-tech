@@ -3,19 +3,13 @@ import {environment} from '../../../assets/environment/environment';
 import {BaseService} from './base.service';
 import {Article} from '../../shared/models/article.interface';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class BlogService {
   readonly #baseService = inject(BaseService);
   baseUrl = environment.baseUrl;
   previewArticle: BehaviorSubject<Article> = new BehaviorSubject({} as Article);
   currentPreviewArticle$ = this.previewArticle.asObservable();
-
-  constructor() {
-  }
 
   savePreviewArticle(article: Article): void {
     this.previewArticle.next(article);

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
-import { NgClass, NgIf } from '@angular/common';
-import { UsersService } from '../../../core/services/users.service';
+import {Component, inject, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators} from '@angular/forms';
+import {NgClass, NgIf} from '@angular/common';
+import {UsersService} from '../../../core/services/users.service';
 import CryptoJS from 'crypto-js';
-import { HttpClientModule } from '@angular/common/http';
-import { SnackbarService } from '../../services/snackbar.service';
+import {HttpClientModule} from '@angular/common/http';
+import {SnackbarService} from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-login-form',
@@ -19,14 +19,14 @@ import { SnackbarService } from '../../services/snackbar.service';
   standalone: true
 })
 export class LoginFormComponent implements OnInit {
+  readonly fb = inject(FormBuilder);
+  readonly usersService = inject(UsersService);
+  readonly snackbar = inject(SnackbarService);
+
   authForm!: FormGroup;
   isSignIn = true;
   submitted = false;
 
-  constructor(private fb: FormBuilder,
-              private usersService: UsersService,
-              private snackbar: SnackbarService) {
-  }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -66,7 +66,7 @@ export class LoginFormComponent implements OnInit {
       const password = control.parent.get('password');
       const passwordValue = password ? password.value : '';
 
-      return passwordValue === control.value ? null : { passwordMismatch: true };
+      return passwordValue === control.value ? null : {passwordMismatch: true};
     };
   }
 
@@ -112,7 +112,7 @@ export class LoginFormComponent implements OnInit {
     }
 
     // Clone the form values
-    const formData = { ...this.authForm.value };
+    const formData = {...this.authForm.value};
 
     // Encrypt the password
     formData.password = this.encryptPassword(formData.password);

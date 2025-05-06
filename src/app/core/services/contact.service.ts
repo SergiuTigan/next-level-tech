@@ -1,18 +1,14 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { ContactRequest, ContactResponse } from '../../shared/models/contact.interface';
-import { environment } from '../../../assets/environment/environment';
+import {inject, Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {ContactRequest, ContactResponse} from '../../shared/models/contact.interface';
+import {environment} from '../../../assets/environment/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ContactService {
+  readonly http = inject(HttpClient);
   private apiUrl = `${environment.baseUrl}/contact`;
-
-  constructor(private http: HttpClient) {
-  }
 
   /**
    * Send a contact form submission to the API

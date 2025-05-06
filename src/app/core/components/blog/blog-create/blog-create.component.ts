@@ -1,11 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Article, CreateArticleDto } from '../../../../shared/models/article.interface';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgForOf, NgIf } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { BlogService } from '../../../services/blog.service';
-import { QuillEditorComponent } from 'ngx-quill';
-import { SnackbarService } from '../../../../shared/services/snackbar.service';
+import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
+import {Article, CreateArticleDto} from '../../../../shared/models/article.interface';
+import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {NgForOf, NgIf} from '@angular/common';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {BlogService} from '../../../services/blog.service';
+import {QuillEditorComponent} from 'ngx-quill';
+import {SnackbarService} from '../../../../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-blog-create',
@@ -21,6 +21,12 @@ import { SnackbarService } from '../../../../shared/services/snackbar.service';
   styleUrl: './blog-create.component.scss'
 })
 export class BlogCreateComponent implements OnInit {
+  readonly fb = inject(FormBuilder);
+  readonly blogService = inject(BlogService);
+  readonly router = inject(Router);
+  readonly activatedRoute = inject(ActivatedRoute);
+  readonly snackbarService = inject(SnackbarService);
+
   @Output() createPost = new EventEmitter<CreateArticleDto>();
   @Output() close = new EventEmitter<boolean>();
 
@@ -41,16 +47,16 @@ export class BlogCreateComponent implements OnInit {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
       ['blockquote', 'code-block'],
-      [{ 'header': 1 }, { 'header': 2 }],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-      [{ 'indent': '-1' }, { 'indent': '+1' }],
-      [{ 'direction': 'rtl' }],
-      [{ 'size': ['small', false, 'large', 'huge'] }],
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'font': [] }],
-      [{ 'align': [] }],
+      [{'header': 1}, {'header': 2}],
+      [{'list': 'ordered'}, {'list': 'bullet'}],
+      [{'script': 'sub'}, {'script': 'super'}],
+      [{'indent': '-1'}, {'indent': '+1'}],
+      [{'direction': 'rtl'}],
+      [{'size': ['small', false, 'large', 'huge']}],
+      [{'header': [1, 2, 3, 4, 5, 6, false]}],
+      [{'color': []}, {'background': []}],
+      [{'font': []}],
+      [{'align': []}],
       ['clean'],
       ['link', 'image', 'video']
     ]
@@ -63,13 +69,6 @@ export class BlogCreateComponent implements OnInit {
       !this.thumbnailFile ||
       !!this.coverImageError ||
       this.hasAdditionalImageErrors();
-  }
-
-  constructor(private fb: FormBuilder,
-              private blogService: BlogService,
-              private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private snackbarService: SnackbarService) {
   }
 
   ngOnInit(): void {
@@ -93,7 +92,7 @@ export class BlogCreateComponent implements OnInit {
         if (post.images.length) {
           post.images.forEach((img: any) => {
             this.addImageItem();
-            this.imageItems.at(this.imageItems.length - 1).patchValue({ description: img.description });
+            this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
             this.additionalImages[this.additionalImages.length - 1].preview = img.url;
           });
         }
@@ -117,7 +116,7 @@ export class BlogCreateComponent implements OnInit {
           if (article.images.length) {
             article.images.forEach((img: any) => {
               this.addImageItem();
-              this.imageItems.at(this.imageItems.length - 1).patchValue({ description: img.description });
+              this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
               this.additionalImages[this.additionalImages.length - 1].preview = img.url;
             });
           }
@@ -289,7 +288,7 @@ export class BlogCreateComponent implements OnInit {
     const validImages = this.additionalImages.filter(img => img.file);
 
     formData.append('imageMetadata', JSON.stringify(
-      validImages.map(img => ({ description: img.description || '' }))
+      validImages.map(img => ({description: img.description || ''}))
     ));
 
     validImages.forEach((img) => {
@@ -309,7 +308,7 @@ export class BlogCreateComponent implements OnInit {
       ? formValues.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag)
       : formValues.tags || [];
 
-    const images = this.additionalImages.map(img => ({ url: img.preview, description: img.description }));
+    const images = this.additionalImages.map(img => ({url: img.preview, description: img.description}));
 
     return {
       title: formValues.title,
@@ -344,7 +343,7 @@ export class BlogCreateComponent implements OnInit {
     this.blogService.savePreviewArticle({} as Article);
     this.blogService.createPost(formData).subscribe(
       response => {
-        this.router.navigate(['../'], { relativeTo: this.activatedRoute }).then();
+        this.router.navigate(['../'], {relativeTo: this.activatedRoute}).then();
         this.snackbarService.success('Article created successfully');
       },
       error => {
@@ -356,7 +355,7 @@ export class BlogCreateComponent implements OnInit {
   private updatePost(formData: FormData): void {
     this.blogService.updatePost(this.postId, formData).subscribe(
       response => {
-        this.router.navigate(['../'], { relativeTo: this.activatedRoute }).then();
+        this.router.navigate(['../'], {relativeTo: this.activatedRoute}).then();
         this.snackbarService.success('Article updated successfully');
       },
       error => {

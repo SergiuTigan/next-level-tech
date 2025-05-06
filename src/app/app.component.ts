@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {UsersService} from './core/services/users.service';
 import {User} from './shared/models/user.interface';
-import {inject} from '@vercel/analytics';
+import * as vercelInject from '@vercel/analytics';
 import {injectSpeedInsights} from '@vercel/speed-insights';
 import {RouterOutlet} from '@angular/router';
 import {routeAnimations} from './shared/helpers/route-animations';
@@ -9,6 +9,10 @@ import {NavbarComponent} from "./shared/components/navbar/navbar.component";
 import {FooterComponent} from "./shared/components/footer/footer.component";
 import {AsyncPipe} from "@angular/common";
 import {LoginFormComponent} from "./shared/components/login-form/login-form.component";
+import {BaseService} from "./core/services/base.service";
+import {BlogService} from "./core/services/blog.service";
+import {SnackbarService} from "./shared/services/snackbar.service";
+import {ContactService} from "./core/services/contact.service";
 
 @Component({
   selector: 'app-root',
@@ -23,15 +27,14 @@ import {LoginFormComponent} from "./shared/components/login-form/login-form.comp
     AsyncPipe,
     LoginFormComponent
   ],
+  providers: [UsersService, BaseService, BlogService, SnackbarService, ContactService],
 })
 export class AppComponent implements OnInit {
+  readonly usersService = inject(UsersService);
   isOpen$ = this.usersService.isSignInOpenCurrent;
 
-  constructor(private usersService: UsersService) {
-  }
-
   ngOnInit(): void {
-    inject();
+    vercelInject.inject();
     injectSpeedInsights();
     sessionStorage.getItem('token') ? this.usersService.saveAuthState(true) : this.usersService.saveAuthState(false);
     if (sessionStorage.getItem('user')) {

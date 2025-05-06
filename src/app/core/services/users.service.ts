@@ -4,9 +4,7 @@ import { User } from '../../shared/models/user.interface';
 import { environment } from '../../../assets/environment/environment';
 import { BaseService } from './base.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UsersService {
   readonly #baseService = inject(BaseService);
   baseUrl = environment.baseUrl;
@@ -16,9 +14,6 @@ export class UsersService {
   isSignInOpenCurrent = this.isSignInOpen$.asObservable();
   isAuthenticatedCurrent = this.isAuthenticated$.asObservable();
   isNotReaderCurrent$ = this.isAuthenticated$.asObservable();
-
-  constructor() {
-  }
 
   saveCurrentState(isOpen: boolean): void {
     this.isSignInOpen$.next(isOpen);

@@ -1,21 +1,21 @@
 // src/app/shared/components/custom-snackbar/custom-snackbar.component.ts
-import { Component, Inject } from '@angular/core';
-import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import {Component, inject, Inject, OnInit} from '@angular/core';
+import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-snackbar',
   templateUrl: './snackbar.component.html',
   standalone: true
 })
-export class SnackbarComponent {
-  message: string;
-  type: 'success' | 'error' | 'warning' | 'info';
+export class SnackbarComponent implements OnInit {
+  public snackBarRef = inject(MatSnackBarRef<SnackbarComponent>);
+  public data: any = inject(MAT_SNACK_BAR_DATA);
 
-  constructor(
-    public snackBarRef: MatSnackBarRef<SnackbarComponent>,
-    @Inject(MAT_SNACK_BAR_DATA) public data: any
-  ) {
-    this.message = data.message;
-    this.type = data.type || 'info';
+  message!: string;
+  type!: 'success' | 'error' | 'warning' | 'info';
+
+  ngOnInit(): void {
+    this.message = this.data.message;
+    this.type = this.data.type || 'info';
   }
 }

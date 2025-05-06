@@ -5,7 +5,9 @@
     (click)="goBack()"
     class="group flex items-center text-blue-600 hover:text-blue-800 mb-8 transition-all duration-300"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24"
+    <svg xmlns="http://www.w3.org/2000/svg"
+         class="h-5 w-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none"
+         viewBox="0 0 24 24"
          stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
     </svg>
@@ -17,7 +19,8 @@
     <div class="mb-10 border-b border-gray-100 pb-8">
       <div class="flex flex-wrap items-center justify-between mb-6">
         <div class="mb-2 sm:mb-0">
-          <span class="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full uppercase tracking-wide font-semibold shadow-sm">
+          <span
+            class="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full uppercase tracking-wide font-semibold shadow-sm">
             {{ article.category }}
           </span>
           <span class="ml-3 text-gray-500 text-sm">{{ formatDate(article.createDate) }}</span>
@@ -28,7 +31,8 @@
             (click)="likePost()"
             class="flex items-center text-gray-600 hover:text-red-500 transition-all duration-300 group"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5 transform group-hover:scale-110 transition-transform duration-300"
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-5 w-5 mr-1.5 transform group-hover:scale-110 transition-transform duration-300"
                  fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
@@ -40,7 +44,8 @@
             (click)="sharePost()"
             class="flex items-center text-gray-600 hover:text-blue-500 transition-all duration-300 group"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5 transform group-hover:scale-110 transition-transform duration-300"
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-5 w-5 mr-1.5 transform group-hover:scale-110 transition-transform duration-300"
                  fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
@@ -72,7 +77,8 @@
         class="w-16 h-16 rounded-full mr-5 object-cover border-2 border-white shadow"
       >
       <div>
-        <h3 class="font-semibold text-gray-900 text-lg mb-1">{{ article.author.firstName }} {{ article.author.lastName }}</h3>
+        <h3
+          class="font-semibold text-gray-900 text-lg mb-1">{{ article.author.firstName }} {{ article.author.lastName }}</h3>
         <p class="text-gray-600">{{ article.author.bio }}</p>
       </div>
     </div>
@@ -94,7 +100,8 @@
                   style="max-height: 350px;"
                 >
                 @if (image.description) {
-                  <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white p-3 transform transition-transform duration-300">
+                  <div
+                    class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white p-3 transform transition-transform duration-300">
                     <p class="text-sm">{{ image.description }}</p>
                   </div>
                 }
@@ -110,7 +117,8 @@
       <h3 class="text-xl font-semibold text-gray-900 mb-4">Tags</h3>
       <div class="flex flex-wrap">
         @for (tag of article.tags; track tag) {
-          <span class="bg-gray-100 text-gray-800 mr-3 mb-3 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors duration-300 cursor-pointer">
+          <span
+            class="bg-gray-100 text-gray-800 mr-3 mb-3 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors duration-300 cursor-pointer">
             #{{ tag }}
           </span>
         }
@@ -147,35 +155,45 @@
       </div>
 
       <!-- Comment form -->
-      <div class="bg-gray-50 p-8 rounded-lg shadow-sm">
-        <h3 class="text-xl font-semibold text-gray-900 mb-6">Leave a comment</h3>
-        <div class="mb-4">
-          <label for="name" class="block text-gray-700 mb-2">Name</label>
-          <input
-            type="text"
-            id="name"
-            placeholder="Your name"
-            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
-          >
+      @if (isSignedIn) {
+        <div class="bg-gray-50 p-8 rounded-lg shadow-sm">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6">Leave a comment</h3>
+          <div class="mb-4">
+            <label for="name" class="block text-gray-700 mb-2">Name</label>
+            <input
+              type="text"
+              id="name"
+              placeholder="Your name"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+            >
+          </div>
+          <div class="mb-6">
+            <label for="comment" class="block text-gray-700 mb-2">Comment</label>
+            <textarea
+              id="comment"
+              placeholder="Write your comment here..."
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+              rows="4"
+            ></textarea>
+          </div>
+          <button
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow">
+            Submit Comment
+          </button>
         </div>
-        <div class="mb-6">
-          <label for="comment" class="block text-gray-700 mb-2">Comment</label>
-          <textarea
-            id="comment"
-            placeholder="Write your comment here..."
-            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
-            rows="4"
-          ></textarea>
+      } @else {
+        <div class="bg-gray-50 p-8 rounded-lg shadow-sm flex items-center justify-center">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6">You must be <span >signed in</span> to comment.</h3>
         </div>
-        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow">
-          Submit Comment
-        </button>
-      </div>
+      }
+
     }
   } @else {
     <div class="text-center py-16">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-6" fill="none"
+           viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
       </svg>
       <h2 class="text-3xl font-bold text-gray-900 mb-4">Article not found</h2>
       <p class="text-xl text-gray-600 mb-8">The article you are looking for does not exist or has been removed.</p>

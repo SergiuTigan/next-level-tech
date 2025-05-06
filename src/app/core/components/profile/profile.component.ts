@@ -1,10 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { finalize, first } from 'rxjs/operators';
-import { NgClass, NgIf } from '@angular/common';
-import { UsersService } from '../../services/users.service';
-import { SnackbarService } from '../../../shared/services/snackbar.service';
+import {Component, inject, OnInit} from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators
+} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {finalize, first} from 'rxjs/operators';
+import {NgClass, NgIf} from '@angular/common';
+import {UsersService} from '../../services/users.service';
+import {SnackbarService} from '../../../shared/services/snackbar.service';
 import cryptoJS from 'crypto-js';
 
 @Component({
@@ -13,28 +20,23 @@ import cryptoJS from 'crypto-js';
   styleUrls: ['./profile.component.scss'],
   imports: [
     ReactiveFormsModule,
-    NgIf,
     NgClass,
-    RouterLink
   ],
   standalone: true
 })
 export class ProfileComponent implements OnInit {
+  readonly formBuilder = inject(FormBuilder);
+  readonly router = inject(Router);
+  readonly userService = inject(UsersService);
+  readonly snackbarService = inject(SnackbarService);
+  readonly route = inject(ActivatedRoute);
+
   profileForm!: FormGroup;
   submitted = false;
   loading = false;
   currentUser: any;
   avatarPreview: string | null = null;
   selectedFile: File | null = null;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private userService: UsersService,
-    private snackbarService: SnackbarService,
-    private route: ActivatedRoute
-  ) {
-  }
 
   ngOnInit(): void {
     this.currentUser = JSON.parse(sessionStorage.getItem('user') || '{}');
@@ -44,12 +46,12 @@ export class ProfileComponent implements OnInit {
   // Initialize form with current user data
   initForm(): void {
     this.profileForm = this.formBuilder.group({
-      email: [{ value: this.currentUser?.email || '', disabled: true }],
+      email: [{value: this.currentUser?.email || '', disabled: true}],
       firstName: [this.currentUser?.firstName || '', [Validators.required, Validators.minLength(2)]],
       lastName: [this.currentUser?.lastName || '', [Validators.required, Validators.minLength(2)]],
       avatar: [this.currentUser?.avatar || ''],
       bio: [this.currentUser?.bio || '', [Validators.maxLength(500)]],
-      role: [{ value: this.currentUser?.role || '', disabled: true }],
+      role: [{value: this.currentUser?.role || '', disabled: true}],
       password: [''],
       newPassword: ['', [Validators.minLength(8)]],
       confirmNewPassword: ['']
@@ -65,8 +67,8 @@ export class ProfileComponent implements OnInit {
 
     // If new password is provided, confirm password must match
     if (newPassword?.value && newPassword.value !== confirmPassword?.value) {
-      confirmPassword?.setErrors({ passwordMismatch: true });
-      return { passwordMismatch: true };
+      confirmPassword?.setErrors({passwordMismatch: true});
+      return {passwordMismatch: true};
     }
 
     return null;
@@ -79,8 +81,8 @@ export class ProfileComponent implements OnInit {
 
     // If new password is provided but current password is not
     if (newPassword?.value && !password?.value) {
-      password?.setErrors({ required: true });
-      return { passwordRequired: true };
+      password?.setErrors({required: true});
+      return {passwordRequired: true};
     }
 
     return null;
@@ -124,7 +126,7 @@ export class ProfileComponent implements OnInit {
     }
 
     this.loading = true;
-    const formData = { ...this.profileForm.getRawValue() };
+    const formData = {...this.profileForm.getRawValue()};
 
     if (!formData.newPassword) {
       delete formData.password;
@@ -173,7 +175,7 @@ export class ProfileComponent implements OnInit {
           // Update the stored user if successful
           sessionStorage.setItem('user', JSON.stringify(updatedUser));
           this.snackbarService.success('Profile updated successfully');
-          this.router.navigate(['../', { relativeTo: this.route }]).then();
+          this.router.navigate(['../', {relativeTo: this.route}]).then();
         },
         (error: any) => {
           this.snackbarService.error('Failed to update profile. Please try again.');
@@ -182,6 +184,6 @@ export class ProfileComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['../'], { relativeTo: this.route }).then();
+    this.router.navigate(['../'], {relativeTo: this.route}).then();
   }
 }
