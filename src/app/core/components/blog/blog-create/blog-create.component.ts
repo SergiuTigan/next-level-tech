@@ -11,8 +11,6 @@ import {SnackbarService} from '../../../../shared/services/snackbar.service';
   selector: 'app-blog-create',
   imports: [
     ReactiveFormsModule,
-    NgIf,
-    NgForOf,
     RouterLink,
     QuillEditorComponent
   ],
@@ -113,7 +111,7 @@ export class BlogCreateComponent implements OnInit {
           this.thumbnailPreview = article.thumbnail;
           this.coverImageFile = new File([], article.coverImage);
           this.thumbnailFile = new File([], article.thumbnail);
-          if (article.images.length) {
+          if (article.images?.length) {
             article.images.forEach((img: any) => {
               this.addImageItem();
               this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
@@ -320,7 +318,7 @@ export class BlogCreateComponent implements OnInit {
       coverImage: this.coverImagePreview || '',
       thumbnail: this.thumbnailPreview || '',
       tags,
-      likes: 0,
+      likes: [],
       images,
       comments: []
     };
@@ -342,11 +340,11 @@ export class BlogCreateComponent implements OnInit {
   private createNewPost(formData: FormData): void {
     this.blogService.savePreviewArticle({} as Article);
     this.blogService.createPost(formData).subscribe(
-      response => {
+      () => {
         this.router.navigate(['../'], {relativeTo: this.activatedRoute}).then();
         this.snackbarService.success('Article created successfully');
       },
-      error => {
+      () => {
         this.snackbarService.error('Failed to create article');
       }
     );
@@ -354,11 +352,11 @@ export class BlogCreateComponent implements OnInit {
 
   private updatePost(formData: FormData): void {
     this.blogService.updatePost(this.postId, formData).subscribe(
-      response => {
+      () => {
         this.router.navigate(['../'], {relativeTo: this.activatedRoute}).then();
         this.snackbarService.success('Article updated successfully');
       },
-      error => {
+      () => {
         this.snackbarService.error('Failed to create article');
       }
     );

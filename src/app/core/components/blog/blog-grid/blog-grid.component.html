@@ -120,7 +120,7 @@
               <div class="flex items-center gap-x-3">
                 <div
                   class="h-10 w-10 rounded-full bg-gradient-to-tr from-indigo-500 to-blue-600 flex items-center justify-center text-white font-semibold text-sm shadow-md ring-2 ring-white">
-                  {{ article.author?.firstName?.charAt(0) || 'A' }}
+                  {{ article.author?.firstName?.at(0) || 'A' }}
                 </div>
                 <div class="text-sm">
                   <p class="font-medium text-gray-800 tracking-tight">{{ article.author?.firstName || 'Anonymous' }}</p>

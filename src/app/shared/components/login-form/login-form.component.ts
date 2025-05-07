@@ -1,9 +1,8 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators} from '@angular/forms';
-import {NgClass, NgIf} from '@angular/common';
+import {NgClass} from '@angular/common';
 import {UsersService} from '../../../core/services/users.service';
 import CryptoJS from 'crypto-js';
-import {HttpClientModule} from '@angular/common/http';
 import {SnackbarService} from '../../services/snackbar.service';
 
 @Component({
@@ -13,7 +12,6 @@ import {SnackbarService} from '../../services/snackbar.service';
   imports: [
     ReactiveFormsModule,
     NgClass,
-    NgIf, HttpClientModule
   ],
   providers: [],
   standalone: true

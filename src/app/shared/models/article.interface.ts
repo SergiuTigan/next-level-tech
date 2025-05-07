@@ -1,4 +1,4 @@
-import { User } from './user.interface';
+import {User} from './user.interface';
 
 export interface Article {
   _id?: string;
@@ -11,13 +11,16 @@ export interface Article {
   images: Image[];
   imageDescriptions?: { [key: string]: string };
   tags: string[];
-  likes: number;
-  comments: string[];
+  likes: string[];
+  comments: Comment[];
   thumbnail: string;
   author: User;
+
+  [key: string]: any;
 }
-export interface Image{
-  url:string,
+
+export interface Image {
+  url: string,
   description: string,
   _id?: string
 }
@@ -33,7 +36,14 @@ export interface CreateArticleDto {
   imageDescriptions?: { [key: string]: string };
   tags: string[];
   likes: number;
-  comments: string[];
+  comments: Comment[];
   thumbnail: File;
   author?: User;
+}
+
+interface Comment {
+  userName: string;
+  userId: string;
+  comment: string;
+  timestamp: string;
 }

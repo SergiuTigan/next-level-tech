@@ -4,11 +4,13 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {BlogService} from '../../../services/blog.service';
 import {Article} from '../../../../shared/models/article.interface';
 import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
+import {User} from "../../../../shared/models/user.interface";
+import {UsersService} from "../../../services/users.service";
 
 @Component({
   selector: 'app-blog-details',
   standalone: true,
-  imports: [CommonModule, SafeHtmlPipe, RouterLink],
+  imports: [CommonModule, SafeHtmlPipe],
   templateUrl: './blog-details.component.html',
   styleUrls: ['./blog-details.component.scss'] // Fixed stylesheet reference
 })
@@ -16,7 +18,9 @@ export class BlogDetailsComponent implements OnInit {
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
   readonly blogService = inject(BlogService);
+  readonly userService = inject(UsersService);
 
+  user = JSON.parse(sessionStorage.getItem('user') || '{}') as User;
   article!: Article;
   isPreviewMode: boolean = false;
   isSignedIn!: boolean;
@@ -57,7 +61,27 @@ export class BlogDetailsComponent implements OnInit {
   }
 
   likePost(): void {
-    this.article.likes++;
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    if (this.article._id && user._id) {
+      this.blogService.likePost(this.article._id, {userId: user._id}).subscribe((article: Article) => {
+        this.article = article;
+      });
+    }
+  };
+
+  submitComment(comment: string): void {
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    if (this.article._id && user._id) {
+      const commentData = {
+        userName: `${user.firstName} ${user.lastName}`,
+        userId: user._id,
+        comment: comment,
+        timestamp: new Date().toISOString()
+      };
+      this.blogService.commentPost(this.article._id, commentData).subscribe((article: Article) => {
+        this.article = article;
+      });
+    }
   }
 
   sharePost(): void {

@@ -62,4 +62,7 @@ export class UsersService {
       sessionStorage.setItem('user', JSON.stringify(user));
     }));
   }
+  getUserById(id: string): Observable<User> {
+    return this.#baseService.get<User>(`${this.baseUrl}/users/${id}`);
+  }
 }

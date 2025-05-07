@@ -31,7 +31,15 @@ export class BlogService {
     return this.#baseService.delete(`${this.baseUrl}/article/${id}`);
   }
 
-  updatePost(id: string, data: FormData): Observable<Article> {
+  updatePost(id: string, data: Partial<Article>): Observable<Article> {
     return this.#baseService.patch<Article>(`${this.baseUrl}/article/${id}`, data);
+  }
+
+  likePost(id: string, data: Partial<Article>): Observable<Article> {
+    return this.#baseService.patch<Article>(`${this.baseUrl}/article/${id}/like`, data);
+  }
+
+  commentPost(id: string, data: Partial<Article>): Observable<Article> {
+    return this.#baseService.patch<Article>(`${this.baseUrl}/article/${id}/comment`, data);
   }
 }

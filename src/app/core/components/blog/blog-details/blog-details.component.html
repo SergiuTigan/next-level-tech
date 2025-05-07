@@ -31,13 +31,22 @@
             (click)="likePost()"
             class="flex items-center text-gray-600 hover:text-red-500 transition-all duration-300 group"
           >
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="h-5 w-5 mr-1.5 transform group-hover:scale-110 transition-transform duration-300"
-                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-            </svg>
-            <span class="font-medium">{{ article.likes }}</span>
+            @if (user._id && article.likes.includes(user._id)) {
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   class="h-5 w-5 mr-1.5 transform group-hover:scale-110 transition-transform duration-300"
+                   fill="red" viewBox="0 0 24 24" stroke="red">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+              </svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   class="h-5 w-5 mr-1.5 transform group-hover:scale-110 transition-transform duration-300"
+                   fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+              </svg>
+            }
+            <span class="font-medium">{{ article.likes.length }}</span>
           </button>
 
           <button
@@ -136,14 +145,14 @@
                 <div class="flex items-center mb-3">
                   <!-- In a real app, you would have comment author info -->
                   <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center mr-3">
-                    <span class="text-white font-medium">{{ $index + 1 }}</span>
+                    <span class="text-white font-medium">{{ comment.userName?.charAt(0) }}</span>
                   </div>
                   <div>
-                    <span class="font-semibold text-gray-900">User {{ $index + 1 }}</span>
-                    <p class="text-gray-500 text-xs">Posted on {{ formatDate(article.createDate) }}</p>
+                    <span class="font-semibold text-gray-900">{{ comment.userName }}</span>
+                    <p class="text-gray-500 text-xs">Posted on {{ formatDate(comment.timestamp) }}</p>
                   </div>
                 </div>
-                <p class="text-gray-800">{{ comment }}</p>
+                <p class="text-gray-800">{{ comment.comment }}</p>
               </div>
             }
           </div>
@@ -158,15 +167,6 @@
       @if (isSignedIn) {
         <div class="bg-gray-50 p-8 rounded-lg shadow-sm">
           <h3 class="text-xl font-semibold text-gray-900 mb-6">Leave a comment</h3>
-          <div class="mb-4">
-            <label for="name" class="block text-gray-700 mb-2">Name</label>
-            <input
-              type="text"
-              id="name"
-              placeholder="Your name"
-              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
-            >
-          </div>
           <div class="mb-6">
             <label for="comment" class="block text-gray-700 mb-2">Comment</label>
             <textarea
@@ -174,16 +174,18 @@
               placeholder="Write your comment here..."
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
               rows="4"
+              #commentInput
             ></textarea>
           </div>
           <button
-            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow">
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow"
+            (click)="submitComment( commentInput.value); commentInput.value = ''">
             Submit Comment
           </button>
         </div>
       } @else {
         <div class="bg-gray-50 p-8 rounded-lg shadow-sm flex items-center justify-center">
-          <h3 class="text-xl font-semibold text-gray-900 mb-6">You must be <span >signed in</span> to comment.</h3>
+          <h3 class="text-xl font-semibold text-gray-900 mb-6">You must be <span>signed in</span> to comment.</h3>
         </div>
       }
 
