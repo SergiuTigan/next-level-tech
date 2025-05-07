@@ -42,4 +42,11 @@ export class BlogService {
   commentPost(id: string, data: Partial<Article>): Observable<Article> {
     return this.#baseService.patch<Article>(`${this.baseUrl}/article/${id}/comment`, data);
   }
+
+  removeComment(id: string, commentId: string): Observable<Article> {
+    return this.#baseService.delete<Article>(`${this.baseUrl}/article/${id}/comment/${commentId}`);
+  }
+  updateComment(id: string, commentId: string, data: Partial<Article>): Observable<Article> {
+    return this.#baseService.patch<Article>(`${this.baseUrl}/article/${id}/comment/${commentId}`, data);
+  }
 }

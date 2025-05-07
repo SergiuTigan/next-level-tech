@@ -42,6 +42,7 @@ export interface CreateArticleDto {
 }
 
 interface Comment {
+  _id: string | null;
   userName: string;
   userId: string;
   comment: string;
