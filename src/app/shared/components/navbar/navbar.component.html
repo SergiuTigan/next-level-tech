@@ -1,9 +1,9 @@
-<nav class="navbar-container sticky top-0 left-0 z-10">
+<nav class="navbar-container">
   <div class="menu-container">
     <div class="menu">
       <div class="mobile">
         <!-- Mobile menu button -->
-        <button type="button" class="hamburger focus:ring-2 focus:ring-indigo-500 focus:outline-hidden focus:ring-inset" aria-controls="mobile-menu" aria-expanded="false"
+        <button type="button" class="hamburger" aria-controls="mobile-menu" aria-expanded="false"
                 (click)="mobileMenuHidden = !mobileMenuHidden">
           @if (mobileMenuHidden) {
             <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
@@ -16,34 +16,26 @@
           }
         </button>
       </div>
-      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-between">
-        <div class="flex shrink-0 items-center ">
-          <img [routerLink]="'/home'" class="h-16 w-auto cursor-pointer" src="assets/NLT%20Simple%20Logo%20Black.png" alt="Next Level Tech">
+      <div class="menu-content">
+        <div class="logo-container">
+          <img [routerLink]="'/home'" class="logo" src="assets/NLT%20Simple%20Logo%20Black.png" alt="Next Level Tech">
         </div>
-        <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-          <a [routerLink]="'/blog'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('blog')}">Blog</a>
-          <a [routerLink]="'/projects'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('projects')}">Projects</a>
-          <a [routerLink]="'/about'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('about')}">About</a>
-          <a [routerLink]="'/contact'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('contact')}">Contact</a>
+        <div class="nav-links">
+          <a [routerLink]="'/blog'" class="nav-item" [ngClass]="{'active': isCurrentPage('blog')}">Blog</a>
+          <a [routerLink]="'/projects'" class="nav-item" [ngClass]="{'active': isCurrentPage('projects')}">Projects</a>
+          <a [routerLink]="'/about'" class="nav-item" [ngClass]="{'active': isCurrentPage('about')}">About</a>
+          <a [routerLink]="'/contact'" class="nav-item" [ngClass]="{'active': isCurrentPage('contact')}">Contact</a>
         </div>
       </div>
       @if (isUserLoggedIn | async) {
-        <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-          <a [routerLink]="'/profile'" class="hamburger-menu-item" [ngClass]="{'active': isCurrentPage('profile')}">Profile</a>
-          <button type="button"
-                  class="cursor-pointer bg-red-600 px-4 py-2 h-1/2 self-center ml-5
-              rounded-lg text-white text-sm font-semibold shadow-md transition-all duration-300
-              hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
-                  (click)="logout()">
+        <div class="nav-links">
+          <a [routerLink]="'/profile'" class="nav-item" [ngClass]="{'active': isCurrentPage('profile')}">Profile</a>
+          <button type="button" class="auth-button logout" (click)="logout()">
             Log Out
           </button>
         </div>
       } @else {
-        <button type="button"
-                class="cursor-pointer bg-indigo-600 px-4 py-2 h-1/2 self-center ml-5
-              rounded-lg text-white text-sm font-semibold shadow-md transition-all duration-300
-              hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
-                (click)="openModal($event)">
+        <button type="button" class="auth-button login" (click)="openModal($event)">
           Sign In / Sign Up
         </button>
       }
@@ -52,37 +44,32 @@
 
   <!-- Mobile menu overlay -->
   @if (!mobileMenuHidden) {
-    <div class="sm:hidden fixed inset-0 bg-black bg-opacity-50 z-20" (click)="mobileMenuHidden = true"></div>
-    <div class="sm:hidden fixed top-0 right-0 w-64 h-full bg-white shadow-lg z-30 transform transition-transform ease-in-out duration-300" id="mobile-menu">
-      <div class="flex justify-between items-center p-4 border-b">
-        <h2 class="text-lg font-semibold text-indigo-600">Menu</h2>
-        <button class="text-gray-500 hover:text-gray-700" (click)="mobileMenuHidden = true">
+    <div class="mobile-menu-overlay" (click)="mobileMenuHidden = true"></div>
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <h2 class="mobile-menu-title">Menu</h2>
+        <button class="mobile-menu-close" (click)="mobileMenuHidden = true">
           <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
           </svg>
         </button>
       </div>
-      <div class="py-4">
-        <a [routerLink]="'/blog'" class="block py-2 px-4 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-700" (click)="mobileMenuHidden = true">Blog</a>
-        <a [routerLink]="'/projects'" class="block py-2 px-4 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-700" (click)="mobileMenuHidden = true">Projects</a>
-        <a [routerLink]="'/about'" class="block py-2 px-4 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-700" (click)="mobileMenuHidden = true">About</a>
-        <a [routerLink]="'/contact'" class="block py-2 px-4 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
-           (click)="mobileMenuHidden = true">Contact</a>
+      <div class="mobile-menu-content">
+        <a [routerLink]="'/blog'" class="mobile-menu-item" (click)="mobileMenuHidden = true">Blog</a>
+        <a [routerLink]="'/projects'" class="mobile-menu-item" (click)="mobileMenuHidden = true">Projects</a>
+        <a [routerLink]="'/about'" class="mobile-menu-item" (click)="mobileMenuHidden = true">About</a>
+        <a [routerLink]="'/contact'" class="mobile-menu-item" (click)="mobileMenuHidden = true">Contact</a>
 
         @if (isUserLoggedIn | async) {
-          <div class="border-t mt-4 pt-4">
-            <a [routerLink]="'/profile'" class="block py-2 px-4 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-700" (click)="mobileMenuHidden = true">Profile</a>
-            <button type="button"
-                    class="w-full text-left py-2 px-4 text-base font-medium text-red-600 hover:bg-red-50"
-                    (click)="logout(); mobileMenuHidden = true">
+          <div class="mobile-menu-divider">
+            <a [routerLink]="'/profile'" class="mobile-menu-item" (click)="mobileMenuHidden = true">Profile</a>
+            <button type="button" class="mobile-menu-logout" (click)="logout(); mobileMenuHidden = true">
               Log Out
             </button>
           </div>
         } @else {
-          <div class="border-t mt-4 pt-4">
-            <button type="button"
-                    class="w-full text-left py-2 px-4 text-base font-medium text-indigo-600 hover:bg-indigo-50"
-                    (click)="openModal($event); mobileMenuHidden = true">
+          <div class="mobile-menu-divider">
+            <button type="button" class="mobile-menu-login" (click)="openModal($event); mobileMenuHidden = true">
               Sign In / Sign Up
             </button>
           </div>
