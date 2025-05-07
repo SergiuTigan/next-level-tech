@@ -1,11 +1,11 @@
 import {CommonModule} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {BlogService} from '../../../services/blog.service';
 import {Article} from '../../../../shared/models/article.interface';
 import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
 import {User} from "../../../../shared/models/user.interface";
-import {UsersService} from "../../../services/users.service";
+import {SnackbarService} from "../../../../shared/services/snackbar.service";
 
 @Component({
   selector: 'app-blog-details',
@@ -18,7 +18,7 @@ export class BlogDetailsComponent implements OnInit {
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
   readonly blogService = inject(BlogService);
-  readonly userService = inject(UsersService);
+  readonly snackbarService = inject(SnackbarService);
 
   user = JSON.parse(sessionStorage.getItem('user') || '{}') as User;
   article!: Article;
@@ -70,6 +70,10 @@ export class BlogDetailsComponent implements OnInit {
   };
 
   submitComment(comment: string): void {
+    if (!comment) {
+      this.snackbarService.error('Please enter a comment');
+      return;
+    }
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     if (this.article._id && user._id) {
       const commentData = {
@@ -80,6 +84,7 @@ export class BlogDetailsComponent implements OnInit {
       };
       this.blogService.commentPost(this.article._id, commentData).subscribe((article: Article) => {
         this.article = article;
+        this.snackbarService.success('Comment submitted successfully');
       });
     }
   }

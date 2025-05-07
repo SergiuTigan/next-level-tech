@@ -12,6 +12,7 @@ import {
 import {SnackbarService} from '../../../../shared/services/snackbar.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {SkeletonLoaderComponent} from '../../../../shared/helpers/skeleton-loader';
+import {User} from "../../../../shared/models/user.interface";
 
 @Component({
   selector: 'app-blog-grid',
@@ -52,19 +53,25 @@ export class BlogGridComponent implements OnInit {
   articles: Article[] = [];
   isAuth = this.userService.isAuthenticatedCurrent;
   isNotReader = this.userService.isNotReaderCurrent$;
-  isAdmin!: boolean;
+  user = JSON.parse(sessionStorage.getItem('user') || '{}');
   cardStates: { [key: string]: 'normal' | 'hovered' } = {};
   loading = true;
 
+  get isAdmin(): boolean {
+    return this.user.role === 'admin';
+  }
 
   ngOnInit(): void {
     this.blogService.savePreviewArticle({} as Article);
-    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-    this.isAdmin = user.role === 'admin';
+
     this.blogService.getAllArticles().subscribe((articles: Article[]) => {
       this.articles = articles;
       this.loading = false;
     });
+  }
+
+  isAuthor(user: User): boolean {
+    return this.user._id === user._id;
   }
 
   toggleHover(articleId: string): void {

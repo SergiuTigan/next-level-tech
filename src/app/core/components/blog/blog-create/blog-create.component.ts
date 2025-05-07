@@ -1,7 +1,6 @@
 import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
 import {Article, CreateArticleDto} from '../../../../shared/models/article.interface';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgForOf, NgIf} from '@angular/common';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {BlogService} from '../../../services/blog.service';
 import {QuillEditorComponent} from 'ngx-quill';
@@ -341,7 +340,7 @@ export class BlogCreateComponent implements OnInit {
     this.blogService.savePreviewArticle({} as Article);
     this.blogService.createPost(formData).subscribe(
       () => {
-        this.router.navigate(['../'], {relativeTo: this.activatedRoute}).then();
+        this.router.navigate(['./blog']).then();
         this.snackbarService.success('Article created successfully');
       },
       () => {
@@ -353,12 +352,10 @@ export class BlogCreateComponent implements OnInit {
   private updatePost(formData: FormData): void {
     this.blogService.updatePost(this.postId, formData).subscribe(
       () => {
-        this.router.navigate(['../'], {relativeTo: this.activatedRoute}).then();
+        this.router.navigate(['./blog']).then();
         this.snackbarService.success('Article updated successfully');
       },
-      () => {
-        this.snackbarService.error('Failed to create article');
-      }
+      () => this.snackbarService.error('Failed to create article')
     );
   }
 

@@ -45,7 +45,7 @@
             [@cardHover]="cardStates[article._id ?? ''] || 'normal'"
             (mouseenter)="toggleHover(article._id ?? '')"
             (mouseleave)="toggleHover(article._id ?? '')"
-            class="flex flex-col bg-white/95 backdrop-blur-xl rounded-3xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer h-full max-w-md mx-auto"
+            class="flex flex-col bg-white/95 backdrop-blur-xl rounded-3xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer h-full max-w-md mx-auto min-w-[25rem]"
             [routerLink]="'details/' + article._id">
 
             <!-- Thumbnail with Overlay and Integrated Controls -->
@@ -66,7 +66,7 @@
                   </span>
 
                 <!-- Admin Controls -->
-                @if (isAdmin) {
+                @if (isAdmin || isAuthor(article.author)) {
                   <div class="flex space-x-2">
                     <button
                       class="flex items-center justify-center w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm text-blue-600 shadow-md transition-all duration-300 hover:scale-110 hover:bg-white"
