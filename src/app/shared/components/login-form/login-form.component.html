@@ -1,21 +1,21 @@
-<div class="auth-form-container max-w-md mx-auto mt-8 p-6 bg-white rounded shadow">
-  <h2 class="text-2xl font-bold mb-6 text-center">
+<div class="auth-form-container">
+  <h2 class="auth-title">
     {{ isSignIn ? 'Sign In' : 'Create an Account' }}
   </h2>
 
   <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
     <!-- Email Field -->
-    <div class="mb-4">
-      <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+    <div class="form-group">
+      <label for="email" class="form-label">Email</label>
       <input
         type="email"
         id="email"
         formControlName="email"
-        class="w-full px-3 py-2 border rounded"
-        [ngClass]="{'border-red-500': submitted && f['email'].errors, 'border-gray-300': !(submitted && f['email'].errors)}"
+        class="form-input"
+        [ngClass]="{'error': submitted && f['email'].errors, 'normal': !(submitted && f['email'].errors)}"
       >
       @if (submitted && f['email'].errors) {
-        <div class="mt-1 text-sm text-red-500">
+        <div class="error-message">
           @if (f['email'].errors?.['required']) {
             <div>Email is required</div>
           }
@@ -28,17 +28,17 @@
 
     <!-- First Name Field (Sign Up only) -->
     @if (!isSignIn) {
-      <div class="mb-4">
-        <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+      <div class="form-group">
+        <label for="firstName" class="form-label">First Name</label>
         <input
           type="text"
           id="firstName"
           formControlName="firstName"
-          class="w-full px-3 py-2 border rounded"
-          [ngClass]="{'border-red-500': submitted && f['firstName']?.errors, 'border-gray-300': !(submitted && f['firstName']?.errors)}"
+          class="form-input"
+          [ngClass]="{'error': submitted && f['firstName']?.errors, 'normal': !(submitted && f['firstName']?.errors)}"
         >
         @if (submitted && f['firstName']?.errors) {
-          <div class="mt-1 text-sm text-red-500">
+          <div class="error-message">
             @if (f['firstName']?.errors?.['required']) {
               <div>Name is required</div>
             }
@@ -50,18 +50,17 @@
       </div>
 
       <!-- Last Name Field (Sign Up only) -->
-
-      <div class="mb-4">
-        <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+      <div class="form-group">
+        <label for="lastName" class="form-label">Last Name</label>
         <input
           type="text"
           id="lastName"
           formControlName="lastName"
-          class="w-full px-3 py-2 border rounded"
-          [ngClass]="{'border-red-500': submitted && f['lastName']?.errors, 'border-gray-300': !(submitted && f['lastName']?.errors)}"
+          class="form-input"
+          [ngClass]="{'error': submitted && f['lastName']?.errors, 'normal': !(submitted && f['lastName']?.errors)}"
         >
         @if (submitted && f['lastName']?.errors) {
-          <div class="mt-1 text-sm text-red-500">
+          <div class="error-message">
             @if (f['lastName']?.errors?.['required']) {
               <div>Name is required</div>
             }
@@ -73,19 +72,19 @@
       </div>
 
       <!-- Role Selection (Sign Up only) -->
-      <div class="mb-4">
-        <label for="role" class="block text-sm font-medium text-gray-700">I want to</label>
+      <div class="form-group">
+        <label for="role" class="form-label">I want to</label>
         <select
           id="role"
           formControlName="role"
-          class="w-full px-3 py-2 border rounded bg-white"
-          [ngClass]="{'border-red-500': submitted && f['role']?.errors, 'border-gray-300': !(submitted && f['role']?.errors)}"
+          class="form-input"
+          [ngClass]="{'error': submitted && f['role']?.errors, 'normal': !(submitted && f['role']?.errors)}"
         >
           <option value="Reader">Just read articles</option>
           <option value="Writer">Write and read articles</option>
         </select>
         @if (submitted && f['role']?.errors) {
-          <div class="mt-1 text-sm text-red-500">
+          <div class="error-message">
             @if (f['role']?.errors?.['required']) {
               <div>Please select a role</div>
             }
@@ -93,18 +92,19 @@
         }
       </div>
     }
+
     <!-- Password Field -->
-    <div class="mb-4">
-      <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+    <div class="form-group">
+      <label for="password" class="form-label">Password</label>
       <input
         type="password"
         id="password"
         formControlName="password"
-        class="w-full px-3 py-2 border rounded"
-        [ngClass]="{'border-red-500': submitted && f['password'].errors, 'border-gray-300': !(submitted && f['password'].errors)}"
+        class="form-input"
+        [ngClass]="{'error': submitted && f['password'].errors, 'normal': !(submitted && f['password'].errors)}"
       >
       @if (submitted && f['password'].errors) {
-        <div class="mt-1 text-sm text-red-500">
+        <div class="error-message">
           @if (f['password'].errors?.['required']) {
             <div>Password is required</div>
           }
@@ -117,17 +117,17 @@
 
     <!-- Confirm Password Field (Sign Up only) -->
     @if (!isSignIn) {
-      <div class="mb-4">
-        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+      <div class="form-group">
+        <label for="confirmPassword" class="form-label">Confirm Password</label>
         <input
           type="password"
           id="confirmPassword"
           formControlName="confirmPassword"
-          class="w-full px-3 py-2 border rounded"
-          [ngClass]="{'border-red-500': submitted && f['confirmPassword']?.errors, 'border-gray-300': !(submitted && f['confirmPassword']?.errors)}"
+          class="form-input"
+          [ngClass]="{'error': submitted && f['confirmPassword']?.errors, 'normal': !(submitted && f['confirmPassword']?.errors)}"
         >
         @if (submitted && f['confirmPassword']?.errors) {
-          <div class="mt-1 text-sm text-red-500">
+          <div class="error-message">
             @if (f['confirmPassword']?.errors?.['required']) {
               <div>Please confirm your password</div>
             }
@@ -140,15 +140,13 @@
     }
 
     <!-- Submit Button -->
-    <button
-      type="submit"
-      class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-500">
+    <button type="submit" class="submit-button">
       {{ isSignIn ? 'Sign In' : 'Sign Up' }}
     </button>
 
     <!-- Toggle auth mode -->
-    <div class="mt-4 text-center">
-      <a href="javascript:void(0)" (click)="toggleAuthMode()" class="text-indigo-600 hover:text-indigo-500">
+    <div class="toggle-auth">
+      <a href="javascript:void(0)" (click)="toggleAuthMode()">
         {{ isSignIn ? 'Need an account? Sign Up' : 'Already have an account? Sign In' }}
       </a>
     </div>

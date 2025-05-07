@@ -1,0 +1,43 @@
+.auth-form-container {
+  @apply max-w-md mx-auto mt-8 p-6 bg-white rounded shadow;
+}
+
+.auth-title {
+  @apply text-2xl font-bold mb-6 text-center;
+}
+
+.form-group {
+  @apply mb-4;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700;
+}
+
+.form-input {
+  @apply w-full px-3 py-2 border rounded;
+  
+  &.error {
+    @apply border-red-500;
+  }
+  
+  &.normal {
+    @apply border-gray-300;
+  }
+}
+
+.error-message {
+  @apply mt-1 text-sm text-red-500;
+}
+
+.submit-button {
+  @apply w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-500;
+}
+
+.toggle-auth {
+  @apply mt-4 text-center;
+  
+  a {
+    @apply text-indigo-600 hover:text-indigo-500;
+  }
+}
