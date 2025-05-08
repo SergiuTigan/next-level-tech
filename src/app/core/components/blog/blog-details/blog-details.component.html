@@ -28,7 +28,7 @@
 
         <div class="flex items-center space-x-6">
           <button
-            (click)="likePost()"
+            (click)="likeArticle()"
             class="flex items-center text-gray-600 hover:text-red-500 transition-all duration-300 group"
           >
             @if (user._id && article.likes.includes(user._id)) {
@@ -127,6 +127,7 @@
       <div class="flex flex-wrap">
         @for (tag of getTags(article.tags[0]); track tag) {
           <span
+            [routerLink]="['/blog/tags', tag]"
             class="bg-gray-100 text-gray-800 mr-3 mb-3 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors duration-300 cursor-pointer">
             #{{ tag }}
           </span>

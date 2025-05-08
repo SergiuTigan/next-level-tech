@@ -28,6 +28,10 @@ export const routes: Route[] = [
         path: 'edit/:id',
         loadComponent: () => import('./core/components/blog/blog-create/blog-create.component').then(m => m.BlogCreateComponent)
       },
+      {
+        path: 'tags/:tag',
+        loadComponent: () => import('./core/components/blog/blog-grid/blog-grid.component').then(m => m.BlogGridComponent)
+      }
     ],
   },
   {

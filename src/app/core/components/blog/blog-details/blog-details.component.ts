@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {BlogService} from '../../../services/blog.service';
 import {Article} from '../../../../shared/models/article.interface';
 import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
@@ -15,7 +15,7 @@ import {FormsModule} from '@angular/forms';
 @Component({
   selector: 'app-blog-details',
   standalone: true,
-  imports: [CommonModule, SafeHtmlPipe, MatDialogModule, FormsModule],
+  imports: [CommonModule, SafeHtmlPipe, MatDialogModule, FormsModule, RouterLink],
   templateUrl: './blog-details.component.html',
   styleUrls: ['./blog-details.component.scss'] // Fixed stylesheet reference
 })
@@ -65,7 +65,7 @@ export class BlogDetailsComponent implements OnInit {
     return new Date(dateString).toLocaleDateString('en-US', options);
   }
 
-  likePost(): void {
+  likeArticle(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     if (this.article._id && user._id) {
       this.blogService.likePost(this.article._id, {userId: user._id}).subscribe((article: Article) => {

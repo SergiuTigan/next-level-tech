@@ -38,6 +38,7 @@ export class BlogCreateComponent implements OnInit {
   thumbnailPreview: string | null = null;
   isEditMode: boolean = false;
   postId: string = '';
+  user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
   additionalImages: any[] = [];
   quillModules = {
@@ -325,20 +326,19 @@ export class BlogCreateComponent implements OnInit {
 
   onSubmit(): void {
     if (this.createPostForm.valid && this.coverImageFile && !this.coverImageError && !this.hasAdditionalImageErrors()) {
-      const formData = this.prepareFormData();
 
       if (this.isEditMode && this.postId) {
-        this.updatePost(formData);
+        this.updateArticle(this.prepareFormData());
       } else {
-        this.createNewPost(formData);
+        this.createNewArticle(this.prepareFormData());
       }
 
     }
   }
 
-  private createNewPost(formData: FormData): void {
+  private createNewArticle(article: FormData): void {
     this.blogService.savePreviewArticle({} as Article);
-    this.blogService.createPost(formData).subscribe(
+    this.blogService.createPost(article).subscribe(
       () => {
         this.router.navigate(['./blog']).then();
         this.snackbarService.success('Article created successfully');
@@ -349,8 +349,8 @@ export class BlogCreateComponent implements OnInit {
     );
   }
 
-  private updatePost(formData: FormData): void {
-    this.blogService.updatePost(this.postId, formData).subscribe(
+  private updateArticle(article: FormData): void {
+    this.blogService.updateArticle(this.postId, article).subscribe(
       () => {
         this.router.navigate(['./blog']).then();
         this.snackbarService.success('Article updated successfully');

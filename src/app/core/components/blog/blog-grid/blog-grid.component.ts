@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Article} from '../../../../shared/models/article.interface';
-import {Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {BlogService} from '../../../services/blog.service';
 import {BlogCreateComponent} from '../blog-create/blog-create.component';
 import {UsersService} from '../../../services/users.service';
@@ -49,6 +49,7 @@ export class BlogGridComponent implements OnInit {
   readonly matDialog = inject(MatDialog);
   readonly snackbarService = inject(SnackbarService);
   readonly router = inject(Router);
+  readonly activatedRoute = inject(ActivatedRoute);
 
   articles: Article[] = [];
   isAuth = this.userService.isAuthenticatedCurrent;
@@ -63,11 +64,18 @@ export class BlogGridComponent implements OnInit {
 
   ngOnInit(): void {
     this.blogService.savePreviewArticle({} as Article);
-
-    this.blogService.getAllArticles().subscribe((articles: Article[]) => {
-      this.articles = articles;
-      this.loading = false;
-    });
+    const tag: string = this.activatedRoute.snapshot.params['tag'];
+    if (!tag) {
+      this.blogService.getAllArticles().subscribe((articles: Article[]) => {
+        this.articles = articles;
+        this.loading = false;
+      });
+    } else {
+      this.blogService.getAllArticlesByTag(tag).subscribe((articles: Article[]) => {
+        this.articles = articles;
+        this.loading = false;
+      });
+    }
   }
 
   isAuthor(user: User): boolean {
@@ -93,7 +101,6 @@ export class BlogGridComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result && id) {
-        // User confirmed, proceed with deletion
         this.blogService.deletePost(id).subscribe(() => {
           this.articles = this.articles.filter(article => article._id !== id);
           this.snackbarService.success('Article deleted successfully');

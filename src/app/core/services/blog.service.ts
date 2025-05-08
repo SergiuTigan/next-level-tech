@@ -19,19 +19,23 @@ export class BlogService {
     return this.#baseService.get<Article[]>(`${this.baseUrl}/article`);
   }
 
+  getAllArticlesByTag(tag: string): Observable<Article[]> {
+    return this.#baseService.get<Article[]>(`${this.baseUrl}/article/tag/${tag}`);
+  }
+
   getArticleById(id: string): Observable<Article> {
     return this.#baseService.get<Article>(`${this.baseUrl}/article/${id}`);
   }
 
-  createPost(formData: FormData): Observable<Article> {
-    return this.#baseService.post<Article>(`${this.baseUrl}/article`, formData);
+  createPost(article: FormData): Observable<Article> {
+    return this.#baseService.post<Article>(`${this.baseUrl}/article`, article);
   }
 
   deletePost(id: string): Observable<any> {
     return this.#baseService.delete(`${this.baseUrl}/article/${id}`);
   }
 
-  updatePost(id: string, data: Partial<Article>): Observable<Article> {
+  updateArticle(id: string, data: Partial<Article>): Observable<Article> {
     return this.#baseService.patch<Article>(`${this.baseUrl}/article/${id}`, data);
   }
 
@@ -46,6 +50,7 @@ export class BlogService {
   removeComment(id: string, commentId: string): Observable<Article> {
     return this.#baseService.delete<Article>(`${this.baseUrl}/article/${id}/comment/${commentId}`);
   }
+
   updateComment(id: string, commentId: string, data: Partial<Article>): Observable<Article> {
     return this.#baseService.patch<Article>(`${this.baseUrl}/article/${id}/comment/${commentId}`, data);
   }

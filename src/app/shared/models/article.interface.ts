@@ -31,13 +31,13 @@ export interface CreateArticleDto {
   description: string;
   category: string;
   createDate: string;
-  coverImage: File;
+  coverImage: File | null;
   images: File[];
   imageDescriptions?: { [key: string]: string };
   tags: string[];
-  likes: number;
+  likes: string[];
   comments: Comment[];
-  thumbnail: File;
+  thumbnail: File | null;
   author?: User;
 }
 
