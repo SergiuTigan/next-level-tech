@@ -125,7 +125,7 @@
     <div class="mb-12">
       <h3 class="text-xl font-semibold text-gray-900 mb-4">Tags</h3>
       <div class="flex flex-wrap">
-        @for (tag of article.tags; track tag) {
+        @for (tag of getTags(article.tags[0]); track tag) {
           <span
             class="bg-gray-100 text-gray-800 mr-3 mb-3 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors duration-300 cursor-pointer">
             #{{ tag }}

@@ -40,11 +40,6 @@ export class BlogDetailsComponent implements OnInit {
       if (id) {
         this.blogService.getArticleById(id).subscribe((article: Article) => {
           this.article = article;
-
-          if (typeof this.article.tags[0] === 'string') {
-            this.article.tags = this.article.tags[0].split(',');
-            this.article.tags = this.article.tags.map(tag => tag.trim().charAt(0).toUpperCase() + tag.trim().slice(1));
-          }
         });
       }
     } else {
@@ -55,6 +50,10 @@ export class BlogDetailsComponent implements OnInit {
     if (JSON.stringify(this.article) === '{}') {
       this.router.navigate(['/blog'], {relativeTo: this.route});
     }
+  }
+
+  getTags(tags: string): string[] {
+    return tags.split(',').map(tag => tag.trim().charAt(0).toUpperCase() + tag.trim().slice(1));
   }
 
   formatDate(dateString: string): string {

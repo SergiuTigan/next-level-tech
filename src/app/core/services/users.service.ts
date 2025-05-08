@@ -1,8 +1,8 @@
-import {inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { User } from '../../shared/models/user.interface';
-import { environment } from '../../../assets/environment/environment';
-import { BaseService } from './base.service';
+import {inject, Injectable} from '@angular/core';
+import {BehaviorSubject, Observable, tap} from 'rxjs';
+import {User} from '../../shared/models/user.interface';
+import {environment} from '../../../assets/environment/environment';
+import {BaseService} from './base.service';
 
 @Injectable()
 export class UsersService {
@@ -32,7 +32,10 @@ export class UsersService {
   }
 
   register(user: User): Observable<{ user: User, token: string }> {
-    return this.#baseService.post<{ user: User, token: string }>(`${this.baseUrl}/users`, user).pipe(tap((user: { user: User, token: string }) => {
+    return this.#baseService.post<{ user: User, token: string }>(`${this.baseUrl}/users`, user).pipe(tap((user: {
+      user: User,
+      token: string
+    }) => {
       sessionStorage.setItem('token', user.token);
       sessionStorage.setItem('user', JSON.stringify(user.user));
       this.saveAuthState(true);
@@ -41,7 +44,10 @@ export class UsersService {
   }
 
   login(user: any): Observable<{ user: User, token: string }> {
-    return this.#baseService.post<{ user: User, token: string }>(`${this.baseUrl}/users/login`, user).pipe(tap((user: { user: User, token: string }) => {
+    return this.#baseService.post<{ user: User, token: string }>(`${this.baseUrl}/users/login`, user).pipe(tap((user: {
+      user: User,
+      token: string
+    }) => {
       sessionStorage.setItem('token', user.token);
       sessionStorage.setItem('user', JSON.stringify(user.user));
       this.saveAuthState(true);
@@ -62,6 +68,7 @@ export class UsersService {
       sessionStorage.setItem('user', JSON.stringify(user));
     }));
   }
+
   getUserById(id: string): Observable<User> {
     return this.#baseService.get<User>(`${this.baseUrl}/users/${id}`);
   }
