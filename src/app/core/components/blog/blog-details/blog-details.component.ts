@@ -115,29 +115,44 @@ export class BlogDetailsComponent implements OnInit {
     return this.user._id === comment.userId || this.user.role === 'admin';
   }
 
-  editComment(index: number, comment: string): void {
-    this.editingComment = {index, text: comment};
+  editComment(index: number, currentCommentText: string): void {
+    this.editingComment = {index, text: currentCommentText};
   }
 
   saveCommentEdit(commentId: string | null): void {
-    if (!this.editingComment || !this.article._id || !commentId) {
+    if (!this.editingComment || !this.article?._id || !commentId) {
+      console.error('Missing data for saving comment edit:', {
+        editingComment: this.editingComment,
+        articleId: this.article?._id,
+        commentId,
+      });
       return;
     }
 
-    const updatedComments = [...this.article.comments];
-    updatedComments[this.editingComment.index] = {
-      ...updatedComments[this.editingComment.index],
-      comment: this.editingComment.text
+    const originalComment = this.article.comments[this.editingComment.index];
+
+    if (!originalComment) {
+      console.error('Original comment not found at index:', this.editingComment.index);
+      this.editingComment = null;
+      return;
+    }
+
+    const updatePayload = {
+      comment: this.editingComment.text,
+      userName: originalComment.userName,
+      userId: originalComment.userId,
+      timestamp: originalComment.timestamp,
     };
 
-    this.blogService.updateComment(this.article._id, commentId, {comments: updatedComments}).subscribe(
+    this.blogService.updateComment(this.article._id, commentId, updatePayload).subscribe(
       (updatedArticle: Article) => {
         this.article = updatedArticle;
-        this.editingComment = null;
+        this.editingComment = null; // Clear the editing state.
         this.snackbarService.success('Comment updated successfully');
       },
-      error => {
-        this.snackbarService.error('Failed to update comment');
+      (error) => {
+        console.error('Failed to update comment:', error);
+        this.snackbarService.error('Failed to update comment. Please try again.');
       }
     );
   }
