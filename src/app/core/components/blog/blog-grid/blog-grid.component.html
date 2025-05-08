@@ -46,7 +46,7 @@
             (mouseenter)="toggleHover(article._id ?? '')"
             (mouseleave)="toggleHover(article._id ?? '')"
             class="flex flex-col bg-white/95 backdrop-blur-xl rounded-3xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer h-full max-w-md mx-auto min-w-[25rem]"
-            [routerLink]="'details/' + article._id">
+            [routerLink]="'/blog/details/' + article._id">
 
             <!-- Thumbnail with Overlay and Integrated Controls -->
             <div class="relative w-full h-44 overflow-hidden">
