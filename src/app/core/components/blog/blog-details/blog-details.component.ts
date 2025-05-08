@@ -52,10 +52,6 @@ export class BlogDetailsComponent implements OnInit {
     }
   }
 
-  getTags(tags: string): string[] {
-    return tags.split(',').map(tag => tag.trim().charAt(0).toUpperCase() + tag.trim().slice(1));
-  }
-
   formatDate(dateString: string): string {
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
