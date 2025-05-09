@@ -338,7 +338,7 @@ export class BlogCreateComponent implements OnInit {
 
   private createNewArticle(article: FormData): void {
     this.blogService.savePreviewArticle({} as Article);
-    this.blogService.createPost(article).subscribe(
+    this.blogService.createArticle(article).subscribe(
       () => {
         this.router.navigate(['./blog']).then();
         this.snackbarService.success('Article created successfully');

@@ -27,7 +27,7 @@ export class BlogService {
     return this.#baseService.get<Article>(`${this.baseUrl}/article/${id}`);
   }
 
-  createPost(article: FormData): Observable<Article> {
+  createArticle(article: FormData): Observable<Article> {
     return this.#baseService.post<Article>(`${this.baseUrl}/article`, article);
   }
 
@@ -35,7 +35,7 @@ export class BlogService {
     return this.#baseService.delete(`${this.baseUrl}/article/${id}`);
   }
 
-  updateArticle(id: string, data: Partial<Article>): Observable<Article> {
+  updateArticle(id: string, data: FormData): Observable<Article> {
     return this.#baseService.patch<Article>(`${this.baseUrl}/article/${id}`, data);
   }
 
