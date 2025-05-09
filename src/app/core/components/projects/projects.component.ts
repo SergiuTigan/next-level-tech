@@ -1,15 +1,20 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import {Component, inject, OnInit} from '@angular/core';
+import {RouterLink, RouterOutlet} from '@angular/router';
+import {ProjectsService} from "../../services/projects.service";
+import {AsyncPipe, NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-projects',
   imports: [
-    RouterLink
+    RouterOutlet
   ],
   standalone: true,
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
 })
-export class ProjectsComponent {
+export class ProjectsComponent implements OnInit {
 
+
+  ngOnInit(): void {
+  }
 }
