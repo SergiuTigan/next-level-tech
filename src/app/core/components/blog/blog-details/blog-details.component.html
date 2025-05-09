@@ -80,11 +80,19 @@
 
     <!-- Author info -->
     <div class="flex items-center mb-10 p-6 bg-blue-50 rounded-lg shadow-sm">
-      <img
-        [src]="article.author.avatar"
-        [alt]="article.author.firstName + ' ' + article.author.lastName"
-        class="w-16 h-16 rounded-full mr-5 object-cover border-2 border-white shadow"
-      >
+      @if (article.author.avatar) {
+        <img
+          [src]="article.author.avatar"
+          [alt]="article.author.firstName + ' ' + article.author.lastName"
+          class="w-16 h-16 rounded-full mr-5 object-cover border-2 border-white shadow"
+        >
+      } @else {
+        <div class="w-16 h-16 rounded-full bg-gray-300 mr-5 flex items-center justify-center">
+          <span
+            class="text-gray-600 font-semibold text-lg">{{ article.author.firstName.charAt(0) + article.author.lastName.charAt(0) }}</span>
+        </div>
+      }
+
       <div>
         <h3
           class="font-semibold text-gray-900 text-lg mb-1">{{ article.author.firstName }} {{ article.author.lastName }}</h3>
