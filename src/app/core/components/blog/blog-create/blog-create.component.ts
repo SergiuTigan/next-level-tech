@@ -1,10 +1,11 @@
-import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, inject, OnDestroy, OnInit, Output} from '@angular/core';
 import {Article, CreateArticleDto} from '../../../../shared/models/article.interface';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {BlogService} from '../../../services/blog.service';
 import {QuillEditorComponent} from 'ngx-quill';
 import {SnackbarService} from '../../../../shared/services/snackbar.service';
+import {BaseService} from "../../../services/base.service";
 
 @Component({
   selector: 'app-blog-create',
@@ -23,6 +24,7 @@ export class BlogCreateComponent implements OnInit {
   readonly router = inject(Router);
   readonly activatedRoute = inject(ActivatedRoute);
   readonly snackbarService = inject(SnackbarService);
+  readonly baseService = inject(BaseService);
 
   @Output() createPost = new EventEmitter<CreateArticleDto>();
   @Output() close = new EventEmitter<boolean>();
@@ -98,7 +100,7 @@ export class BlogCreateComponent implements OnInit {
 
     } else {
       this.blogService.currentPreviewArticle$.subscribe(article => {
-        if (article) {
+        if (Object.keys(article).length) {
           this.createPostForm.patchValue({
             title: article.title,
             content: article.content,
@@ -282,7 +284,6 @@ export class BlogCreateComponent implements OnInit {
     formData.append('coverImage', this.coverImageFile ? this.coverImageFile : '');
 
     formData.append('thumbnail', this.thumbnailFile ? this.thumbnailFile : '');
-
     const validImages = this.additionalImages.filter(img => img.file);
 
     formData.append('imageMetadata', JSON.stringify(
@@ -326,13 +327,11 @@ export class BlogCreateComponent implements OnInit {
 
   onSubmit(): void {
     if (this.createPostForm.valid && this.coverImageFile && !this.coverImageError && !this.hasAdditionalImageErrors()) {
-
       if (this.isEditMode && this.postId) {
         this.updateArticle(this.prepareFormData());
       } else {
         this.createNewArticle(this.prepareFormData());
       }
-
     }
   }
 
@@ -340,6 +339,7 @@ export class BlogCreateComponent implements OnInit {
     this.blogService.savePreviewArticle({} as Article);
     this.blogService.createArticle(article).subscribe(
       () => {
+        this.createPostForm.reset();
         this.router.navigate(['./blog']).then();
         this.snackbarService.success('Article created successfully');
       },
@@ -352,10 +352,13 @@ export class BlogCreateComponent implements OnInit {
   private updateArticle(article: FormData): void {
     this.blogService.updateArticle(this.postId, article).subscribe(
       () => {
+        this.createPostForm.reset();
         this.router.navigate(['./blog']).then();
         this.snackbarService.success('Article updated successfully');
       },
-      () => this.snackbarService.error('Failed to create article')
+      () => {
+        this.snackbarService.error('Failed to create article')
+      }
     );
   }
 

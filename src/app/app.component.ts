@@ -31,7 +31,9 @@ import {ContactService} from "./core/services/contact.service";
 })
 export class AppComponent implements OnInit {
   readonly usersService = inject(UsersService);
+  readonly baseService = inject(BaseService);
   isOpen$ = this.usersService.isSignInOpenCurrent;
+  loading$ = this.baseService.loading$;
 
   ngOnInit(): void {
     vercelInject.inject();

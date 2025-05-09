@@ -31,11 +31,8 @@ import {User} from "../../../../shared/models/user.interface";
   ],
   imports: [
     RouterLink,
-    BlogCreateComponent,
     AsyncPipe,
-    NgIf,
     DatePipe,
-    NgForOf,
     SkeletonLoaderComponent
   ],
   providers: [MatDialog],
