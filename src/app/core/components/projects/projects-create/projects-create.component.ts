@@ -1,5 +1,5 @@
 import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
-import {IProject, CreateProjectDto} from '../../../../shared/models/project.interface';
+import {CreateProjectDto, IProject} from '../../../../shared/models/project.interface';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {QuillEditorComponent} from 'ngx-quill';
@@ -276,12 +276,11 @@ export class ProjectsCreateComponent implements OnInit {
     const validImages = this.additionalImages.filter(img => img.file);
 
     // Create project with proper typing
-    const project: CreateProjectDto = {
+    return {
       title: formValues.title,
       content: formValues.content,
       description: formValues.description,
       techUsed: techUsed,
-      createDate: new Date().toISOString(),
       coverImage: this.coverImageFile!,
       thumbnail: this.thumbnailFile!,
       images: validImages.map(img => img.file),
@@ -290,8 +289,6 @@ export class ProjectsCreateComponent implements OnInit {
         return acc;
       }, {} as { [key: string]: string })
     };
-
-    return project;
   }
 
   preparePreviewData(): IProject {

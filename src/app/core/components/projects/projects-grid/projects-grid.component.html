@@ -29,70 +29,120 @@
       Create Project
     </button>
   </div>
-  @let projects = projects$ | async;
+  @let projects = (projects$ | async) || [];
 
-  @if (projects && projects.length > 1) {
-    @let featureProject = projects[0];
-    <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-      <!-- Featured Project -->
-      <div class="backdrop-blur-sm bg-white/40 rounded-xl shadow-xl border border-white/50 p-8 mb-24">
-        <div class="flex flex-col lg:flex-row gap-12">
-          <div class="lg:w-2/3">
+  @let featureProject = projects[0] || {};
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+    <!-- Featured Project -->
+    <div class="backdrop-blur-sm bg-white/40 rounded-xl shadow-xl border border-white/50 p-8 mb-24">
+      <div class="flex flex-col lg:flex-row gap-12">
+        <div class="lg:w-2/3">
           <span
             class="inline-flex items-center rounded-md bg-indigo-100 px-2.5 py-0.5 text-sm font-medium text-indigo-800">
             Featured Project
           </span>
-            <h2
-              class="mt-4 text-3xl font-bold text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-700">
-              {{ featureProject.title }}
-            </h2>
-            <p class="mt-4 text-lg text-gray-700">
-              {{ featureProject.description }}
-            </p>
+          <h2
+            class="mt-4 text-3xl font-bold text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-700">
+            {{ featureProject.title }}
+          </h2>
+          <p class="mt-4 text-lg text-gray-700">
+            {{ featureProject.description }}
+          </p>
 
-            <div class="mt-6 flex flex-wrap gap-2">
-              @for (technology of featureProject.techUsed; track technology) {
-                <span
-                  class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700">
+          <div class="mt-6 flex flex-wrap gap-2">
+            @for (technology of featureProject.techUsed; track technology) {
+              <span
+                class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700">
                   {{ technology }}
                 </span>
+            }
+          </div>
+
+          <ul class="mt-8 space-y-4 text-gray-700">
+            <li class="flex gap-x-3">
+              <svg class="mt-1 h-5 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor"
+                   aria-hidden="true">
+                <path fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                      clip-rule="evenodd"/>
+              </svg>
+              <span>Intuitive drag-and-drop functionality for PDF generation and reporting</span>
+            </li>
+            <li class="flex gap-x-3">
+              <svg class="mt-1 h-5 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor"
+                   aria-hidden="true">
+                <path fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                      clip-rule="evenodd"/>
+              </svg>
+              <span>Modern, responsive interface optimized for all devices</span>
+            </li>
+            <li class="flex gap-x-3">
+              <svg class="mt-1 h-5 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor"
+                   aria-hidden="true">
+                <path fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                      clip-rule="evenodd"/>
+              </svg>
+              <span>Seamless backend integration for efficient data processing</span>
+            </li>
+          </ul>
+
+          <div class="mt-8">
+            <a href="#" class="text-indigo-600 font-medium hover:text-indigo-500 flex items-center"
+               [routerLink]="['/projects/' + featureProject._id + '/details']">
+              View Case Study
+              <svg class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                      clip-rule="evenodd"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="lg:w-1/3 relative">
+          <img
+            [src]="featureProject.coverImage"
+            alt="Financial Planning Platform"
+            class="rounded-xl shadow-lg object-cover h-full">
+          <div
+            class="absolute -bottom-4 -right-4 w-32 h-32 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl opacity-50 blur-xl"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Grid -->
+    <h2 class="text-2xl font-bold text-gray-900 mb-8">More Success Stories</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (project of projects.slice(1); track project) {
+        <div
+          class="bg-white/80 rounded-lg overflow-hidden shadow-md transition-all duration-200 hover:shadow-lg hover:translate-y-[-4px] group">
+          <div class="relative h-48 overflow-hidden">
+            <img
+              class="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+              [src]="project.thumbnail"
+              alt="Automotive Software Updates">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <h3 class="absolute bottom-4 left-4 text-xl font-bold text-white">{{ project.title }}</h3>
+          </div>
+          <div class="p-6">
+            <div class="flex flex-wrap gap-2 mb-4">
+              @for (technologies of project.techUsed; track technologies; let i = $index) {
+                <span
+                  class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
+                  [ngClass]="colorClasses[i % colorClasses.length]">
+                        {{ technologies }}
+                  </span>
               }
             </div>
-
-            <ul class="mt-8 space-y-4 text-gray-700">
-              <li class="flex gap-x-3">
-                <svg class="mt-1 h-5 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                        clip-rule="evenodd"/>
-                </svg>
-                <span>Intuitive drag-and-drop functionality for PDF generation and reporting</span>
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="mt-1 h-5 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                        clip-rule="evenodd"/>
-                </svg>
-                <span>Modern, responsive interface optimized for all devices</span>
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="mt-1 h-5 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                        clip-rule="evenodd"/>
-                </svg>
-                <span>Seamless backend integration for efficient data processing</span>
-              </li>
-            </ul>
-
-            <div class="mt-8">
-              <a href="#" class="text-indigo-600 font-medium hover:text-indigo-500 flex items-center">
-                View Case Study
+            <p class="text-gray-700">
+              {{ project.description }}
+            </p>
+            <div class="mt-6">
+              <a href="#" class="text-indigo-600 font-medium hover:text-indigo-500 flex items-center"
+                 [routerLink]="['/projects/' + project._id + '/details']">
+                View Details
                 <svg class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd"
                         d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
@@ -101,135 +151,85 @@
               </a>
             </div>
           </div>
-          <div class="lg:w-1/3 relative">
-            <img
-              [src]="featureProject.coverImage"
-              alt="Financial Planning Platform"
-              class="rounded-xl shadow-lg object-cover h-full">
-            <div
-              class="absolute -bottom-4 -right-4 w-32 h-32 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl opacity-50 blur-xl"></div>
+        </div>
+      } </div>
+
+    <!-- Technologies -->
+    <div class="mt-24 backdrop-blur-sm bg-white/40 rounded-xl shadow-xl border border-white/50 p-8">
+      <h2
+        class="text-center text-3xl font-bold text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-700">
+        Technology Expertise</h2>
+      <p class="mt-6 text-lg text-gray-700 text-center max-w-3xl mx-auto">
+        Our projects leverage cutting-edge technologies to deliver superior performance, security, and user
+        experience.
+      </p>
+
+      <div class="mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+        <div class="flex flex-col items-center">
+          <div class="h-16 w-16 flex items-center justify-center rounded-lg bg-white shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-10 w-10 text-red-600">
+              <path fill="currentColor"
+                    d="M185.7 268.1h76.2l-38.1-91.6-38.1 91.6zM223.8 32L16 106.4l31.8 275.7 176 97.9 176-97.9 31.8-275.7zM354 373.8h-48.6l-26.2-65.4H168.6l-26.2 65.4H93.7L223.8 81.5z"/>
+            </svg>
           </div>
+          <h3 class="mt-4 font-medium text-gray-900">Angular</h3>
+        </div>
+
+
+        <div class="flex flex-col items-center">
+          <div class="h-16 w-16 flex items-center justify-center rounded-lg bg-white shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-10 w-10 text-blue-600">
+              <path fill="currentColor"
+                    d="M0 32v448h448V32H0zm243.8 349.4c0 43.6-25.6 63.5-62.9 63.5-33.7 0-53.2-17.4-63.2-38.5l34.3-20.7c6.6 11.7 12.6 21.6 27.1 21.6 13.8 0 22.6-5.4 22.6-26.5V237.7h42.1v143.7zm99.6 63.5c-39.1 0-64.4-18.6-76.7-43l34.3-19.8c9 14.7 20.8 25.6 41.5 25.6 17.4 0 28.6-8.7 28.6-20.8 0-14.4-11.4-19.5-30.7-28l-10.5-4.5c-30.4-12.9-50.5-29.2-50.5-63.5 0-31.6 24.1-55.6 61.6-55.6 26.8 0 46 9.3 59.8 33.7L368 290c-7.2-12.9-15-18-27.1-18-12.3 0-20.1 7.8-20.1 18 0 12.6 7.8 17.7 25.9 25.6l10.5 4.5c35.8 15.3 55.9 31 55.9 66.2 0 37.8-29.8 58.6-69.7 58.6z"/>
+            </svg>
+          </div>
+          <h3 class="mt-4 font-medium text-gray-900">JavaScript</h3>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <div class="h-16 w-16 flex items-center justify-center rounded-lg bg-white shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="h-10 w-10 text-blue-400">
+              <path fill="currentColor"
+                    d="M480 32l-64 368-223.3 80L0 400l19.6-94.8h82l-8 40.6L210 390.2l134.1-44.4 18.8-97.1H29.5l16-82h333.7l10.5-52.7H56.3l16.3-82H480z"/>
+            </svg>
+          </div>
+          <h3 class="mt-4 font-medium text-gray-900">CSS</h3>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <div class="h-16 w-16 flex items-center justify-center rounded-lg bg-white shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="h-10 w-10 text-purple-600">
+              <path fill="currentColor"
+                    d="M333.5,201.4c0-22.1-15.6-34.3-43-34.3h-50.4v71.2h42.5C315.4,238.2,333.5,225,333.5,201.4z M517,188.6 c-9.5-30.9-10.9-68.8-9.8-98.1c1.1-30.5-22.7-58.5-54.7-58.5H123.7c-32.1,0-55.8,28.1-54.7,58.5c1,29.3-0.3,67.2-9.8,98.1 c-9.6,31-25.7,50.6-52.2,53.1v28.5c26.4,2.5,42.6,22.1,52.2,53.1c9.5,30.9,10.9,68.8,9.8,98.1c-1.1,30.5,22.7,58.5,54.7,58.5h328.7 c32.1,0,55.8-28.1,54.7-58.5c-1-29.3,0.3-67.2,9.8-98.1c9.6-31,25.7-50.6,52.1-53.1v-28.5C542.7,239.2,526.5,219.6,517,188.6z M300.2,375.1h-97.9V136.8h97.4c43.3,0,71.7,23.4,71.7,59.4c0,25.3-19.1,47.9-43.5,51.8v1.3c33.2,3.6,55.5,26.6,55.5,58.3 C383.4,349.7,352.1,375.1,300.2,375.1z M290.2,266.4h-50.1v78.4h52.3c34.2,0,52.3-13.7,52.3-39.5 C344.7,279.6,326.1,266.4,290.2,266.4z"/>
+            </svg>
+          </div>
+          <h3 class="mt-4 font-medium text-gray-900">Bootstrap</h3>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <div class="h-16 w-16 flex items-center justify-center rounded-lg bg-white shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-10 w-10 text-cyan-500">
+              <path fill="currentColor"
+                    d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"/>
+            </svg>
+          </div>
+          <h3 class="mt-4 font-medium text-gray-900">Tailwind CSS</h3>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <div class="h-16 w-16 flex items-center justify-center rounded-lg bg-white shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-10 w-10 text-indigo-600">
+              <path fill="currentColor"
+                    d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"/>
+            </svg>
+          </div>
+          <h3 class="mt-4 font-medium text-gray-900">TypeScript</h3>
         </div>
       </div>
-
-      <!-- Project Grid -->
-      <h2 class="text-2xl font-bold text-gray-900 mb-8">More Success Stories</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        @for (project of projects.slice(1); track project) {
-          <div
-            class="bg-white/80 rounded-lg overflow-hidden shadow-md transition-all duration-200 hover:shadow-lg hover:translate-y-[-4px] group">
-            <div class="relative h-48 overflow-hidden">
-              <img
-                class="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                [src]="project.thumbnail"
-                alt="Automotive Software Updates">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-              <h3 class="absolute bottom-4 left-4 text-xl font-bold text-white">{{ project.title }}</h3>
-            </div>
-            <div class="p-6">
-              <div class="flex flex-wrap gap-2 mb-4">
-                @for (technologies of project.techUsed; track technologies; let i = $index) {
-                  <span
-                    class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
-                    [ngClass]="colorClasses[i % colorClasses.length]">
-                        {{ technologies }}
-                  </span>
-                }
-              </div>
-              <p class="text-gray-700">
-                {{ project.description }}
-              </p>
-              <div class="mt-6">
-                <a href="#" class="text-indigo-600 font-medium hover:text-indigo-500 flex items-center">
-                  View Details
-                  <svg class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clip-rule="evenodd"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        } </div>
-
-      <!-- Technologies -->
-      <div class="mt-24 backdrop-blur-sm bg-white/40 rounded-xl shadow-xl border border-white/50 p-8">
-        <h2
-          class="text-center text-3xl font-bold text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-700">
-          Technology Expertise</h2>
-        <p class="mt-6 text-lg text-gray-700 text-center max-w-3xl mx-auto">
-          Our projects leverage cutting-edge technologies to deliver superior performance, security, and user
-          experience.
-        </p>
-
-        <div class="mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-          <div class="flex flex-col items-center">
-            <div class="h-16 w-16 flex items-center justify-center rounded-lg bg-white shadow-md">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-10 w-10 text-red-600">
-                <path fill="currentColor"
-                      d="M185.7 268.1h76.2l-38.1-91.6-38.1 91.6zM223.8 32L16 106.4l31.8 275.7 176 97.9 176-97.9 31.8-275.7zM354 373.8h-48.6l-26.2-65.4H168.6l-26.2 65.4H93.7L223.8 81.5z"/>
-              </svg>
-            </div>
-            <h3 class="mt-4 font-medium text-gray-900">Angular</h3>
-          </div>
-
-
-          <div class="flex flex-col items-center">
-            <div class="h-16 w-16 flex items-center justify-center rounded-lg bg-white shadow-md">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-10 w-10 text-blue-600">
-                <path fill="currentColor"
-                      d="M0 32v448h448V32H0zm243.8 349.4c0 43.6-25.6 63.5-62.9 63.5-33.7 0-53.2-17.4-63.2-38.5l34.3-20.7c6.6 11.7 12.6 21.6 27.1 21.6 13.8 0 22.6-5.4 22.6-26.5V237.7h42.1v143.7zm99.6 63.5c-39.1 0-64.4-18.6-76.7-43l34.3-19.8c9 14.7 20.8 25.6 41.5 25.6 17.4 0 28.6-8.7 28.6-20.8 0-14.4-11.4-19.5-30.7-28l-10.5-4.5c-30.4-12.9-50.5-29.2-50.5-63.5 0-31.6 24.1-55.6 61.6-55.6 26.8 0 46 9.3 59.8 33.7L368 290c-7.2-12.9-15-18-27.1-18-12.3 0-20.1 7.8-20.1 18 0 12.6 7.8 17.7 25.9 25.6l10.5 4.5c35.8 15.3 55.9 31 55.9 66.2 0 37.8-29.8 58.6-69.7 58.6z"/>
-              </svg>
-            </div>
-            <h3 class="mt-4 font-medium text-gray-900">JavaScript</h3>
-          </div>
-
-          <div class="flex flex-col items-center">
-            <div class="h-16 w-16 flex items-center justify-center rounded-lg bg-white shadow-md">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="h-10 w-10 text-blue-400">
-                <path fill="currentColor"
-                      d="M480 32l-64 368-223.3 80L0 400l19.6-94.8h82l-8 40.6L210 390.2l134.1-44.4 18.8-97.1H29.5l16-82h333.7l10.5-52.7H56.3l16.3-82H480z"/>
-              </svg>
-            </div>
-            <h3 class="mt-4 font-medium text-gray-900">CSS</h3>
-          </div>
-
-          <div class="flex flex-col items-center">
-            <div class="h-16 w-16 flex items-center justify-center rounded-lg bg-white shadow-md">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="h-10 w-10 text-purple-600">
-                <path fill="currentColor"
-                      d="M333.5,201.4c0-22.1-15.6-34.3-43-34.3h-50.4v71.2h42.5C315.4,238.2,333.5,225,333.5,201.4z M517,188.6 c-9.5-30.9-10.9-68.8-9.8-98.1c1.1-30.5-22.7-58.5-54.7-58.5H123.7c-32.1,0-55.8,28.1-54.7,58.5c1,29.3-0.3,67.2-9.8,98.1 c-9.6,31-25.7,50.6-52.2,53.1v28.5c26.4,2.5,42.6,22.1,52.2,53.1c9.5,30.9,10.9,68.8,9.8,98.1c-1.1,30.5,22.7,58.5,54.7,58.5h328.7 c32.1,0,55.8-28.1,54.7-58.5c-1-29.3,0.3-67.2,9.8-98.1c9.6-31,25.7-50.6,52.1-53.1v-28.5C542.7,239.2,526.5,219.6,517,188.6z M300.2,375.1h-97.9V136.8h97.4c43.3,0,71.7,23.4,71.7,59.4c0,25.3-19.1,47.9-43.5,51.8v1.3c33.2,3.6,55.5,26.6,55.5,58.3 C383.4,349.7,352.1,375.1,300.2,375.1z M290.2,266.4h-50.1v78.4h52.3c34.2,0,52.3-13.7,52.3-39.5 C344.7,279.6,326.1,266.4,290.2,266.4z"/>
-              </svg>
-            </div>
-            <h3 class="mt-4 font-medium text-gray-900">Bootstrap</h3>
-          </div>
-
-          <div class="flex flex-col items-center">
-            <div class="h-16 w-16 flex items-center justify-center rounded-lg bg-white shadow-md">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-10 w-10 text-cyan-500">
-                <path fill="currentColor"
-                      d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"/>
-              </svg>
-            </div>
-            <h3 class="mt-4 font-medium text-gray-900">Tailwind CSS</h3>
-          </div>
-
-          <div class="flex flex-col items-center">
-            <div class="h-16 w-16 flex items-center justify-center rounded-lg bg-white shadow-md">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-10 w-10 text-indigo-600">
-                <path fill="currentColor"
-                      d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"/>
-              </svg>
-            </div>
-            <h3 class="mt-4 font-medium text-gray-900">TypeScript</h3>
-          </div>
-        </div>
-      </div>
-
-
     </div>
-  }
+
+
+  </div>
   <!-- Call to Action -->
   <div
     class="mt-24 text-center bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-xl p-12 relative overflow-hidden">

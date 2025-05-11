@@ -29,7 +29,6 @@ export class ProjectsService {
         formData.append('content', projectData.content);
         formData.append('description', projectData.description);
         formData.append('techUsed', projectData.techUsed.join(','));
-        formData.append('createDate', projectData.createDate);
 
         if (projectData.coverImage) {
             formData.append('coverImage', projectData.coverImage);
@@ -61,7 +60,6 @@ export class ProjectsService {
         formData.append('content', projectData.content);
         formData.append('description', projectData.description);
         formData.append('techUsed', projectData.techUsed.join(','));
-        formData.append('createDate', projectData.createDate);
 
         if (projectData.coverImage) {
             formData.append('coverImage', projectData.coverImage);

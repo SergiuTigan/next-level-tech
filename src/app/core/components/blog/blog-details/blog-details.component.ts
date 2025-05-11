@@ -17,7 +17,7 @@ import {FormsModule} from '@angular/forms';
   standalone: true,
   imports: [CommonModule, SafeHtmlPipe, MatDialogModule, FormsModule, RouterLink],
   templateUrl: './blog-details.component.html',
-  styleUrls: ['./blog-details.component.scss'] // Fixed stylesheet reference
+  styleUrls: ['./blog-details.component.scss']
 })
 export class BlogDetailsComponent implements OnInit {
   readonly route = inject(ActivatedRoute);

@@ -7,8 +7,6 @@ export interface IProject {
     images: Image[];
     techUsed: string[];
     thumbnail: string;
-    createDate: string;
-
     [key: string]: any;
 }
 
@@ -27,5 +25,4 @@ export interface CreateProjectDto {
     imageDescriptions?: { [key: string]: string };
     techUsed: string[];
     thumbnail: File;
-    createDate: string;
 }
