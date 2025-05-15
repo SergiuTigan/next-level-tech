@@ -1,25 +1,38 @@
 import {Injectable, inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, finalize, map, Observable} from 'rxjs';
 import {CreateProjectDto, IProject} from '../../shared/models/project.interface';
 import {environment} from "../../../assets/environment/environment";
+import {BaseService} from "./base.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProjectsService {
     private readonly http = inject(HttpClient);
+    readonly baseService = inject(BaseService);
     private apiUrl = `${environment.baseUrl}/projects`;
 
     private previewProjectSubject = new BehaviorSubject<IProject>({} as IProject);
     currentPreviewProject$ = this.previewProjectSubject.asObservable();
 
     getAllProjects(): Observable<IProject[]> {
-        return this.http.get<IProject[]>(this.apiUrl);
+        this.baseService.setLoading(true);
+        return this.http.get<IProject[]>(this.apiUrl).pipe(map((data: IProject[]) => {
+            for (const project of data) {
+                project.techUsed = project.techUsed[0].split(',');
+            }
+            return data;
+        }), finalize(() => {
+            this.baseService.setLoading(false);
+        }));
     }
 
     getProjectById(id: string): Observable<IProject> {
-        return this.http.get<IProject>(`${this.apiUrl}/${id}`);
+        return this.http.get<IProject>(`${this.apiUrl}/${id}`).pipe(map((project: IProject) => {
+            project.techUsed = project.techUsed[0].split(',')
+            return project;
+        }));
     }
 
     createProject(projectData: CreateProjectDto): Observable<IProject> {

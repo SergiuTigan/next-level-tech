@@ -4,6 +4,8 @@ import {IProject} from "../../../../shared/models/project.interface";
 import {ProjectsService} from "../../../services/projects.service";
 import {SnackbarService} from "../../../../shared/services/snackbar.service";
 import {SafeHtmlPipe} from "../../../../shared/pipes/safe-html.pipe";
+import {finalize} from "rxjs";
+import {BaseService} from "../../../services/base.service";
 
 @Component({
   selector: 'app-projects-details',
@@ -18,10 +20,12 @@ export class ProjectsDetailsComponent implements OnInit {
   readonly router = inject(Router);
   readonly projectService = inject(ProjectsService);
   readonly snackbarService = inject(SnackbarService);
+  readonly baseService = inject(BaseService);
   project: IProject | null = null;
   error: string | null = null;
 
   ngOnInit(): void {
+    this.baseService.setLoading(true);
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.fetchProject(id);
@@ -31,7 +35,7 @@ export class ProjectsDetailsComponent implements OnInit {
   }
 
   fetchProject(id: string): void {
-    this.projectService.getProjectById(id).subscribe({
+    this.projectService.getProjectById(id).pipe(finalize(() => this.baseService.setLoading(false))).subscribe({
       next: (project) => {
         if (!project) {
           this.snackbarService.error('Project not found');

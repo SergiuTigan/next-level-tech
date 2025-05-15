@@ -50,7 +50,7 @@ export class ProjectsCreateComponent implements OnInit {
       ['blockquote', 'code-block'],
       [{'header': 1}, {'header': 2}],
       [{'list': 'ordered'}, {'list': 'bullet'}],
-      [{'script': 'sub'}, {'script': 'super'}],
+      [{'script': '_id'}, {'script': 'super'}],
       [{'indent': '-1'}, {'indent': '+1'}],
       [{'direction': 'rtl'}],
       [{'size': ['small', false, 'large', 'huge']}],
@@ -72,6 +72,7 @@ export class ProjectsCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.baseService.setLoading(true);
     this.initForm();
     this.projectId = this.activatedRoute.snapshot.params['id'];
     if (this.projectId) {
@@ -280,7 +281,7 @@ export class ProjectsCreateComponent implements OnInit {
       title: formValues.title,
       content: formValues.content,
       description: formValues.description,
-      techUsed: techUsed,
+      techUsed: techUsed.split(','),
       coverImage: this.coverImageFile!,
       thumbnail: this.thumbnailFile!,
       images: validImages.map(img => img.file),

@@ -49,7 +49,7 @@ export class BlogCreateComponent implements OnInit {
       ['blockquote', 'code-block'],
       [{'header': 1}, {'header': 2}],
       [{'list': 'ordered'}, {'list': 'bullet'}],
-      [{'script': 'sub'}, {'script': 'super'}],
+      [{'script': '_id'}, {'script': 'super'}],
       [{'indent': '-1'}, {'indent': '+1'}],
       [{'direction': 'rtl'}],
       [{'size': ['small', false, 'large', 'huge']}],
@@ -275,6 +275,7 @@ export class BlogCreateComponent implements OnInit {
     });
 
     formData.append('title', formValues.title);
+    formData.append('published', 'false');
     formData.append('content', formValues.content);
     formData.append('description', formValues.description);
     formData.append('category', formValues.category);
@@ -311,6 +312,7 @@ export class BlogCreateComponent implements OnInit {
 
     return {
       title: formValues.title,
+      published: false,
       content: formValues.content,
       description: formValues.description,
       category: formValues.category,
