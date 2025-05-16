@@ -39,6 +39,10 @@ export class ProjectsGridComponent implements OnInit {
     'bg-indigo-100 text-indigo-800'
   ];
 
+  get isAdmin() {
+    return JSON.parse(sessionStorage.getItem('user') || '{}')?.role?.toLowerCase() === 'admin';
+  }
+
   ngOnInit() {
     this.baseService.setLoading(true);
   }
