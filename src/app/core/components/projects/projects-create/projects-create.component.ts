@@ -7,6 +7,7 @@ import {SnackbarService} from '../../../../shared/services/snackbar.service';
 import {BaseService} from "../../../services/base.service";
 import {ProjectsService} from "../../../services/projects.service";
 import {NgForOf, NgIf} from "@angular/common";
+import {AdditionalImagesComponent} from "../../../../shared/components/additional-images/additional-images.component";
 
 @Component({
   selector: 'app-project-create',
@@ -15,7 +16,8 @@ import {NgForOf, NgIf} from "@angular/common";
     RouterLink,
     QuillEditorComponent,
     NgForOf,
-    NgIf
+    NgIf,
+    AdditionalImagesComponent
   ],
   standalone: true,
   templateUrl: './projects-create.component.html',
@@ -91,12 +93,16 @@ export class ProjectsCreateComponent implements OnInit {
         this.coverImageFile = new File([], project.coverImage);
         this.thumbnailFile = new File([], project.thumbnail);
 
+        // Clear the additionalImages array before adding new items
+        this.additionalImages = [];
+        
         if (project.additionalImages.length) {
           project.additionalImages.forEach((img: any) => {
-            this.addImageItem();
-            this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
-            this.additionalImages[this.additionalImages.length - 1].preview = img.url;
-            this.additionalImages[this.additionalImages.length - 1].url = img.url; // Add url property to identify as existing image
+            this.additionalImages.push({
+              description: img.description,
+              preview: img.url,
+              url: img.url
+            });
           });
         }
       });
@@ -116,12 +122,16 @@ export class ProjectsCreateComponent implements OnInit {
           this.coverImageFile = new File([], project.coverImage);
           this.thumbnailFile = new File([], project.thumbnail);
 
+          // Clear the additionalImages array before adding new items
+          this.additionalImages = [];
+          
           if (project.additionalImages?.length) {
             project.additionalImages.forEach((img: any) => {
-              this.addImageItem();
-              this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
-              this.additionalImages[this.additionalImages.length - 1].preview = img.url;
-              this.additionalImages[this.additionalImages.length - 1].url = img.url; // Add url property to identify as existing image
+              this.additionalImages.push({
+                description: img.description,
+                preview: img.url,
+                url: img.url
+              });
             });
           }
         }
@@ -134,53 +144,29 @@ export class ProjectsCreateComponent implements OnInit {
       title: ['', Validators.required],
       content: ['', Validators.required],
       description: ['', Validators.required],
-      techUsed: [''],
-      imageItems: this.fb.array([])
+      techUsed: ['']
     });
   }
 
-  get imageItems() {
-    return this.projectForm.get('imageItems') as FormArray;
+  onImagesChange(images: any[]) {
+    this.additionalImages = images;
   }
 
-  addImageItem() {
-    const imageItemGroup = this.fb.group({
-      description: ['']
-    });
-
-    // Add to the beginning of the FormArray instead of the end
-    this.imageItems.insert(0, imageItemGroup);
-
-    // Add to the beginning of the additionalImages array instead of the end
-    this.additionalImages.unshift({
-      description: '',
-      preview: '',
-      url: '',
-      file: null
-    });
-  }
-
-  removeImageItem(index: number) {
-    // Store the image ID if it exists (for existing images in edit mode)
-    const removedImage = this.additionalImages[index];
-
-    // Remove from form array
-    this.imageItems.removeAt(index);
-
-    // Remove from additionalImages array
-    this.additionalImages.splice(index, 1);
-
-    // If in edit mode and the image has a URL but no file, it's an existing image
-    // We should track it to ensure it's removed during update
-    if (this.isEditMode && removedImage && removedImage.url && !removedImage.file) {
-      // Store the removed image ID or URL to exclude it during update
-      if (!this.projectForm.get('removedImages')) {
-        this.projectForm.addControl('removedImages', this.fb.array([]));
-      }
-
-      const removedImages = this.projectForm.get('removedImages') as FormArray;
-      removedImages.push(this.fb.control(removedImage.url));
+  onRemovedImagesChange(removedImages: string[]) {
+    // Create or update the removedImages FormArray
+    if (!this.projectForm.get('removedImages')) {
+      this.projectForm.addControl('removedImages', this.fb.array([]));
     }
+    
+    const removedImagesArray = this.projectForm.get('removedImages') as FormArray;
+    // Clear existing items
+    while (removedImagesArray.length) {
+      removedImagesArray.removeAt(0);
+    }
+    // Add new items
+    removedImages.forEach(url => {
+      removedImagesArray.push(this.fb.control(url));
+    });
   }
 
   onCoverImageSelected(event: Event) {
@@ -236,55 +222,6 @@ export class ProjectsCreateComponent implements OnInit {
     this.thumbnailPreview = null;
   }
 
-  onAdditionalImageSelected(event: Event, index: number) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length) {
-      const file = input.files[0];
-
-      if (file.size > 5 * 1024 * 1024) {
-        this.additionalImages[index] = {
-          ...this.additionalImages[index],
-          preview: '',
-          error: 'Image must be smaller than 5MB'
-        };
-        return;
-      }
-
-      if (!file.type.match('image.*')) {
-        this.additionalImages[index] = {
-          ...this.additionalImages[index],
-          preview: '',
-          error: 'Only image files are allowed'
-        };
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.additionalImages[index] = {
-          ...this.additionalImages[index],
-          file: file,
-          preview: reader.result as string,
-          error: undefined,
-          description: this.imageItems.at(index).get('description')?.value
-        };
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  getImagePreview(index: number): string | null {
-    return this.additionalImages[index]?.preview || null;
-  }
-
-  getImageError(index: number): string | null {
-    return this.additionalImages[index]?.error || null;
-  }
-
-  hasAdditionalImageErrors(): boolean {
-    return this.additionalImages.some(img => !!img.error);
-  }
-
   createProjectDto(): CreateProjectDto {
     const formValues = this.projectForm.value;
 
@@ -292,13 +229,6 @@ export class ProjectsCreateComponent implements OnInit {
     const techUsed = typeof formValues.techUsed === 'string'
       ? formValues.techUsed.split(',').map((tech: string) => tech.trim()).filter((tech: string) => tech)
       : formValues.techUsed || [];
-
-    // Update image descriptions
-    this.imageItems.controls.forEach((control, index) => {
-      if (this.additionalImages[index]) {
-        this.additionalImages[index].description = control.get('description')?.value;
-      }
-    });
 
     // In edit mode, include both new images (with files) and existing images (with URLs)
     // In create mode, only include images with files
@@ -350,7 +280,7 @@ export class ProjectsCreateComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.projectForm.valid && this.coverImageFile && !this.coverImageError && !this.hasAdditionalImageErrors()) {
+    if (this.projectForm.valid && this.coverImageFile && !this.coverImageError) {
       if (this.isEditMode && this.projectId) {
         this.updateProject(this.createProjectDto());
       } else {
@@ -389,5 +319,9 @@ export class ProjectsCreateComponent implements OnInit {
   openPreview(): void {
     this.projectService.savePreviewProject(this.preparePreviewData());
     this.router.navigate(['/projects/details', 'preview']).then();
+  }
+
+  hasAdditionalImageErrors(): boolean {
+    return this.additionalImages.some(img => !!img.error);
   }
 }
