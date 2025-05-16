@@ -93,6 +93,11 @@ export class ProjectsService {
             });
         }
 
+        // Handle removed images
+        if (projectData.removedImages && projectData.removedImages.length > 0) {
+            formData.append('removedImages', JSON.stringify(projectData.removedImages));
+        }
+
         return this.http.patch<IProject>(`${this.apiUrl}/${id}`, formData);
     }
 

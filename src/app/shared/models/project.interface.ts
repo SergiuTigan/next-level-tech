@@ -25,4 +25,5 @@ export interface CreateProjectDto {
     imageDescriptions?: { [key: string]: string };
     techUsed: string[];
     thumbnail: File;
+    removedImages?: string[];
 }

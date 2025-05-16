@@ -89,7 +89,7 @@ export class BlogCreateComponent implements OnInit {
         this.thumbnailPreview = post.thumbnail;
         this.coverImageFile = new File([], post.coverImage);
         this.thumbnailFile = new File([], post.thumbnail);
-        
+
         // Handle additional images
         if (post.additionalImages && post.additionalImages.length) {
           // Clear existing images
@@ -97,12 +97,12 @@ export class BlogCreateComponent implements OnInit {
             this.imageItems.removeAt(0);
           }
           this.additionalImages = [];
-          
+
           // Add each image
           post.additionalImages.forEach((img: any) => {
             this.addImageItem();
             const lastIndex = this.imageItems.length - 1;
-            
+
             // If img is a string, use it as the URL
             if (typeof img === 'string') {
               this.additionalImages[lastIndex] = {
@@ -112,7 +112,7 @@ export class BlogCreateComponent implements OnInit {
               };
             } else {
               // If img is an object with url and description
-              this.imageItems.at(lastIndex).patchValue({ description: img.description || '' });
+              this.imageItems.at(lastIndex).patchValue({description: img.description || ''});
               this.additionalImages[lastIndex] = {
                 preview: img.url,
                 description: img.description || '',
@@ -137,7 +137,7 @@ export class BlogCreateComponent implements OnInit {
           this.thumbnailPreview = article.thumbnail;
           this.coverImageFile = new File([], article.coverImage);
           this.thumbnailFile = new File([], article.thumbnail);
-          
+
           // Handle additional images
           if (article.additionalImages?.length) {
             // Clear existing images
@@ -145,12 +145,12 @@ export class BlogCreateComponent implements OnInit {
               this.imageItems.removeAt(0);
             }
             this.additionalImages = [];
-            
+
             // Add each image
             article.additionalImages.forEach((img: any) => {
               this.addImageItem();
               const lastIndex = this.imageItems.length - 1;
-              
+
               // If img is a string, use it as the URL
               if (typeof img === 'string') {
                 this.additionalImages[lastIndex] = {
@@ -160,7 +160,7 @@ export class BlogCreateComponent implements OnInit {
                 };
               } else {
                 // If img is an object with url and description
-                this.imageItems.at(lastIndex).patchValue({ description: img.description || '' });
+                this.imageItems.at(lastIndex).patchValue({description: img.description || ''});
                 this.additionalImages[lastIndex] = {
                   preview: img.url,
                   description: img.description || '',
@@ -183,6 +183,9 @@ export class BlogCreateComponent implements OnInit {
       tags: [''],
       imageItems: this.fb.array([])
     });
+
+    // Add removedImages control separately to track images that should be removed during update
+    this.createPostForm.addControl('removedImages', this.fb.array([]));
   }
 
   get imageItems() {
@@ -194,16 +197,32 @@ export class BlogCreateComponent implements OnInit {
       description: ['']
     });
 
-    this.imageItems.push(imageItemGroup);
-    this.additionalImages.push({
+    // Add to the beginning of the FormArray instead of the end
+    this.imageItems.insert(0, imageItemGroup);
+
+    // Add to the beginning of the additionalImages array instead of the end
+    this.additionalImages.unshift({
       description: '',
       preview: ''
     });
   }
 
   removeImageItem(index: number) {
+    // Store the image URL if it exists (for existing images in edit mode)
+    const removedImage = this.additionalImages[index];
+
+    // Remove from form array
     this.imageItems.removeAt(index);
+
+    // Remove from additionalImages array
     this.additionalImages.splice(index, 1);
+
+    // If in edit mode and the image has a URL but no file, it's an existing image
+    // We should track it to ensure it's not included in the update
+    if (this.isEditMode && removedImage && removedImage.preview && !removedImage.file) {
+      const removedImages = this.createPostForm.get('removedImages') as FormArray;
+      removedImages.push(this.fb.control(removedImage.preview));
+    }
   }
 
   onCoverImageSelected(event: Event) {
@@ -344,6 +363,12 @@ export class BlogCreateComponent implements OnInit {
       if (img.file) {
         formData.append('additionalImages', img.file);
       }
+    });
+
+    // Add removed images to the form data
+    const removedImages = this.createPostForm.get('removedImages') as FormArray;
+    removedImages.controls.forEach((control) => {
+      formData.append('removedImages', control.value);
     });
 
     return formData;

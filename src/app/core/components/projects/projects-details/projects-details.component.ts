@@ -6,14 +6,19 @@ import {SnackbarService} from "../../../../shared/services/snackbar.service";
 import {SafeHtmlPipe} from "../../../../shared/pipes/safe-html.pipe";
 import {finalize} from "rxjs";
 import {BaseService} from "../../../services/base.service";
+import {ScrollProgressComponent} from "../../../../shared/components/scroll-progress/scroll-progress.component";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-projects-details',
   templateUrl: './projects-details.component.html',
   styleUrls: ['./projects-details.component.scss'],
   imports: [
-    SafeHtmlPipe
-  ]
+    SafeHtmlPipe,
+    ScrollProgressComponent,
+    CommonModule
+  ],
+  standalone: true
 })
 export class ProjectsDetailsComponent implements OnInit {
   readonly route = inject(ActivatedRoute);

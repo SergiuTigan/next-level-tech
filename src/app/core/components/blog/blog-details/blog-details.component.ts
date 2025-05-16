@@ -11,11 +11,12 @@ import {
   ConfirmationModalComponent
 } from '../../../../shared/components/modals/delete-confirmation-modal/confirmation-modal.component';
 import {FormsModule} from '@angular/forms';
+import {ScrollProgressComponent} from '../../../../shared/components/scroll-progress/scroll-progress.component';
 
 @Component({
   selector: 'app-blog-details',
   standalone: true,
-  imports: [CommonModule, SafeHtmlPipe, MatDialogModule, FormsModule, RouterLink],
+  imports: [CommonModule, SafeHtmlPipe, MatDialogModule, FormsModule, RouterLink, ScrollProgressComponent],
   templateUrl: './blog-details.component.html',
   styleUrls: ['./blog-details.component.scss']
 })

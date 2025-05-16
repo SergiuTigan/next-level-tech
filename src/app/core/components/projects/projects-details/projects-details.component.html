@@ -1,3 +1,4 @@
+<app-scroll-progress></app-scroll-progress>
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white">
   <!-- Back button -->
   <button (click)="goBack()"
@@ -37,7 +38,7 @@
             <div class="overflow-hidden rounded-lg shadow-md group">
               <div class="relative">
                 <img
-                  [src]="img"
+                  [src]="img.url"
                   class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500"
                   style="max-height: 350px;"
                 >

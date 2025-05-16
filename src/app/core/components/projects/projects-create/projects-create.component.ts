@@ -96,6 +96,7 @@ export class ProjectsCreateComponent implements OnInit {
             this.addImageItem();
             this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
             this.additionalImages[this.additionalImages.length - 1].preview = img.url;
+            this.additionalImages[this.additionalImages.length - 1].url = img.url; // Add url property to identify as existing image
           });
         }
       });
@@ -120,6 +121,7 @@ export class ProjectsCreateComponent implements OnInit {
               this.addImageItem();
               this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
               this.additionalImages[this.additionalImages.length - 1].preview = img.url;
+              this.additionalImages[this.additionalImages.length - 1].url = img.url; // Add url property to identify as existing image
             });
           }
         }
@@ -146,16 +148,39 @@ export class ProjectsCreateComponent implements OnInit {
       description: ['']
     });
 
-    this.imageItems.push(imageItemGroup);
-    this.additionalImages.push({
+    // Add to the beginning of the FormArray instead of the end
+    this.imageItems.insert(0, imageItemGroup);
+
+    // Add to the beginning of the additionalImages array instead of the end
+    this.additionalImages.unshift({
       description: '',
-      preview: ''
+      preview: '',
+      url: '',
+      file: null
     });
   }
 
   removeImageItem(index: number) {
+    // Store the image ID if it exists (for existing images in edit mode)
+    const removedImage = this.additionalImages[index];
+
+    // Remove from form array
     this.imageItems.removeAt(index);
+
+    // Remove from additionalImages array
     this.additionalImages.splice(index, 1);
+
+    // If in edit mode and the image has a URL but no file, it's an existing image
+    // We should track it to ensure it's removed during update
+    if (this.isEditMode && removedImage && removedImage.url && !removedImage.file) {
+      // Store the removed image ID or URL to exclude it during update
+      if (!this.projectForm.get('removedImages')) {
+        this.projectForm.addControl('removedImages', this.fb.array([]));
+      }
+
+      const removedImages = this.projectForm.get('removedImages') as FormArray;
+      removedImages.push(this.fb.control(removedImage.url));
+    }
   }
 
   onCoverImageSelected(event: Event) {
@@ -275,8 +300,16 @@ export class ProjectsCreateComponent implements OnInit {
       }
     });
 
-    // Filter valid images
-    const validImages = this.additionalImages.filter(img => img.file);
+    // In edit mode, include both new images (with files) and existing images (with URLs)
+    // In create mode, only include images with files
+    const validImages = this.isEditMode
+      ? this.additionalImages.filter(img => img.file || img.url)
+      : this.additionalImages.filter(img => img.file);
+
+    // Get removed images if in edit mode
+    const removedImages = this.isEditMode && this.projectForm.get('removedImages')
+      ? (this.projectForm.get('removedImages') as FormArray).value
+      : [];
 
     // Create project with proper typing
     return {
@@ -286,11 +319,12 @@ export class ProjectsCreateComponent implements OnInit {
       techUsed: techUsed,
       coverImage: this.coverImageFile!,
       thumbnail: this.thumbnailFile!,
-      additionalImages: validImages.map(img => img.file),
+      additionalImages: validImages.filter(img => img.file).map(img => img.file),
       imageDescriptions: validImages.reduce((acc, img, index) => {
         acc[index.toString()] = img.description || '';
         return acc;
-      }, {} as { [key: string]: string })
+      }, {} as { [key: string]: string }),
+      removedImages: removedImages
     };
   }
 
