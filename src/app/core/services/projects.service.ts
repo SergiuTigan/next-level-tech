@@ -52,13 +52,13 @@ export class ProjectsService {
         }
 
         // Handle images and their descriptions
-        if (projectData.images && projectData.images.length > 0) {
+        if (projectData.additionalImages && projectData.additionalImages.length > 0) {
             formData.append('imageMetadata', JSON.stringify(
                 Object.entries(projectData.imageDescriptions || {}).map(([index, description]) => ({description}))
             ));
 
-            projectData.images.forEach(img => {
-                formData.append('images', img);
+            projectData.additionalImages.forEach(img => {
+                formData.append('additionalImages', img);
             });
         }
 
@@ -83,17 +83,17 @@ export class ProjectsService {
         }
 
         // Handle images and their descriptions
-        if (projectData.images && projectData.images.length > 0) {
+        if (projectData.additionalImages && projectData.additionalImages.length > 0) {
             formData.append('imageMetadata', JSON.stringify(
                 Object.entries(projectData.imageDescriptions || {}).map(([index, description]) => ({description}))
             ));
 
-            projectData.images.forEach(img => {
-                formData.append('images', img);
+            projectData.additionalImages.forEach(img => {
+                formData.append('additionalImages', img);
             });
         }
 
-        return this.http.put<IProject>(`${this.apiUrl}/${id}`, formData);
+        return this.http.patch<IProject>(`${this.apiUrl}/${id}`, formData);
     }
 
     deleteProject(id: string): Observable<void> {

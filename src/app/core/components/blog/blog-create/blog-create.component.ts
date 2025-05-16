@@ -89,15 +89,39 @@ export class BlogCreateComponent implements OnInit {
         this.thumbnailPreview = post.thumbnail;
         this.coverImageFile = new File([], post.coverImage);
         this.thumbnailFile = new File([], post.thumbnail);
-        if (post.images.length) {
-          post.images.forEach((img: any) => {
+        
+        // Handle additional images
+        if (post.additionalImages && post.additionalImages.length) {
+          // Clear existing images
+          while (this.imageItems.length) {
+            this.imageItems.removeAt(0);
+          }
+          this.additionalImages = [];
+          
+          // Add each image
+          post.additionalImages.forEach((img: any) => {
             this.addImageItem();
-            this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
-            this.additionalImages[this.additionalImages.length - 1].preview = img.url;
+            const lastIndex = this.imageItems.length - 1;
+            
+            // If img is a string, use it as the URL
+            if (typeof img === 'string') {
+              this.additionalImages[lastIndex] = {
+                preview: img,
+                description: '',
+                file: null
+              };
+            } else {
+              // If img is an object with url and description
+              this.imageItems.at(lastIndex).patchValue({ description: img.description || '' });
+              this.additionalImages[lastIndex] = {
+                preview: img.url,
+                description: img.description || '',
+                file: null
+              };
+            }
           });
         }
       });
-
     } else {
       this.blogService.currentPreviewArticle$.subscribe(article => {
         if (Object.keys(article).length) {
@@ -113,11 +137,36 @@ export class BlogCreateComponent implements OnInit {
           this.thumbnailPreview = article.thumbnail;
           this.coverImageFile = new File([], article.coverImage);
           this.thumbnailFile = new File([], article.thumbnail);
-          if (article.images?.length) {
-            article.images.forEach((img: any) => {
+          
+          // Handle additional images
+          if (article.additionalImages?.length) {
+            // Clear existing images
+            while (this.imageItems.length) {
+              this.imageItems.removeAt(0);
+            }
+            this.additionalImages = [];
+            
+            // Add each image
+            article.additionalImages.forEach((img: any) => {
               this.addImageItem();
-              this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
-              this.additionalImages[this.additionalImages.length - 1].preview = img.url;
+              const lastIndex = this.imageItems.length - 1;
+              
+              // If img is a string, use it as the URL
+              if (typeof img === 'string') {
+                this.additionalImages[lastIndex] = {
+                  preview: img,
+                  description: '',
+                  file: null
+                };
+              } else {
+                // If img is an object with url and description
+                this.imageItems.at(lastIndex).patchValue({ description: img.description || '' });
+                this.additionalImages[lastIndex] = {
+                  preview: img.url,
+                  description: img.description || '',
+                  file: null
+                };
+              }
             });
           }
         }
@@ -293,7 +342,7 @@ export class BlogCreateComponent implements OnInit {
 
     validImages.forEach((img) => {
       if (img.file) {
-        formData.append('images', img.file);
+        formData.append('additionalImages', img.file);
       }
     });
 
@@ -322,7 +371,7 @@ export class BlogCreateComponent implements OnInit {
       thumbnail: this.thumbnailPreview || '',
       tags,
       likes: [],
-      images,
+      additionalImages: images,
       comments: []
     };
   }

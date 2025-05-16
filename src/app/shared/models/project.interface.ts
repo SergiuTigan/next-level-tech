@@ -4,7 +4,7 @@ export interface IProject {
     content: string;
     description: string;
     coverImage: string;
-    images: Image[];
+    additionalImages: Image[];
     techUsed: string[];
     thumbnail: string;
     [key: string]: any;
@@ -21,7 +21,7 @@ export interface CreateProjectDto {
     content: string;
     description: string;
     coverImage: File;
-    images: File[];
+    additionalImages: File[];
     imageDescriptions?: { [key: string]: string };
     techUsed: string[];
     thumbnail: File;

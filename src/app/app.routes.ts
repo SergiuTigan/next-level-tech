@@ -43,7 +43,7 @@ export const routes: Route[] = [
         path: '',
         loadComponent: () => import('./core/components/projects/projects-grid/projects-grid.component').then(m => m.ProjectsGridComponent)
       }, {
-        path: ':id/details',
+        path: 'details/:id',
         loadComponent: () => import('./core/components/projects/projects-details/projects-details.component').then(m => m.ProjectsDetailsComponent)
       },
       {
@@ -51,7 +51,7 @@ export const routes: Route[] = [
         loadComponent: () => import('./core/components/projects/projects-create/projects-create.component').then(m => m.ProjectsCreateComponent)
       },
       {
-        path: ':id/edit',
+        path: 'edit/:id',
         loadComponent: () => import('./core/components/projects/projects-create/projects-create.component').then(m => m.ProjectsCreateComponent)
       }
     ]

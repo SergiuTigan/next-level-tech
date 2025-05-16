@@ -104,15 +104,15 @@
     <div class="prose prose-content" [innerHTML]="article.content | safeHtml"></div>
 
     <!-- Additional images gallery -->
-    @if (article.images && article.images.length > 0) {
+    @if (article.additionalImages && article.additionalImages.length > 0) {
       <div class="mb-12">
         <h3 class="text-xl font-semibold text-gray-900 mb-4">Image Gallery</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          @for (image of article.images; track image.url) {
+          @for (image of article.additionalImages; track image.url) {
             <div class="overflow-hidden rounded-lg shadow-md group">
               <div class="relative overflow-hidden">
                 <img
-                  [src]="image.url"
+                  [src]="image"
                   class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500"
                   style="max-height: 350px;"
                 >

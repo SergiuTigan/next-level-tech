@@ -9,7 +9,7 @@ export interface Article {
   category: string;
   createDate: string;
   coverImage: string;
-  images: Image[];
+  additionalImages: Image[];
   imageDescriptions?: { [key: string]: string };
   tags: string[];
   likes: string[];

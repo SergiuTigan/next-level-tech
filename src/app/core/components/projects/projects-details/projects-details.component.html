@@ -19,7 +19,7 @@
     <!-- Cover Image -->
     <div class="mb-10 overflow-hidden rounded-xl shadow-lg">
       <img
-        [src]="project.coverImage"
+        [src]="project.thumbnail"
         [alt]="project.title"
         class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
         style="max-height: 550px;"
@@ -29,15 +29,15 @@
     <div class="flex items-center mb-10 p-6 bg-blue-50 rounded-lg shadow-sm">
       <div class="prose prose-content mb-10 project-content" [innerHTML]="project.content | safeHtml"></div>
     </div>
-    @if (project.images?.length) {
+    @if (project.additionalImages?.length) {
       <div class="mb-12">
         <h3 class="text-xl font-semibold text-gray-900 mb-4">Image Gallery</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          @for (img of project.images; track img._id || img.url) {
+          @for (img of project.additionalImages; track img._id || img.url) {
             <div class="overflow-hidden rounded-lg shadow-md group">
               <div class="relative">
                 <img
-                  [src]="img.url"
+                  [src]="img"
                   class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500"
                   style="max-height: 350px;"
                 >

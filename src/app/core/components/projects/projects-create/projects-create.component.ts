@@ -78,6 +78,7 @@ export class ProjectsCreateComponent implements OnInit {
     if (this.projectId) {
       this.isEditMode = true;
       this.projectService.getProjectById(this.projectId).subscribe(project => {
+        this.baseService.setLoading(false);
         this.projectForm.patchValue({
           title: project.title,
           content: project.content,
@@ -90,8 +91,8 @@ export class ProjectsCreateComponent implements OnInit {
         this.coverImageFile = new File([], project.coverImage);
         this.thumbnailFile = new File([], project.thumbnail);
 
-        if (project.images.length) {
-          project.images.forEach((img: any) => {
+        if (project.additionalImages.length) {
+          project.additionalImages.forEach((img: any) => {
             this.addImageItem();
             this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
             this.additionalImages[this.additionalImages.length - 1].preview = img.url;
@@ -100,6 +101,7 @@ export class ProjectsCreateComponent implements OnInit {
       });
     } else {
       this.projectService.currentPreviewProject$.subscribe(project => {
+        this.baseService.setLoading(false);
         if (Object.keys(project).length) {
           this.projectForm.patchValue({
             title: project.title,
@@ -113,8 +115,8 @@ export class ProjectsCreateComponent implements OnInit {
           this.coverImageFile = new File([], project.coverImage);
           this.thumbnailFile = new File([], project.thumbnail);
 
-          if (project.images?.length) {
-            project.images.forEach((img: any) => {
+          if (project.additionalImages?.length) {
+            project.additionalImages.forEach((img: any) => {
               this.addImageItem();
               this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
               this.additionalImages[this.additionalImages.length - 1].preview = img.url;
@@ -281,10 +283,10 @@ export class ProjectsCreateComponent implements OnInit {
       title: formValues.title,
       content: formValues.content,
       description: formValues.description,
-      techUsed: techUsed.split(','),
+      techUsed: techUsed,
       coverImage: this.coverImageFile!,
       thumbnail: this.thumbnailFile!,
-      images: validImages.map(img => img.file),
+      additionalImages: validImages.map(img => img.file),
       imageDescriptions: validImages.reduce((acc, img, index) => {
         acc[index.toString()] = img.description || '';
         return acc;
@@ -309,7 +311,7 @@ export class ProjectsCreateComponent implements OnInit {
       coverImage: this.coverImagePreview || '',
       thumbnail: this.thumbnailPreview || '',
       techUsed,
-      images
+      additionalImages: images
     };
   }
 
