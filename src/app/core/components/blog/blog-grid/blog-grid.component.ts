@@ -79,8 +79,54 @@ export class BlogGridComponent implements OnInit {
     return this.user._id === user._id;
   }
 
+  isWithinFirstDay(createDate: string): boolean {
+    const articleDate = new Date(createDate);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - articleDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays <= 1;
+  }
+
+  canEditArticle(article: Article): boolean {
+    if (this.isAdmin) return true;
+    return this.isAuthor(article.author) && this.isWithinFirstDay(article.createDate);
+  }
+
   toggleHover(articleId: string): void {
     this.cardStates[articleId] = this.cardStates[articleId] === 'hovered' ? 'normal' : 'hovered';
+  }
+
+  togglePublishStatus(event: any, article: Article): void {
+    event.stopPropagation();
+
+    const dialogRef = this.matDialog.open(ConfirmationModalComponent, {
+      width: '400px',
+      data: {
+        title: article.published ? 'Unpublish Article' : 'Publish Article',
+        message: `Are you sure you want to ${article.published ? 'unpublish' : 'publish'} this article?`,
+        confirmText: article.published ? 'Unpublish' : 'Publish',
+        cancelText: 'Cancel'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      const formData = new FormData();
+      formData.append('published', String(!article.published));
+      if (result && article._id) {
+        this.blogService.updateArticle(article._id, formData).subscribe(
+          (updatedArticle) => {
+            const index = this.articles.findIndex(a => a._id === article._id);
+            if (index !== -1) {
+              this.articles[index] = updatedArticle;
+            }
+            this.snackbarService.success(`Article ${updatedArticle.published ? 'published' : 'unpublished'} successfully`);
+          },
+          error => {
+            this.snackbarService.error(`Failed to ${article.published ? 'unpublish' : 'publish'} article`);
+          }
+        );
+      }
+    });
   }
 
   deleteArticle(event: any, id?: string): void {
@@ -123,9 +169,16 @@ export class BlogGridComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result && id) {
-        // Navigate to edit page or open edit form
         this.router.navigate(['/blog/edit', id]);
       }
     });
+  }
+
+  timeRange(date: string): boolean {
+    const articleDate = new Date(date);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - articleDate.getTime());
+    const diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
+    return diffHours <= 24;
   }
 }

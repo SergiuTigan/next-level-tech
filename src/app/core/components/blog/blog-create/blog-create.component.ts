@@ -6,13 +6,18 @@ import {BlogService} from '../../../services/blog.service';
 import {QuillEditorComponent} from 'ngx-quill';
 import {SnackbarService} from '../../../../shared/services/snackbar.service';
 import {BaseService} from "../../../services/base.service";
+import {NgForOf, NgIf} from "@angular/common";
+import {AdditionalImagesComponent} from "../../../../shared/components/additional-images/additional-images.component";
 
 @Component({
   selector: 'app-blog-create',
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    QuillEditorComponent
+    QuillEditorComponent,
+    NgForOf,
+    NgIf,
+    AdditionalImagesComponent
   ],
   standalone: true,
   templateUrl: './blog-create.component.html',
@@ -49,7 +54,7 @@ export class BlogCreateComponent implements OnInit {
       ['blockquote', 'code-block'],
       [{'header': 1}, {'header': 2}],
       [{'list': 'ordered'}, {'list': 'bullet'}],
-      [{'script': 'sub'}, {'script': 'super'}],
+      [{'script': '_id'}, {'script': 'super'}],
       [{'indent': '-1'}, {'indent': '+1'}],
       [{'direction': 'rtl'}],
       [{'size': ['small', false, 'large', 'huge']}],
@@ -89,15 +94,12 @@ export class BlogCreateComponent implements OnInit {
         this.thumbnailPreview = post.thumbnail;
         this.coverImageFile = new File([], post.coverImage);
         this.thumbnailFile = new File([], post.thumbnail);
-        if (post.images.length) {
-          post.images.forEach((img: any) => {
-            this.addImageItem();
-            this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
-            this.additionalImages[this.additionalImages.length - 1].preview = img.url;
-          });
+
+        // Handle additional images
+        if (post.additionalImages && post.additionalImages.length) {
+          this.additionalImages = post.additionalImages;
         }
       });
-
     } else {
       this.blogService.currentPreviewArticle$.subscribe(article => {
         if (Object.keys(article).length) {
@@ -113,12 +115,10 @@ export class BlogCreateComponent implements OnInit {
           this.thumbnailPreview = article.thumbnail;
           this.coverImageFile = new File([], article.coverImage);
           this.thumbnailFile = new File([], article.thumbnail);
-          if (article.images?.length) {
-            article.images.forEach((img: any) => {
-              this.addImageItem();
-              this.imageItems.at(this.imageItems.length - 1).patchValue({description: img.description});
-              this.additionalImages[this.additionalImages.length - 1].preview = img.url;
-            });
+
+          // Handle additional images
+          if (article.additionalImages?.length) {
+            this.additionalImages = article.additionalImages;
           }
         }
       });
@@ -132,29 +132,31 @@ export class BlogCreateComponent implements OnInit {
       description: ['', Validators.required],
       category: ['', Validators.required],
       tags: [''],
-      imageItems: this.fb.array([])
-    });
-  }
-
-  get imageItems() {
-    return this.createPostForm.get('imageItems') as FormArray;
-  }
-
-  addImageItem() {
-    const imageItemGroup = this.fb.group({
-      description: ['']
     });
 
-    this.imageItems.push(imageItemGroup);
-    this.additionalImages.push({
-      description: '',
-      preview: ''
-    });
+    // Add removedImages control separately to track images that should be removed during update
+    this.createPostForm.addControl('removedImages', this.fb.array([]));
   }
 
-  removeImageItem(index: number) {
-    this.imageItems.removeAt(index);
-    this.additionalImages.splice(index, 1);
+  onImagesChange(images: any[]) {
+    this.additionalImages = images;
+  }
+
+  onRemovedImagesChange(removedImages: string[]) {
+    // Create or update the removedImages FormArray
+    if (!this.createPostForm.get('removedImages')) {
+      this.createPostForm.addControl('removedImages', this.fb.array([]));
+    }
+    
+    const removedImagesArray = this.createPostForm.get('removedImages') as FormArray;
+    // Clear existing items
+    while (removedImagesArray.length) {
+      removedImagesArray.removeAt(0);
+    }
+    // Add new items
+    removedImages.forEach(url => {
+      removedImagesArray.push(this.fb.control(url));
+    });
   }
 
   onCoverImageSelected(event: Event) {
@@ -210,55 +212,6 @@ export class BlogCreateComponent implements OnInit {
     this.thumbnailPreview = null;
   }
 
-  onAdditionalImageSelected(event: Event, index: number) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length) {
-      const file = input.files[0];
-
-      if (file.size > 5 * 1024 * 1024) {
-        this.additionalImages[index] = {
-          ...this.additionalImages[index],
-          preview: '',
-          error: 'Image must be smaller than 5MB'
-        };
-        return;
-      }
-
-      if (!file.type.match('image.*')) {
-        this.additionalImages[index] = {
-          ...this.additionalImages[index],
-          preview: '',
-          error: 'Only image files are allowed'
-        };
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.additionalImages[index] = {
-          ...this.additionalImages[index],
-          file: file,
-          preview: reader.result as string,
-          error: undefined,
-          description: this.imageItems.at(index).get('description')?.value
-        };
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  getImagePreview(index: number): string | null {
-    return this.additionalImages[index]?.preview || null;
-  }
-
-  getImageError(index: number): string | null {
-    return this.additionalImages[index]?.error || null;
-  }
-
-  hasAdditionalImageErrors(): boolean {
-    return this.additionalImages.some(img => !!img.error);
-  }
-
   prepareFormData(): FormData {
     const formValues = this.createPostForm.value;
     const formData = new FormData();
@@ -268,13 +221,8 @@ export class BlogCreateComponent implements OnInit {
       ? formValues.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag)
       : formValues.tags || [];
 
-    this.imageItems.controls.forEach((control, index) => {
-      if (this.additionalImages[index]) {
-        this.additionalImages[index].description = control.get('description')?.value;
-      }
-    });
-
     formData.append('title', formValues.title);
+    formData.append('published', 'false');
     formData.append('content', formValues.content);
     formData.append('description', formValues.description);
     formData.append('category', formValues.category);
@@ -292,8 +240,14 @@ export class BlogCreateComponent implements OnInit {
 
     validImages.forEach((img) => {
       if (img.file) {
-        formData.append('images', img.file);
+        formData.append('additionalImages', img.file);
       }
+    });
+
+    // Add removed images to the form data
+    const removedImages = this.createPostForm.get('removedImages') as FormArray;
+    removedImages.controls.forEach((control) => {
+      formData.append('removedImages', control.value);
     });
 
     return formData;
@@ -311,6 +265,7 @@ export class BlogCreateComponent implements OnInit {
 
     return {
       title: formValues.title,
+      published: false,
       content: formValues.content,
       description: formValues.description,
       category: formValues.category,
@@ -320,13 +275,13 @@ export class BlogCreateComponent implements OnInit {
       thumbnail: this.thumbnailPreview || '',
       tags,
       likes: [],
-      images,
+      additionalImages: images,
       comments: []
     };
   }
 
   onSubmit(): void {
-    if (this.createPostForm.valid && this.coverImageFile && !this.coverImageError && !this.hasAdditionalImageErrors()) {
+    if (this.createPostForm.valid && this.coverImageFile && !this.coverImageError) {
       if (this.isEditMode && this.postId) {
         this.updateArticle(this.prepareFormData());
       } else {
@@ -365,5 +320,9 @@ export class BlogCreateComponent implements OnInit {
   openPreview(): void {
     this.blogService.savePreviewArticle(this.preparePreviewData() as Article);
     this.router.navigate(['/blog/details', 'preview']).then();
+  }
+
+  hasAdditionalImageErrors(): boolean {
+    return this.additionalImages.some(img => !!img.error);
   }
 }

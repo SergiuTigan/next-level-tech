@@ -1,4 +1,5 @@
 <!-- blog-details.component.html -->
+<app-scroll-progress></app-scroll-progress>
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white">
   <!-- Back button -->
   <button
@@ -104,11 +105,11 @@
     <div class="prose prose-content" [innerHTML]="article.content | safeHtml"></div>
 
     <!-- Additional images gallery -->
-    @if (article.images && article.images.length > 0) {
+    @if (article.additionalImages && article.additionalImages.length > 0) {
       <div class="mb-12">
         <h3 class="text-xl font-semibold text-gray-900 mb-4">Image Gallery</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          @for (image of article.images; track image.url) {
+          @for (image of article.additionalImages; track image.url) {
             <div class="overflow-hidden rounded-lg shadow-md group">
               <div class="relative overflow-hidden">
                 <img
@@ -154,7 +155,8 @@
                 <div class="flex items-center justify-between mb-3">
                   <div class="flex items-center">
                     <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center mr-3">
-                      <span class="text-white font-medium">{{ comment.userName?.charAt(0) }}</span>
+                      <span
+                        class="text-white font-medium">{{ comment.userName ? comment.userName.charAt(0) : undefined }}</span>
                     </div>
                     <div>
                       <span class="font-semibold text-gray-900">{{ comment.userName }}</span>

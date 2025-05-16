@@ -1,0 +1,217 @@
+<div class="relative bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 h-[85vh] overflow-auto">
+  <!-- Hero Section -->
+  <div class="relative overflow-hidden">
+    <div class="absolute inset-0">
+      <img
+        src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&h=600&q=80"
+        alt="Blog writing"
+        class="w-full h-full object-cover object-center">
+      <div class="absolute inset-0 bg-gradient-to-b from-indigo-900/70 to-purple-900/70 mix-blend-multiply"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto py-16 px-6 sm:py-24 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">Share Your Past Projects</h1>
+      <p class="mt-6 max-w-3xl text-xl text-indigo-100">
+        Showcase your skills and experience by creating a detailed project page. Add images, descriptions, and
+        technologies used to highlight your work.
+      </p>
+    </div>
+  </div>
+
+  <div class="container mx-auto p-6 max-w-4xl">
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+      <h1 class="text-3xl font-bold mb-6 text-indigo-700 border-b pb-3">
+        {{ isEditMode ? 'Edit Project' : 'Create New Project' }}
+      </h1>
+
+      <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="space-y-8">
+        <!-- Title -->
+        <div class="form-group">
+          <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Project Title</label>
+          <input
+            type="text"
+            id="title"
+            formControlName="title"
+            class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-4 py-2"
+            placeholder="Enter your project title">
+          <div *ngIf="projectForm.get('title')?.invalid && projectForm.get('title')?.touched"
+               class="text-red-600 text-sm mt-1">
+            Title is required
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Short Description</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="3"
+            class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-4 py-2"
+            placeholder="Brief description of your project"></textarea>
+          <div *ngIf="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
+               class="text-red-600 text-sm mt-1">
+            Description is required
+          </div>
+        </div>
+
+        <!-- Content (Rich Text) -->
+        <div class="form-group">
+          <label for="content" class="block text-sm font-medium text-gray-700 mb-1">Full Content</label>
+          <div
+            class="border-2 border-gray-300 rounded-md overflow-hidden focus-within:border-indigo-500 focus-within:ring focus-within:ring-indigo-200 focus-within:ring-opacity-50">
+            <quill-editor formControlName="content" [modules]="quillModules" class="h-64"></quill-editor>
+          </div>
+          <div *ngIf="projectForm.get('content')?.invalid && projectForm.get('content')?.touched"
+               class="text-red-600 text-sm mt-1">
+            Content is required
+          </div>
+        </div>
+
+        <!-- Technologies Used -->
+        <div class="form-group">
+          <label for="techUsed" class="block text-sm font-medium text-gray-700 mb-1">Technologies Used</label>
+          <input
+            type="text"
+            id="techUsed"
+            formControlName="techUsed"
+            class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-4 py-2"
+            placeholder="Angular, TypeScript, Node.js, etc.">
+          <p class="text-sm text-gray-500 mt-1">Enter technologies separated by commas</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Cover Image -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Cover Image</label>
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
+              <div *ngIf="!coverImagePreview" class="h-48 flex items-center justify-center">
+                <div class="text-center">
+                  <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                    <path
+                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <p class="mt-1 text-sm text-gray-500">No image selected</p>
+                </div>
+              </div>
+              <img *ngIf="coverImagePreview" [src]="coverImagePreview" alt="Cover image preview"
+                   class="h-48 w-full object-contain">
+              <div class="mt-4 flex items-center justify-center">
+                <label for="coverImage"
+                       class="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                       stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0l-4 4m4-4v12"/>
+                  </svg>
+                  Select Cover Image
+                  <input id="coverImage" name="coverImage" type="file" accept="image/*" class="sr-only"
+                         (change)="onCoverImageSelected($event)">
+                </label>
+                <button *ngIf="coverImagePreview" type="button"
+                        class="ml-3 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                        (click)="removeCoverImage()">
+                  <svg class="-ml-0.5 mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                       stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                  Remove
+                </button>
+              </div>
+            </div>
+            <div *ngIf="coverImageError" class="text-red-600 text-sm mt-1">
+              {{ coverImageError }}
+            </div>
+          </div>
+
+          <!-- Thumbnail -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail</label>
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
+              <div *ngIf="!thumbnailPreview" class="h-48 flex items-center justify-center">
+                <div class="text-center">
+                  <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                    <path
+                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <p class="mt-1 text-sm text-gray-500">No thumbnail selected</p>
+                </div>
+              </div>
+              <img *ngIf="thumbnailPreview" [src]="thumbnailPreview" alt="Thumbnail preview"
+                   class="h-48 w-full object-contain">
+              <div class="mt-4 flex items-center justify-center">
+                <label for="thumbnail"
+                       class="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                       stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0l-4 4m4-4v12"/>
+                  </svg>
+                  Select Thumbnail
+                  <input id="thumbnail" name="thumbnail" type="file" accept="image/*" class="sr-only"
+                         (change)="onThumbnailSelected($event)">
+                </label>
+                <button *ngIf="thumbnailPreview" type="button"
+                        class="ml-3 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                        (click)="removeThumbnail()">
+                  <svg class="-ml-0.5 mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                       stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Images -->
+        <app-additional-images 
+          [images]="additionalImages" 
+          [isEditMode]="isEditMode"
+          (imagesChange)="onImagesChange($event)"
+          (removedImagesChange)="onRemovedImagesChange($event)">
+        </app-additional-images>
+
+        <!-- Actions -->
+        <div class="flex justify-between pt-6 border-t border-gray-200 mt-8">
+          <a [routerLink]="['/projects']"
+             class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+            </svg>
+            Cancel
+          </a>
+          <div class="flex space-x-3">
+            <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    (click)="openPreview()">
+              <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+              Preview
+            </button>
+            <button type="submit" [disabled]="submitDisabled"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
+              <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+              </svg>
+              {{ isEditMode ? 'Update' : 'Create' }} Project
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

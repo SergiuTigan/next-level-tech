@@ -13,6 +13,7 @@ import {BaseService} from "./core/services/base.service";
 import {BlogService} from "./core/services/blog.service";
 import {SnackbarService} from "./shared/services/snackbar.service";
 import {ContactService} from "./core/services/contact.service";
+import {ProjectsService} from "./core/services/projects.service";
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,7 @@ import {ContactService} from "./core/services/contact.service";
     AsyncPipe,
     LoginFormComponent
   ],
-  providers: [UsersService, BaseService, BlogService, SnackbarService, ContactService],
+  providers: [UsersService, BaseService, BlogService, SnackbarService, ContactService, ProjectsService],
 })
 export class AppComponent implements OnInit {
   readonly usersService = inject(UsersService);

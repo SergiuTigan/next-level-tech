@@ -1,0 +1,58 @@
+// Additional styling for the component
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+// Improve image container appearance
+.border-dashed {
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: #6366f1; // Indigo-500
+  }
+}
+
+// Image container styles
+.image-container {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+}
+
+// Image preview styles
+.image-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 8rem;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 0.375rem;
+
+  img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// Empty state container
+div[formArrayName="imageItems"] > div:last-child {
+  &.cursor-pointer {
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba(99, 102, 241, 0.05);
+      transform: translateY(-2px);
+    }
+  }
+}

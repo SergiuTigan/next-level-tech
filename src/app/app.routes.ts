@@ -37,7 +37,24 @@ export const routes: Route[] = [
   {
     path: 'projects',
     loadComponent: () => import('./core/components/projects/projects.component').then(m => m.ProjectsComponent),
-    data: {animation: 'ProjectsPage'}
+    data: {animation: 'ProjectsPage'},
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./core/components/projects/projects-grid/projects-grid.component').then(m => m.ProjectsGridComponent)
+      }, {
+        path: 'details/:id',
+        loadComponent: () => import('./core/components/projects/projects-details/projects-details.component').then(m => m.ProjectsDetailsComponent)
+      },
+      {
+        path: 'create',
+        loadComponent: () => import('./core/components/projects/projects-create/projects-create.component').then(m => m.ProjectsCreateComponent)
+      },
+      {
+        path: 'edit/:id',
+        loadComponent: () => import('./core/components/projects/projects-create/projects-create.component').then(m => m.ProjectsCreateComponent)
+      }
+    ]
   },
   {
     path: 'about',

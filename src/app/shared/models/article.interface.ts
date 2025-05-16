@@ -3,12 +3,13 @@ import {User} from './user.interface';
 export interface Article {
   _id?: string;
   title: string;
+  published: boolean;
   content: string;
   description: string;
   category: string;
   createDate: string;
   coverImage: string;
-  images: Image[];
+  additionalImages: Image[];
   imageDescriptions?: { [key: string]: string };
   tags: string[];
   likes: string[];
@@ -27,6 +28,7 @@ export interface Image {
 
 export interface CreateArticleDto {
   title: string;
+  published: boolean;
   content: string;
   description: string;
   category: string;
