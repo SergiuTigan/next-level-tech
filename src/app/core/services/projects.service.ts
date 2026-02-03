@@ -1,6 +1,6 @@
 import {Injectable, inject} from '@angular/core';
-import {BehaviorSubject, from, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {BehaviorSubject, from, Observable, of} from 'rxjs';
+import {map, tap, catchError} from 'rxjs/operators';
 import {CreateProjectDto, IProject} from '../../shared/models/project.interface';
 import {BaseService} from './base.service';
 const COLLECTION = 'projects';
@@ -15,8 +15,14 @@ export class ProjectsService {
   currentPreviewProject$ = this.previewProjectSubject.asObservable();
 
   getAllProjects(): Observable<IProject[]> {
+    console.log('[ProjectsService] Fetching all projects...');
     return from(this.baseService.getAll<IProject>(COLLECTION)).pipe(
-      map(projects => projects.map(p => this.normalizeProject(p)))
+      tap(projects => console.log('[ProjectsService] Fetched projects:', projects)),
+      map(projects => projects.map(p => this.normalizeProject(p))),
+      catchError(error => {
+        console.error('[ProjectsService] Error fetching projects:', error);
+        return of([]);
+      })
     );
   }
 
