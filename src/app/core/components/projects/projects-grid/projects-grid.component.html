@@ -167,12 +167,12 @@
 
               <!-- Tech Stack -->
               <div class="flex flex-wrap gap-2">
-                @for (tech of project.techUsed?.slice(0, 4); track tech) {
+                @for (tech of (project.techUsed || []).slice(0, 4); track tech) {
                   <span [ngClass]="colorClasses[$index % colorClasses.length]" class="px-2 py-1 rounded-lg text-xs font-medium">
                     {{ tech | capitalize }}
                   </span>
                 }
-                @if (project.techUsed?.length > 4) {
+                @if (project.techUsed && project.techUsed.length > 4) {
                   <span class="px-2 py-1 text-xs text-gray-500">+{{ project.techUsed.length - 4 }} more</span>
                 }
               </div>

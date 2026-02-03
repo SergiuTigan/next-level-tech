@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
-import {AsyncPipe, NgClass} from '@angular/common';
+import {NgClass} from '@angular/common';
 import {BaseService} from '../../../core/services/base.service';
 import {UsersService} from '../../../core/services/users.service';
 import {ClickOutsideDirective} from '../../directives/click-outside.directive';
@@ -9,8 +9,7 @@ import {ClickOutsideDirective} from '../../directives/click-outside.directive';
   selector: 'app-navbar',
   imports: [
     RouterLink,
-    NgClass,
-    AsyncPipe
+    NgClass
   ],
   providers: [BaseService],
   standalone: true,

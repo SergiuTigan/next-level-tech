@@ -28,7 +28,7 @@
       </div>
 
       <!-- Tech Used -->
-      @if (project.techUsed?.length) {
+      @if (project.techUsed && project.techUsed.length) {
         <div class="mb-10 flex flex-wrap gap-3">
           @for (tech of project.techUsed; track tech) {
             <span class="bg-primary/20 text-primary px-4 py-2 rounded-lg text-sm font-medium">
@@ -51,7 +51,7 @@
       </div>
 
       <!-- Additional Images Gallery -->
-      @if (project.additionalImages?.length) {
+      @if (project.additionalImages && project.additionalImages.length) {
         <div class="mb-12">
           <h3 class="text-2xl font-bold text-white mb-6">Gallery</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
