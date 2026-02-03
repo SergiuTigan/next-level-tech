@@ -7,6 +7,7 @@ import {authInterceptorFn} from "./shared/interceptors/auth.interceptor";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {BrowserModule} from "@angular/platform-browser";
 import {MatDialogModule} from "@angular/material/dialog";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 // Firebase imports
 import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
@@ -20,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptorFn])),
-    importProvidersFrom(BrowserModule, MatDialogModule),
+    importProvidersFrom(BrowserModule, MatDialogModule, MatSnackBarModule),
     provideAnimations(),
     // Firebase providers
     provideFirebaseApp(() => initializeApp(firebaseConfig)),

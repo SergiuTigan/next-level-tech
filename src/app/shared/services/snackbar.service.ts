@@ -3,7 +3,9 @@ import {inject, Injectable} from '@angular/core';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
 import {SnackbarComponent} from '../components/snackbar/snackbar.component';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SnackbarService {
   readonly snackBar = inject(MatSnackBar);
 
