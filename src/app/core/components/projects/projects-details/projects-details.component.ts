@@ -6,7 +6,6 @@ import {SnackbarService} from "../../../../shared/services/snackbar.service";
 import {SafeHtmlPipe} from "../../../../shared/pipes/safe-html.pipe";
 import {finalize} from "rxjs";
 import {BaseService} from "../../../services/base.service";
-import {ScrollProgressComponent} from "../../../../shared/components/scroll-progress/scroll-progress.component";
 import {CommonModule} from "@angular/common";
 
 @Component({
@@ -15,7 +14,6 @@ import {CommonModule} from "@angular/common";
   styleUrls: ['./projects-details.component.scss'],
   imports: [
     SafeHtmlPipe,
-    ScrollProgressComponent,
     CommonModule
   ],
   standalone: true

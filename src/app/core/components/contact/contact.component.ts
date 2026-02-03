@@ -2,7 +2,6 @@ import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {finalize} from 'rxjs/operators';
 import {ContactService} from '../../services/contact.service';
-import {NgClass, NgIf} from '@angular/common';
 import {RecaptchaModule} from "ng-recaptcha";
 
 @Component({
@@ -11,8 +10,6 @@ import {RecaptchaModule} from "ng-recaptcha";
   styleUrls: ['./contact.component.scss'],
   imports: [
     ReactiveFormsModule,
-    NgIf,
-    NgClass,
     RecaptchaModule
   ],
   standalone: true
