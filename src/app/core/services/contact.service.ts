@@ -1,47 +1,77 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {from, Observable} from 'rxjs';
+import {map, catchError} from 'rxjs/operators';
 import {ContactRequest, ContactResponse} from '../../shared/models/contact.interface';
-import {environment} from '../../../assets/environment/environment';
+import {BaseService} from './base.service';
 
-@Injectable()
+const COLLECTION = 'contacts';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class ContactService {
-  readonly http = inject(HttpClient);
-  private apiUrl = `${environment.baseUrl}/contact`;
+  readonly #baseService = inject(BaseService);
 
   /**
-   * Send a contact form submission to the API
+   * Send a contact form submission to Firestore
    */
   submitContactForm(contactData: ContactRequest): Observable<ContactResponse> {
-    return this.http.post<ContactResponse>(this.apiUrl, contactData)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return from(this.submitAsync(contactData)).pipe(
+      catchError(error => {
+        throw new Error(this.handleError(error));
+      })
+    );
+  }
+
+  private async submitAsync(contactData: ContactRequest): Promise<ContactResponse> {
+    const contact = {
+      name: contactData.name,
+      email: contactData.email,
+      subject: contactData.subject,
+      message: contactData.message,
+      captchaToken: contactData.captchaToken,
+      isRead: false
+    };
+
+    const created = await this.#baseService.create<ContactResponse>(COLLECTION, contact);
+    return created;
   }
 
   /**
-   * Handle HTTP errors
+   * Get all contact submissions (for admin)
    */
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'An unknown error occurred';
+  getAllContacts(): Observable<ContactResponse[]> {
+    return from(this.#baseService.getAll<ContactResponse>(COLLECTION));
+  }
 
-    if (error.error instanceof ErrorEvent) {
-      // Client-side error
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Server-side error
-      if (error.status === 0) {
-        errorMessage = 'Could not connect to the server. Please check your internet connection.';
-      } else if (error.status === 400) {
-        errorMessage = error.error?.message || 'Invalid form data. Please check your inputs.';
-      } else if (error.status === 500) {
-        errorMessage = 'Server error. Please try again later.';
-      } else {
-        errorMessage = `Error ${error.status}: ${error.error?.message || error.statusText}`;
+  /**
+   * Mark a contact as read
+   */
+  markAsRead(id: string): Observable<ContactResponse> {
+    return from(this.#baseService.update<ContactResponse>(COLLECTION, id, { isRead: true }));
+  }
+
+  /**
+   * Delete a contact submission
+   */
+  deleteContact(id: string): Observable<void> {
+    return from(this.#baseService.delete(COLLECTION, id));
+  }
+
+  /**
+   * Handle errors
+   */
+  private handleError(error: any): string {
+    if (error?.code) {
+      switch (error.code) {
+        case 'permission-denied':
+          return 'Permission denied. Please try again later.';
+        case 'unavailable':
+          return 'Service unavailable. Please check your internet connection.';
+        default:
+          return `Error: ${error.message || 'An unknown error occurred'}`;
       }
     }
-
-    return throwError(() => new Error(errorMessage));
+    return error?.message || 'An unknown error occurred';
   }
 }

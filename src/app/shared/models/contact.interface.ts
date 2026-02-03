@@ -1,3 +1,5 @@
+import {Timestamp} from 'firebase/firestore';
+
 export interface ContactRequest {
   name: string;
   email: string;
@@ -13,6 +15,6 @@ export interface ContactResponse {
   subject: string;
   message: string;
   isRead: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | Timestamp;
+  updatedAt: string | Timestamp;
 }

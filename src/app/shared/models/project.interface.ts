@@ -1,4 +1,8 @@
+import {Timestamp} from 'firebase/firestore';
+
 export interface IProject {
+    id?: string;
+    /** @deprecated Use 'id' instead - kept for backward compatibility */
     _id?: string;
     title: string;
     content: string;
@@ -7,12 +11,15 @@ export interface IProject {
     additionalImages: Image[];
     techUsed: string[];
     thumbnail: string;
+    createdAt?: string | Timestamp;
     [key: string]: any;
 }
 
 export interface Image {
     url: string,
     description: string,
+    id?: string
+    /** @deprecated Use 'id' instead */
     _id?: string
 }
 

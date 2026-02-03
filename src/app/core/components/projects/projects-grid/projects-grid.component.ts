@@ -30,13 +30,13 @@ export class ProjectsGridComponent implements OnInit {
 
   projects$ = this.projectsService.getAllProjects();
   colorClasses = [
-    'bg-red-100 text-red-800',
-    'bg-green-100 text-green-800',
-    'bg-blue-100 text-blue-800',
-    'bg-yellow-100 text-yellow-800',
-    'bg-purple-100 text-purple-800',
-    'bg-pink-100 text-pink-800',
-    'bg-indigo-100 text-indigo-800'
+    'bg-blue-500/20 text-blue-400',
+    'bg-green-500/20 text-green-400',
+    'bg-cyan-500/20 text-cyan-400',
+    'bg-amber-500/20 text-amber-400',
+    'bg-rose-500/20 text-rose-400',
+    'bg-teal-500/20 text-teal-400',
+    'bg-orange-500/20 text-orange-400'
   ];
 
   get isAdmin() {
