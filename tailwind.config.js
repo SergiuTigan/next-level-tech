@@ -3,17 +3,21 @@ export default {
   content: [
     "./src/**/*.{html,ts}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        primary: '#3b82f6',
-        secondary: '#06b6d4',
-        dark: {
-          DEFAULT: '#131620',
-          card: '#1a1f2e',
-          border: '#2a3142',
-          lighter: '#232936',
-        }
+        primary: {
+          DEFAULT: '#2563eb',
+          light: '#3b82f6',
+          dark: '#1d4ed8',
+        },
+        secondary: {
+          DEFAULT: '#0891b2',
+          light: '#06b6d4',
+          dark: '#0e7490',
+        },
+        accent: '#8b5cf6',
       }
     },
   },

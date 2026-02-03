@@ -1,7 +1,7 @@
-<div class="min-h-screen flex flex-col bg-dark">
+<div class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
   <!-- Loading Spinner Overlay -->
   @if (loading$ | async) {
-    <div class="fixed inset-0 bg-dark/80 z-50 flex items-center justify-center">
+    <div class="fixed inset-0 bg-white/80 dark:bg-gray-900/80 z-50 flex items-center justify-center">
       <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
     </div>
   }
