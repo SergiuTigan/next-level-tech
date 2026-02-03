@@ -40,14 +40,7 @@
 
       <!-- Content -->
       <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 mb-10">
-        <div class="prose prose-invert prose-lg max-w-none
-                    prose-headings:text-gray-900 dark:text-white prose-headings:font-bold
-                    prose-p:text-gray-600 dark:text-gray-300 prose-p:leading-relaxed
-                    prose-li:text-gray-600 dark:text-gray-300
-                    prose-strong:text-gray-900 dark:text-white
-                    prose-a:text-primary prose-a:no-underline hover:prose-a:text-secondary"
-             [innerHTML]="project.content | safeHtml">
-        </div>
+        <div class="project-content" [innerHTML]="project.content | safeHtml"></div>
       </div>
 
       <!-- Additional Images Gallery -->
