@@ -3,8 +3,6 @@ import {BehaviorSubject, from, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {CreateProjectDto, IProject} from '../../shared/models/project.interface';
 import {BaseService} from './base.service';
-import {orderBy} from '@angular/fire/firestore';
-
 const COLLECTION = 'projects';
 
 @Injectable({
@@ -17,10 +15,7 @@ export class ProjectsService {
   currentPreviewProject$ = this.previewProjectSubject.asObservable();
 
   getAllProjects(): Observable<IProject[]> {
-    return from(this.baseService.getAll<IProject>(
-      COLLECTION,
-      orderBy('createdAt', 'desc')
-    )).pipe(
+    return from(this.baseService.getAll<IProject>(COLLECTION)).pipe(
       map(projects => projects.map(p => this.normalizeProject(p)))
     );
   }
