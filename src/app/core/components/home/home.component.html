@@ -1,97 +1,117 @@
-<div class="relative flex min-h-[80vh] bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 max-h-[85vh]">
-  <div class="mx-auto w-full flex flex-col md:flex-row">
-    <!-- Image Section - hidden on small screens, visible on md and up -->
-    <div class="hidden md:block md:w-1/2 lg:w-1/2 xl:w-1/2 sticky top-0 h-[85vh]">
-      <div class="relative h-[85vh] w-full">
-        <img
-          src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-x=.4&w=2560&h=3413&&q=80"
-          alt="Abstract colorful background"
-          class="absolute inset-0 h-full w-full object-cover shadow-2xl"
-        >
-        <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/30 to-blue-900/10 mix-blend-multiply"></div>
-      </div>
+<div class="bg-dark min-h-screen">
+  <!-- Hero Section -->
+  <div class="relative overflow-hidden">
+    <div class="absolute inset-0">
+      <img
+        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2560&q=80"
+        alt="Tech background"
+        class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-dark/90"></div>
+      <div class="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl"></div>
     </div>
 
-    <!-- Content Section - scrollable, takes full width on small, half on larger screens -->
-    <div class="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 h-[85vh] overflow-y-auto">
-      <div class="p-4 md:p-8 lg:p-12">
-        <div class="max-w-2xl mx-auto backdrop-blur-sm bg-white/50 rounded-xl shadow-xl border border-white/60 p-6 md:p-8">
-          <!-- Header Section -->
-          <p class="text-base font-semibold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">Next-Level Solutions</p>
-          <h1 class="mt-4 text-3xl md:text-4xl font-bold tracking-tight text-gray-900">Development. Outsourcing. Innovation.</h1>
-          <p class="mt-6 text-lg text-gray-700">
-            At Next Level Tech, we bring ideas to life through cutting-edge web development and seamless outsourcing solutions.
-            Whether you're a startup looking for a scalable product or an enterprise needing expert tech support, we deliver world-class solutions tailored to your needs.
-          </p>
-
-          <!-- Main Content -->
-          <div class="mt-10 text-gray-700">
-            <p class="mb-4">
-              Our expertise spans the latest front-end and back-end technologies, ensuring high-performance, scalable, and visually engaging applications.
-              We specialize in modern frameworks and libraries such as Angular, React, TailwindCSS, Bootstrap, and Material UI, crafting sleek and highly responsive interfaces.
-            </p>
-            <p class="mb-6">
-              With a deep understanding of UI/UX principles, we create web applications that are not just functional but also intuitive and visually striking.
-              Our use of TailwindCSS and Bootstrap allows us to develop fast, efficient, and mobile-friendly designs, while Angular and React enable us to build dynamic and scalable applications.
-            </p>
-
-            <!-- Features List -->
-            <ul class="space-y-6 mb-8">
-              <li class="flex gap-x-4 p-4 bg-white/80 rounded-lg shadow-sm border border-gray-100 transition-all duration-200 hover:shadow-md hover:border-indigo-100">
-                <svg class="mt-1 h-5 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M5.5 17a4.5 4.5 0 0 1-1.44-8.765 4.5 4.5 0 0 1 8.302-3.046 3.5 3.5 0 0 1 4.504 4.272A4 4 0 0 1 15 17H5.5Zm3.75-2.75a.75.75 0 0 0 1.5 0V9.66l1.95 2.1a.75.75 0 1 0 1.1-1.02l-3.25-3.5a.75.75 0 0 0-1.1 0l-3.25 3.5a.75.75 0 1 0 1.1 1.02l1.95-2.1v4.59Z"
-                        clip-rule="evenodd"/>
-                </svg>
-                <span><strong class="font-semibold text-gray-900">Scalable Development.</strong> From sleek landing pages to complex SaaS platforms, we build for performance, security, and growth.</span>
-              </li>
-              <li class="flex gap-x-4 p-4 bg-white/80 rounded-lg shadow-sm border border-gray-100 transition-all duration-200 hover:shadow-md hover:border-indigo-100">
-                <svg class="mt-1 h-5 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
-                        clip-rule="evenodd"/>
-                </svg>
-                <span><strong class="font-semibold text-gray-900">Outsourcing Made Easy.</strong> Need an expert team? We provide dedicated developers to accelerate your projects at any stage.</span>
-              </li>
-              <li class="flex gap-x-4 p-4 bg-white/80 rounded-lg shadow-sm border border-gray-100 transition-all duration-200 hover:shadow-md hover:border-indigo-100">
-                <svg class="mt-1 h-5 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path d="M4.632 3.533A2 2 0 0 1 6.577 2h6.846a2 2 0 0 1 1.945 1.533l1.976 8.234A3.489 3.489 0 0 0 16 11.5H4c-.476 0-.93.095-1.344.267l1.976-8.234Z"/>
-                  <path fill-rule="evenodd"
-                        d="M4 13a2 2 0 1 0 0 4h12a2 2 0 1 0 0-4H4Zm11.24 2a.75.75 0 0 1 .75-.75H16a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75h-.01a.75.75 0 0 1-.75-.75V15Zm-2.25-.75a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75H13a.75.75 0 0 0 .75-.75V15a.75.75 0 0 0-.75-.75h-.01Z"
-                        clip-rule="evenodd"/>
-                </svg>
-                <span><strong class="font-semibold text-gray-900">Future-Proof Tech.</strong> We stay ahead of industry trends, using the latest frameworks to keep your digital presence competitive.</span>
-              </li>
-            </ul>
-
-            <p class="mb-8">
-              Whether you need a high-converting website, a powerful backend, or an entire outsourced development team, we've got you covered.
-              We focus on delivering high-quality, efficient solutions that drive success.
-            </p>
-
-            <!-- Second Section -->
-            <div class="p-6 bg-white/80 rounded-xl shadow-md border border-gray-100">
-              <h2 class="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">No In-House Team? No Problem.</h2>
-              <p class="mt-6">
-                Next Level Tech provides flexible, top-tier development talent to bring your projects to life without the hassle of hiring.
-                From startups to enterprises, our outsourcing solutions help you scale efficiently and affordably.
-              </p>
-              <p class="mt-4">
-                Our expertise in frameworks like Angular and React ensures that we deliver fast, reliable, and scalable applications.
-                Whether it's a component-based architecture or single-page applications, we tailor solutions to match your vision.
-                Paired with design frameworks like TailwindCSS, Bootstrap, and Material UI, we guarantee a seamless, modern, and elegant user experience.
-              </p>
-
-              <!-- Call to Action Button -->
-              <div class="mt-8 flex justify-center">
-                <button [routerLink]="['/contact']"
-                        class="px-6 py-3 rounded-md shadow-md text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 font-medium">
-                  Contact Us Today
-                </button>
-              </div>
-            </div>
-          </div>
+    <div class="relative max-w-7xl mx-auto px-6 py-24 sm:py-32 lg:px-8">
+      <div class="max-w-2xl">
+        <p class="text-primary font-semibold mb-4">Senior Frontend Developer</p>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+          Hi, I'm <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Sergiu Țigan</span>
+        </h1>
+        <p class="mt-6 text-xl text-gray-300">
+          Building modern, scalable web applications with Angular, React, and cutting-edge frontend technologies.
+          Nearly a decade of experience crafting intuitive and engaging digital experiences.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-4">
+          <a routerLink="/projects" class="px-6 py-3 rounded-lg font-medium text-white bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all cursor-pointer">
+            View Projects
+          </a>
+          <a routerLink="/contact" class="px-6 py-3 rounded-lg font-medium text-gray-300 border border-dark-border hover:border-primary/50 hover:text-white transition-all cursor-pointer">
+            Get in Touch
+          </a>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills Section -->
+  <div class="max-w-7xl mx-auto px-6 py-24 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">What I Do</h2>
+      <p class="mt-4 text-gray-400 max-w-2xl mx-auto">Specialized in frontend development with expertise across the entire web stack</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-dark-card rounded-2xl border border-dark-border p-8 hover:border-primary/40 transition-all group">
+        <div class="w-14 h-14 rounded-xl bg-primary/20 flex items-center justify-center mb-6 group-hover:bg-primary/30 transition-colors">
+          <svg class="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-white mb-3">Frontend Development</h3>
+        <p class="text-gray-400">Building responsive, performant web applications with Angular, React, and modern JavaScript frameworks.</p>
+      </div>
+
+      <div class="bg-dark-card rounded-2xl border border-dark-border p-8 hover:border-primary/40 transition-all group">
+        <div class="w-14 h-14 rounded-xl bg-secondary/20 flex items-center justify-center mb-6 group-hover:bg-secondary/30 transition-colors">
+          <svg class="w-7 h-7 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-white mb-3">UI/UX Design</h3>
+        <p class="text-gray-400">Creating intuitive, visually engaging interfaces with TailwindCSS, Material UI, and modern design systems.</p>
+      </div>
+
+      <div class="bg-dark-card rounded-2xl border border-dark-border p-8 hover:border-primary/40 transition-all group">
+        <div class="w-14 h-14 rounded-xl bg-green-500/20 flex items-center justify-center mb-6 group-hover:bg-green-500/30 transition-colors">
+          <svg class="w-7 h-7 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-white mb-3">Performance</h3>
+        <p class="text-gray-400">Optimizing applications for speed, scalability, and best practices in modern web development.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="bg-dark-card border-y border-dark-border">
+    <div class="max-w-7xl mx-auto px-6 py-16 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+          <div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">8+</div>
+          <div class="mt-2 text-gray-400">Years Experience</div>
+        </div>
+        <div>
+          <div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">50+</div>
+          <div class="mt-2 text-gray-400">Projects Delivered</div>
+        </div>
+        <div>
+          <div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">6+</div>
+          <div class="mt-2 text-gray-400">Companies</div>
+        </div>
+        <div>
+          <div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">10+</div>
+          <div class="mt-2 text-gray-400">Technologies</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <div class="max-w-7xl mx-auto px-6 py-24 lg:px-8">
+    <div class="bg-gradient-to-r from-primary to-secondary rounded-2xl p-12 text-center relative overflow-hidden">
+      <div class="absolute inset-0 bg-white/5"></div>
+      <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+      
+      <div class="relative">
+        <h2 class="text-3xl font-bold text-white">Let's Work Together</h2>
+        <p class="mt-4 text-white/80 max-w-2xl mx-auto">
+          Looking for a skilled frontend developer? I'm available for freelance projects and collaborations.
+        </p>
+        <a routerLink="/contact" class="mt-8 inline-flex px-8 py-4 rounded-lg font-medium text-primary bg-white hover:bg-gray-100 transition-all cursor-pointer">
+          Start a Conversation
+        </a>
       </div>
     </div>
   </div>
