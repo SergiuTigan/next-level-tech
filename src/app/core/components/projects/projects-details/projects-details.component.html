@@ -1,87 +1,97 @@
-<app-scroll-progress></app-scroll-progress>
-<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white">
-  <!-- Back button -->
-  <button (click)="goBack()"
-          class="group flex items-center text-blue-600 hover:text-blue-800 mb-8 transition-all duration-300">
-    <svg xmlns="http://www.w3.org/2000/svg"
-         class="h-5 w-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none"
-         viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-    </svg>
-    <span class="font-medium">Back to Projects</span>
-  </button>
+<div class="bg-dark min-h-screen">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Back button -->
+    <button (click)="goBack()"
+            class="group flex items-center text-primary hover:text-secondary mb-8 transition-all duration-300 cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="h-5 w-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none"
+           viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      <span class="font-medium">Back to Projects</span>
+    </button>
 
-  @if (project) {
-    <div class="mb-10 border-b border-gray-100 pb-8">
-      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">{{ project.title }}</h1>
-      <p class="text-xl text-gray-600 mb-6 leading-relaxed">{{ project.description }}</p>
-    </div>
-
-    <!-- Cover Image -->
-    <div class="mb-10 overflow-hidden rounded-xl shadow-lg">
-      <img
-        [src]="project.thumbnail"
-        [alt]="project.title"
-        class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
-        style="max-height: 550px;"
-      >
-    </div>
-
-    <div class="flex items-center mb-10 p-6 bg-blue-50 rounded-lg shadow-sm">
-      <div class="prose prose-content mb-10 project-content" [innerHTML]="project.content | safeHtml"></div>
-    </div>
-    @if (project.additionalImages?.length) {
-      <div class="mb-12">
-        <h3 class="text-xl font-semibold text-gray-900 mb-4">Image Gallery</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          @for (img of project.additionalImages; track img._id || img.url) {
-            <div class="overflow-hidden rounded-lg shadow-md group">
-              <div class="relative">
-                <img
-                  [src]="img.url"
-                  class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500"
-                  style="max-height: 350px;"
-                >
-                @if (img.description) {
-                  <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-2 text-sm">
-                    {{ img.description }}
-                  </div>
-                }
-              </div>
-            </div>
-          }
-        </div>
+    @if (project) {
+      <!-- Header -->
+      <div class="mb-10 pb-8 border-b border-dark-border">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">{{ project.title }}</h1>
+        <p class="text-xl text-gray-400 leading-relaxed">{{ project.description }}</p>
       </div>
-    }
 
-    <!-- Tech Used -->
-    @if (project.techUsed?.length) {
-      <div class="mb-12">
-        <h3 class="text-xl font-semibold text-gray-900 mb-4">Technologies Used</h3>
-        <div class="flex flex-wrap">
+      <!-- Cover Image -->
+      <div class="mb-10 overflow-hidden rounded-2xl border border-dark-border">
+        <img
+          [src]="project.coverImage || project.thumbnail"
+          [alt]="project.title"
+          class="w-full h-auto object-cover"
+          style="max-height: 500px;">
+      </div>
+
+      <!-- Tech Used -->
+      @if (project.techUsed?.length) {
+        <div class="mb-10 flex flex-wrap gap-3">
           @for (tech of project.techUsed; track tech) {
-            <span class="bg-blue-100 text-blue-800 mr-3 mb-3 px-4 py-2 rounded-full text-sm font-medium">
+            <span class="bg-primary/20 text-primary px-4 py-2 rounded-lg text-sm font-medium">
               {{ tech }}
             </span>
           }
         </div>
+      }
+
+      <!-- Content -->
+      <div class="bg-dark-card rounded-2xl border border-dark-border p-8 mb-10">
+        <div class="prose prose-invert prose-lg max-w-none
+                    prose-headings:text-white prose-headings:font-bold
+                    prose-p:text-gray-300 prose-p:leading-relaxed
+                    prose-li:text-gray-300
+                    prose-strong:text-white
+                    prose-a:text-primary prose-a:no-underline hover:prose-a:text-secondary"
+             [innerHTML]="project.content | safeHtml">
+        </div>
+      </div>
+
+      <!-- Additional Images Gallery -->
+      @if (project.additionalImages?.length) {
+        <div class="mb-12">
+          <h3 class="text-2xl font-bold text-white mb-6">Gallery</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            @for (img of project.additionalImages; track img._id || img.url) {
+              <div class="overflow-hidden rounded-xl border border-dark-border group">
+                <div class="relative">
+                  <img
+                    [src]="img.url"
+                    class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-500">
+                  @if (img.description) {
+                    <div class="absolute bottom-0 left-0 right-0 bg-dark/80 backdrop-blur-sm text-white p-3 text-sm">
+                      {{ img.description }}
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Back CTA -->
+      <div class="text-center pt-8 border-t border-dark-border">
+        <button (click)="goBack()"
+                class="px-8 py-4 rounded-xl font-medium text-white bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all cursor-pointer">
+          View More Projects
+        </button>
+      </div>
+    } @else {
+      <!-- Not Found -->
+      <div class="text-center py-16">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-500 mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <h2 class="text-3xl font-bold text-white mb-4">Project not found</h2>
+        <p class="text-xl text-gray-400 mb-8">The project you're looking for doesn't exist.</p>
+        <button (click)="goBack()" class="px-8 py-4 rounded-xl font-medium text-white bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all cursor-pointer">
+          Return to Projects
+        </button>
       </div>
     }
-  } @else {
-    <div class="text-center py-16">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-6" fill="none"
-           viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-      </svg>
-      <h2 class="text-3xl font-bold text-gray-900 mb-4">Project not found</h2>
-      <p class="text-xl text-gray-600 mb-8">The project you're looking for doesn’t exist or was removed.</p>
-      <button
-        (click)="goBack()"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium shadow hover:shadow-lg"
-      >
-        Return to Projects
-      </button>
-    </div>
-  }
+  </div>
 </div>
